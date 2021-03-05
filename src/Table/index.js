@@ -32,7 +32,6 @@ class Index extends Component {
     async componentDidMount() {
         const columns = this.props.columns.map((v, i) => {
             const { dataIndex, title } = v;
-            // return v;
             return { ...v, key: [i, dataIndex, title].join('_') };
         });
         await setAsyncState(this, { columns });
@@ -70,7 +69,6 @@ class Index extends Component {
             onShowSizeChange: (current, size) => {
                 setTimeout(async () => {
                     await setAsyncState(this, { pageSize: size, current: 1 });
-                    this.customEvents.fetchData();
                 }, 0);
             }
         };
