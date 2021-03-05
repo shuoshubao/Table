@@ -1,17 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Table } from "antd";
-import { setAsyncState } from "@nbfe/tools";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Table } from 'antd';
+import { get, omit } from 'lodash';
+import { setAsyncState } from '@nbfe/tools';
 
 class Index extends Component {
-    static displayName = "Table";
+    static displayName = 'Table';
 
     static defaultProps = {};
 
     static propTypes = {
         columns: PropTypes.array.isRequired,
         dataSource: PropTypes.array,
-        remoteConfig: PropTypes.object,
+        remoteConfig: PropTypes.object
     };
 
     constructor(props) {
@@ -21,7 +22,7 @@ class Index extends Component {
             current: 1,
             pageSize: 10,
             dataSource: [],
-            columns: [],
+            columns: []
         };
         this.customEvents = this.getCustomEvents();
         this.domEvents = this.getDomEvents();
@@ -29,68 +30,49 @@ class Index extends Component {
     }
 
     async componentDidMount() {
-        const columns = this.props.columns.map((v) => {
-            return { ...v };
+        const columns = this.props.columns.map((v, i) => {
+            const { dataIndex, title } = v;
+            // return v;
+            return { ...v, key: [i, dataIndex, title].join('_') };
         });
-        this.setState({ columns });
-        // this.customEvents.fetchData();
+        await setAsyncState(this, { columns });
+        this.customEvents.fetchData();
     }
 
     getCustomEvents() {
         return {
             isLocalData() {
-                const { fetch: fetchFunc } = this.remoteConfig;
+                const { fetch: fetchFunc } = this.props.remoteConfig;
                 return !fetchFunc;
             },
             fetchData: async () => {
-                const { state } = this;
-                const { pagination } = state;
-                const { current, pageSize } = pagination;
+                const { props, state } = this;
+                const { fetch: fetchFunc, dataSourceKey = 'list', totalKey = 'total' } = props.remoteConfig;
+                const { current, pageSize } = state;
                 const paginationParams = {
                     pageSize,
-                    currentPage: current,
+                    currentPage: current
                 };
-                // const data = await request({
-                //     url: "/variable/list",
-                //     params: {
-                //         ...paginationParams,
-                //     },
-                // });
-                // this.setState({ dataSource: data.list });
-                // this.customEvents.updatePagination({ total: data.totalCount });
-            },
-            // 分页
-            updatePagination: async (pagination = {}) => {
-                return setAsyncState(this, (prevState) => {
-                    return {
-                        ...prevState,
-                        pagination: {
-                            ...prevState.pagination,
-                            ...pagination,
-                        },
-                    };
-                });
-            },
+                const res = await fetchFunc(paginationParams);
+                const dataSource = get(res, dataSourceKey, []);
+                const total = get(res, totalKey, 0);
+                this.setState({ dataSource, total });
+            }
         };
     }
 
     getDomEvents() {
         return {
-            onPaginationChange: async (page) => {
-                await this.customEvents.updatePagination({ current: page });
+            onChange: async (page, pageSize) => {
+                await setAsyncState(this, { current: page });
                 this.customEvents.fetchData();
             },
-            onPaginationShowSizeChange: async (current, size) => {
-                await this.customEvents.updatePagination({ pageSize: size });
-                this.customEvents.fetchData();
-            },
-            onSearch: async () => {
-                await this.customEvents.updatePagination({ current: 1 });
-                this.customEvents.fetchData();
-            },
-            onReset: () => {
-                this.formRef.current.resetFields();
-            },
+            onShowSizeChange: (current, size) => {
+                setTimeout(async () => {
+                    await setAsyncState(this, { pageSize: size, current: 1 });
+                    this.customEvents.fetchData();
+                }, 0);
+            }
         };
     }
 
@@ -99,27 +81,26 @@ class Index extends Component {
     }
 
     render() {
-        const { state, domEvents, customEvents } = this;
-        const { columns, dataSource, pagination } = state;
-        const {
-            onPaginationChange,
-            onPaginationShowSizeChange,
-            onSearch,
-            onReset,
-        } = domEvents;
-        const { fetchData } = customEvents;
+        const { props, state, domEvents, customEvents } = this;
+        const { columns, dataSource, total, current, pageSize } = state;
+        const { onChange, onShowSizeChange } = domEvents;
+        const tableProps = omit(props, ['columns', 'dataSource', 'remoteConfig']);
         return (
             <div>
                 <Table
-                    className="mgt10"
+                    {...tableProps}
                     columns={columns}
                     dataSource={dataSource}
                     pagination={{
-                        onChange: onPaginationChange,
-                        onShowSizeChange: onPaginationShowSizeChange,
-                        ...pagination,
-                        showSizeChanger: true,
-                        showTotal: (total) => `总计 ${total} 条数据`,
+                        style: { padding: '16px 10px', margin: 0 },
+                        onChange,
+                        onShowSizeChange,
+                        total,
+                        current,
+                        pageSize,
+                        showTotal: total => {
+                            return ['总计', total, '条数据'].join(' ');
+                        }
                     }}
                 />
             </div>
