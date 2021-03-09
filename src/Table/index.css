@@ -7,9 +7,6 @@
     display: flex;
     justify-content: space-between;
 }
-.dyna-table .dyna-table-header.dyna-table-header-hide {
-    display: none;
-}
 
 .dyna-table .dyna-table-filter-dropdown {
     font-size: 0;
@@ -18,6 +15,7 @@
 .dyna-table .dyna-table-filter-dropdown .dyna-table-filter-dropdown-options {
     padding: 4px 0;
 }
+
 .dyna-table .dyna-table-filter-dropdown .dyna-table-filter-dropdown-operation {
     border-top: 1px solid rgb(240, 240, 240);
     padding: 7px 8px 7px 3px;

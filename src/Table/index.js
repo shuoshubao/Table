@@ -220,16 +220,15 @@ class Index extends Component {
         const { columns, dataSource, total, current, pageSize } = state;
         const { onChange, onShowSizeChange } = domEvents;
         const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
+        const hideHeader = !prependHeader && !appendHeader;
         return (
             <div className={classNames('dyna-table', props['class'], props['className'])}>
-                <div
-                    className={classNames('dyna-table-header', {
-                        'dyna-table-header-hide': !prependHeader && !appendHeader
-                    })}
-                >
-                    <div className="dyna-table-header-left">{prependHeader}</div>
-                    <div className="dyna-table-header-right">{appendHeader}</div>
-                </div>
+                {!hideHeader && (
+                    <div className="dyna-table-header">
+                        <div className="dyna-table-header-left">{prependHeader}</div>
+                        <div className="dyna-table-header-right">{appendHeader}</div>
+                    </div>
+                )}
                 <Table
                     {...tableProps}
                     columns={columns}

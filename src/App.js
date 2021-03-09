@@ -75,8 +75,6 @@ const App = () => {
                 columns={columns}
                 remoteConfig={remoteConfig}
                 rowKey="name"
-                prependHeader={<a>新增</a>}
-                appendHeader={[<Button type="primary">设置表头</Button>, <a style={{marginLeft: 10}}>设置颜色</a>]}
             />
         </div>
     );
