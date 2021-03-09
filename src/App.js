@@ -1,4 +1,5 @@
 import { range } from 'lodash';
+import { Button } from 'antd';
 import Table from './Table';
 
 const columns = [
@@ -70,7 +71,13 @@ const remoteConfig = {
 const App = () => {
     return (
         <div className="App">
-            <Table columns={columns} remoteConfig={remoteConfig} rowKey="name" />
+            <Table
+                columns={columns}
+                remoteConfig={remoteConfig}
+                rowKey="name"
+                prependHeader={<a>新增</a>}
+                appendHeader={[<Button type="primary">设置表头</Button>, <a style={{marginLeft: 10}}>设置颜色</a>]}
+            />
         </div>
     );
 };

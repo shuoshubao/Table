@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
-import { get, omit, noop, isEqual, isUndefined } from 'lodash';
-import { setAsyncState } from '@nbfe/tools';
+import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
+import { setAsyncState, classNames } from '@nbfe/tools';
 import './index.css';
 
 class Index extends Component {
@@ -32,13 +32,12 @@ class Index extends Component {
     }
 
     async componentDidMount() {
-        const columns = this.props.columns.map((v, i) => {
+        const columns = cloneDeep(this.props.columns).map((v, i) => {
             const { dataIndex, title, filters, filterMultiple = true, sortDirections } = v;
 
-            let filterDropdown = noop;
             // 远端排序
             if (filters) {
-                filterDropdown = props => {
+                v.filterDropdown = props => {
                     const { setSelectedKeys, selectedKeys, confirm, clearFilters } = props;
                     let dropdownNode;
                     const dropdownOptions = filters.map((v2, i2) => {
@@ -94,22 +93,38 @@ class Index extends Component {
                                     disabled={disabledReset}
                                     onClick={() => {
                                         this.domEvents.onFilterReset(dataIndex, filterMultiple);
+                                        confirm({ closeDropdown: true });
                                     }}
                                 >
                                     重置
                                 </Button>
-                                <Button size="small" type="primary" onClick={this.domEvents.onFilterConfirm}>
+                                <Button
+                                    size="small"
+                                    type="primary"
+                                    onClick={() => {
+                                        this.domEvents.onFilterConfirm();
+                                        confirm({ closeDropdown: true });
+                                    }}
+                                >
                                     确定
                                 </Button>
                             </div>
                         </div>
                     );
                 };
+                // 隐藏时, 触发搜索
+                v.onFilterDropdownVisibleChange = visible => {
+                    if (!visible) {
+                        // console.log(222, Date.now());
+                        // this.customEvents.search( false);
+                    }
+                };
             }
-            return { ...v, filterDropdown };
+
+            return v;
         });
         await setAsyncState(this, { columns });
-        this.customEvents.fetchData();
+        // this.customEvents.search( false);
     }
 
     getCustomEvents() {
@@ -123,13 +138,26 @@ class Index extends Component {
             getFilterParams: () => {
                 return this.state.filterValue;
             },
-            fetchData: async () => {
+            search: async (isReset = true) => {
+                // 重置
+                // 回到第一页
+                // 清空筛选项
+                // 清空排序
+                if (isReset) {
+                    await setAsyncState(this, { current: 1, filterValue: {} });
+                }
                 const { props, state } = this;
-                const { fetch: fetchFunc, dataSourceKey = 'list', totalKey = 'total' } = props.remoteConfig;
+                const {
+                    fetch: fetchFunc,
+                    dataSourceKey = 'list',
+                    totalKey = 'total',
+                    pageSizeKey = 'pageSize',
+                    currentPageKey = 'currentPage'
+                } = props.remoteConfig;
                 const { current, pageSize } = state;
                 const paginationParams = {
-                    pageSize,
-                    currentPage: current
+                    [pageSizeKey]: pageSize,
+                    [currentPageKey]: current
                 };
                 const filterParams = this.customEvents.getFilterParams();
                 const res = await fetchFunc({ ...paginationParams, ...filterParams });
@@ -155,7 +183,7 @@ class Index extends Component {
             },
             // 筛选-确认
             onFilterConfirm: () => {
-                this.customEvents.fetchData();
+                this.customEvents.search(false);
             },
             // 筛选-重置
             onFilterReset: async (dataIndex, filterMultiple) => {
@@ -167,11 +195,12 @@ class Index extends Component {
                         }
                     };
                 });
-                this.customEvents.fetchData();
+                // console.log(111, Date.now());
+                this.customEvents.search(false);
             },
             onChange: async (page, pageSize) => {
                 await setAsyncState(this, { current: page });
-                this.customEvents.fetchData();
+                this.customEvents.search(false);
             },
             onShowSizeChange: (current, size) => {
                 setTimeout(async () => {
@@ -187,11 +216,20 @@ class Index extends Component {
 
     render() {
         const { props, state, domEvents, customEvents } = this;
+        const { prependHeader, appendHeader } = props;
         const { columns, dataSource, total, current, pageSize } = state;
         const { onChange, onShowSizeChange } = domEvents;
-        const tableProps = omit(props, ['columns', 'dataSource', 'remoteConfig']);
+        const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
         return (
-            <div>
+            <div className={classNames('dyna-table', props['class'], props['className'])}>
+                <div
+                    className={classNames('dyna-table-header', {
+                        'dyna-table-header-hide': !prependHeader && !appendHeader
+                    })}
+                >
+                    <div className="dyna-table-header-left">{prependHeader}</div>
+                    <div className="dyna-table-header-right">{appendHeader}</div>
+                </div>
                 <Table
                     {...tableProps}
                     columns={columns}

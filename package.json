@@ -1,6 +1,6 @@
 {
     "name": "@jiaoyi/DynaTable",
-    "version": "0.1.1-beta-2",
+    "version": "0.1.1-beta-10",
     "main": "dist/index.js",
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
