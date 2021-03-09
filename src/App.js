@@ -5,23 +5,41 @@ const columns = [
     {
         title: '姓名',
         dataIndex: 'name',
-        key: 'name'
+        filters: [
+            {
+                text: '胡彦祖1',
+                value: 'aa'
+            },
+            {
+                text: '胡彦祖2',
+                value: 'bb'
+            }
+        ]
     },
     {
         title: '年龄',
         dataIndex: 'age',
-        key: 'age'
+        filterMultiple: false,
+        filters: [
+            {
+                text: '32',
+                value: 32
+            },
+            {
+                text: '42',
+                value: 42
+            }
+        ]
     },
     {
         title: '住址',
-        dataIndex: 'address',
-        key: 'address'
+        dataIndex: 'address'
     }
 ];
 
 const dataSource = [
     {
-        name: '胡彦斌',
+        name: '胡彦祖',
         age: 32,
         address: '西湖区湖底公园1号'
     },

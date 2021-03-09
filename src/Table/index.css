@@ -1,0 +1,18 @@
+.dyna-table-filter-dropdown {
+    font-size: 0;
+}
+.dyna-table-filter-dropdown .dyna-table-filter-dropdown-options {
+    padding: 4px 0;
+}
+.dyna-table-filter-dropdown .dyna-table-filter-dropdown-operation {
+    border-top: 1px solid rgb(240, 240, 240);
+    padding: 7px 8px 7px 3px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+.dyna-table-filter-dropdown .ant-checkbox-group-item, .dyna-table-filter-dropdown .ant-radio-wrapper {
+    display: block;
+    padding: 5px 12px;
+    margin-right: 0;
+}
