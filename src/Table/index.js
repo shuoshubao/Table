@@ -45,7 +45,7 @@ class Index extends Component {
                     let dropdownNode;
                     const dropdownOptions = filters.map((v2, i2) => {
                         return {
-                            label: v2.text,
+                            label: v2.label,
                             value: v2.value
                         };
                     });
@@ -205,8 +205,6 @@ class Index extends Component {
             // 分页 - 切换
             onChange: async (page, pageSize) => {
                 await setAsyncState(this, { current: page });
-                console.log(111);
-                console.log(this.cacheSearchParams);
                 this.customEvents.search({}, false);
             },
             // 分页 - 每页的设置
