@@ -29,6 +29,9 @@ class Index extends Component {
         this.customEvents = this.getCustomEvents();
         this.domEvents = this.getDomEvents();
         this.renderResult = this.getRenderResult();
+        this.search = this.customEvents.search;
+        // 缓存 searchParams
+        this.cacheSearchParams = {};
     }
 
     async componentDidMount() {
@@ -115,8 +118,6 @@ class Index extends Component {
                 // 隐藏时, 触发搜索
                 v.onFilterDropdownVisibleChange = visible => {
                     if (!visible) {
-                        // console.log(222, Date.now());
-                        // this.customEvents.search( false);
                     }
                 };
             }
@@ -124,7 +125,6 @@ class Index extends Component {
             return v;
         });
         await setAsyncState(this, { columns });
-        // this.customEvents.search( false);
     }
 
     getCustomEvents() {
@@ -138,7 +138,7 @@ class Index extends Component {
             getFilterParams: () => {
                 return this.state.filterValue;
             },
-            search: async (isReset = true) => {
+            search: async (searchParams = {}, isReset = true) => {
                 // 重置
                 // 回到第一页
                 // 清空筛选项
@@ -160,10 +160,14 @@ class Index extends Component {
                     [currentPageKey]: current
                 };
                 const filterParams = this.customEvents.getFilterParams();
-                const res = await fetchFunc({ ...paginationParams, ...filterParams });
+                const fetchParams = { ...paginationParams, ...filterParams, ...this.cacheSearchParams, ...searchParams };
+                const res = await fetchFunc(fetchParams);
                 const dataSource = get(res, dataSourceKey, []);
                 const total = get(res, totalKey, 0);
                 this.setState({ dataSource, total });
+                if (isReset) {
+                  this.cacheSearchParams = { ...searchParams };
+                }
             }
         };
     }
@@ -183,7 +187,7 @@ class Index extends Component {
             },
             // 筛选-确认
             onFilterConfirm: () => {
-                this.customEvents.search(false);
+                this.customEvents.search({}, false);
             },
             // 筛选-重置
             onFilterReset: async (dataIndex, filterMultiple) => {
@@ -196,12 +200,16 @@ class Index extends Component {
                     };
                 });
                 // console.log(111, Date.now());
-                this.customEvents.search(false);
+                this.customEvents.search({}, false);
             },
+            // 分页 - 切换
             onChange: async (page, pageSize) => {
                 await setAsyncState(this, { current: page });
-                this.customEvents.search(false);
+                console.log(111);
+                console.log(this.cacheSearchParams);
+                this.customEvents.search({}, false);
             },
+            // 分页 - 每页的设置
             onShowSizeChange: (current, size) => {
                 setTimeout(async () => {
                     await setAsyncState(this, { pageSize: size, current: 1 });
