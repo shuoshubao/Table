@@ -186,7 +186,8 @@ class Index extends Component {
                 });
             },
             // 筛选-确认
-            onFilterConfirm: () => {
+            onFilterConfirm: async () => {
+                await setAsyncState(this, { current: 1 });
                 this.customEvents.search({}, false);
             },
             // 筛选-重置
@@ -199,7 +200,6 @@ class Index extends Component {
                         }
                     };
                 });
-                // console.log(111, Date.now());
                 this.customEvents.search({}, false);
             },
             // 分页 - 切换
