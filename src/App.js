@@ -8,11 +8,11 @@ const columns = [
         dataIndex: 'name',
         filters: [
             {
-                text: '胡彦祖1',
+                label: '胡彦祖1',
                 value: 'aa'
             },
             {
-                text: '胡彦祖2',
+                label: '胡彦祖2',
                 value: 'bb'
             }
         ]
@@ -23,11 +23,11 @@ const columns = [
         filterMultiple: false,
         filters: [
             {
-                text: '32',
+                label: '32',
                 value: 32
             },
             {
-                text: '42',
+                label: '42',
                 value: 42
             }
         ]
