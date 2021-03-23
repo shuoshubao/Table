@@ -1,11 +1,11 @@
 {
     "name": "@jiaoyi/DynaTable",
-    "version": "0.1.1-beta-20",
+    "version": "0.1.1-beta-21",
     "main": "dist/index.js",
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
         "@babel/preset-react": "^7.12.13",
-        "@nbfe/tools": "^0.1.11",
+        "@nbfe/tools": "^0.2.0",
         "@rollup/plugin-babel": "^5.3.0",
         "antd": "^4.13.0",
         "postcss": "^8.2.7",
