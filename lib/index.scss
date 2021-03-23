@@ -1,0 +1,33 @@
+.dyna-table {
+    background-color: #fff;
+    .dyna-table-header {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.dyna-table-filter-dropdown {
+    font-size: 0;
+    .dyna-table-filter-dropdown-options {
+        padding: 4px 0;
+        max-height: 300px;
+        overflow-y: auto;
+        .ant-checkbox-group,
+        .ant-radio-group {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    .dyna-table-filter-dropdown-footer {
+        border-top: 1px solid rgb(240, 240, 240);
+        padding: 7px 8px 7px 3px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .ant-checkbox-group-item,
+    .ant-radio-wrapper {
+        padding: 5px 12px;
+        margin-right: 0;
+    }
+}

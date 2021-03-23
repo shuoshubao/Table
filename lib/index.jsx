@@ -4,7 +4,7 @@ import { Table, Checkbox, Radio, Button } from 'antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
-import './index.css';
+import './index.scss';
 
 class Index extends Component {
     static displayName = 'DynaTable';
