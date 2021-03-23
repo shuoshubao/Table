@@ -2,32 +2,24 @@
     "name": "@jiaoyi/DynaTable",
     "version": "0.1.1-beta-22",
     "main": "dist/index.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "npx rollup -c",
+        "publish-beta": "npm publish --tag beta",
+        "prepublishOnly": "npm run build"
+    },
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
         "@babel/preset-react": "^7.12.13",
         "@nbfe/tools": "^0.2.0",
         "@rollup/plugin-babel": "^5.3.0",
+        "@vitejs/plugin-react-refresh": "^1.3.1",
         "antd": "^4.13.0",
         "postcss": "^8.2.7",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "react-scripts": "4.0.3",
-        "rollup": "^2.40.0",
-        "rollup-plugin-postcss": "^4.0.0"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "npx rollup -c",
-        "publish-beta": "npm publish --tag beta",
-        "prepublishOnly": "npm run build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
+        "rollup-plugin-postcss": "^4.0.0",
+        "vite": "^2.1.0"
     },
     "browserslist": {
         "production": [
