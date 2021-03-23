@@ -22,7 +22,7 @@
     border-top: 1px solid rgb(240, 240, 240);
     padding: 7px 8px 7px 3px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 .dyna-table-filter-dropdown .ant-checkbox-group-item,
 .dyna-table-filter-dropdown .ant-radio-wrapper {
