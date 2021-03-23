@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { range } from 'lodash';
 import { Button } from 'antd';
-import Table from './Table';
+import Table from '../lib/index';
 
 const columns = [
     {
