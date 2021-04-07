@@ -4,15 +4,19 @@ import { Table, Checkbox, Radio, Button } from 'antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
+import HeaderSetting from './HeaderSetting.jsx';
 import './index.scss';
 
 class Index extends Component {
     static displayName = 'DynaTable';
 
-    static defaultProps = {};
+    static defaultProps = {
+        visibleColumnsSetting: true
+    };
 
     static propTypes = {
         columns: PropTypes.array.isRequired,
+        visibleColumnsSetting: PropTypes.bool,
         dataSource: PropTypes.array,
         remoteConfig: PropTypes.object
     };
@@ -23,6 +27,7 @@ class Index extends Component {
             total: 0,
             current: 1,
             pageSize: 10,
+            visibleHeaderSetting: true,
             dataSource: [],
             columns: [],
             filterValue: {} // 筛选的数据
@@ -226,17 +231,22 @@ class Index extends Component {
 
     render() {
         const { props, state, domEvents, customEvents } = this;
-        const { prependHeader, appendHeader } = props;
-        const { columns, dataSource, total, current, pageSize } = state;
+        const { prependHeader, appendHeader, visibleColumnsSetting } = props;
+        const { visibleHeaderSetting, columns, dataSource, total, current, pageSize } = state;
         const { onChange, onShowSizeChange } = domEvents;
         const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
-        const hideHeader = !prependHeader && !appendHeader;
+        const hideHeader = isEveryFalsy(prependHeader, appendHeader, visibleColumnsSetting);
         return (
             <div className={classNames('dyna-table', props['class'], props['className'])}>
                 {!hideHeader && (
                     <div className="dyna-table-header">
                         <div className="dyna-table-header-left">{prependHeader}</div>
                         <div className="dyna-table-header-right">{appendHeader}</div>
+                        {visibleHeaderSetting && (
+                            <div className="dyna-table-header-setting">
+                                <HeaderSetting type="button" columns={columns} />
+                            </div>
+                        )}
                     </div>
                 )}
                 <Table
