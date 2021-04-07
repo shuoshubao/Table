@@ -25,5 +25,9 @@
         "rollup-plugin-terser": "^7.0.2",
         "sass": "^1.32.8",
         "vite": "^2.1.0"
+    },
+    "dependencies": {
+        "react-dnd": "^14.0.2",
+        "react-dnd-html5-backend": "^14.0.0"
     }
 }
