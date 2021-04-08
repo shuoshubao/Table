@@ -6,11 +6,11 @@ import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import { ReactSortable } from 'react-sortablejs';
-import { getClassNames } from './util';
+import { getComponentName, getClassNames } from './util';
 import './index.scss';
 
 class Index extends Component {
-    static displayName = 'DynaTableHeaderSetting';
+    static displayName = getComponentName('HeaderSetting');
 
     static defaultProps = {
         columns: []
@@ -76,6 +76,9 @@ class Index extends Component {
                                     setList={columns => this.setState({ columns: columns })}
                                     handle={['.', getClassNames('header-setting-item-sort')].join('')}
                                     ghostClass={getClassNames('header-setting-item-sort-ghost')}
+                                    filter={getClassNames('header-setting-item-sort-disabled')}
+                                    animation={150}
+                                    delay={10}
                                 >
                                     {columns.map((v, i) => {
                                         const { title } = v;

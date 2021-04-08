@@ -34,8 +34,16 @@ const columns = [
         ]
     },
     {
-        title: '住址',
-        dataIndex: 'address'
+        title: '住址1',
+        dataIndex: 'address1'
+    },
+    {
+        title: '住址2',
+        dataIndex: 'address2'
+    },
+    {
+        title: '住址3',
+        dataIndex: 'address3'
     }
 ];
 
@@ -43,12 +51,16 @@ const dataSource = [
     {
         name: '胡彦祖',
         age: 32,
-        address: '西湖区湖底公园1号'
+        address1: '西湖区湖底公园1号',
+        address2: '西湖区湖底公园1号',
+        address3: '西湖区湖底公园1号',
     },
     {
         name: '胡彦祖',
         age: 42,
-        address: '西湖区湖底公园1号'
+        address1: '西湖区湖底公园1号',
+        address2: '西湖区湖底公园1号',
+        address3: '西湖区湖底公园1号',
     }
 ];
 
