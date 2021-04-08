@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { cloneDeep } from 'lodash';
 import { Card, Tooltip, Dropdown, Button } from 'antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import HeaderSettingColumn from './HeaderSettingColumn.jsx';
-import { exchange } from './util';
+import MenuOutlined from '@ant-design/icons/MenuOutlined';
+import CheckOutlined from '@ant-design/icons/CheckOutlined';
+import { ReactSortable } from 'react-sortablejs';
+import { getClassNames } from './util';
 import './index.scss';
 
 class Index extends Component {
@@ -62,31 +62,40 @@ class Index extends Component {
             overlay: () => {
                 const { columns } = this.state;
                 return (
-                    <div ref={this.cardRef}>
+                    <div>
                         <Card
-                            className="dyna-table-header-setting"
+                            className={getClassNames('header-setting')}
                             title="表头设置"
                             style={{ width: 250 }}
                             headStyle={{ textAlign: 'center' }}
                             size="small"
                             bordered={false}
                         >
-                            <DndProvider backend={HTML5Backend}>
-                                {columns.map((v, i) => {
-                                    const { title } = v;
-                                    const column = {
-                                        ...v,
-                                        id: title,
-                                        index: i,
-                                        onMove: (dragIndex, hoverIndex) => {
-                                            this.setState({
-                                                columns: exchange(columns, dragIndex, hoverIndex)
-                                            });
-                                        }
-                                    };
-                                    return <HeaderSettingColumn column={column} key={[i].join()} />;
-                                })}
-                            </DndProvider>
+                            <div className={getClassNames('header-setting-items')} ref={this.cardRef}>
+                                <ReactSortable
+                                    list={columns}
+                                    setList={columns => this.setState({ columns: columns })}
+                                    handle={['.', getClassNames('header-setting-item-sort')].join('')}
+                                    ghostClass={getClassNames('header-setting-item-sort-ghost')}
+                                >
+                                    {columns.map((v, i) => {
+                                        const { title } = v;
+                                        return (
+                                            <div className={getClassNames('header-setting-item')} key={[i].join()}>
+                                                <div className={getClassNames('header-setting-item-sort')}>
+                                                    <MenuOutlined />
+                                                </div>
+                                                <div className={getClassNames('header-setting-item-label')}>
+                                                    {title}
+                                                </div>
+                                                <div className={getClassNames('header-setting-item-check')}>
+                                                    <CheckOutlined />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </ReactSortable>
+                            </div>
                         </Card>
                     </div>
                 );

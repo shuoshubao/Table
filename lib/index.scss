@@ -34,19 +34,26 @@
 
 .dyna-table-header-setting {
     box-shadow: rgb(0 0 0 / 10%) 0px 2px 20px;
+    user-select: none;
     .ant-card-head {
         padding: 5px 0 4px;
+        border-bottom: 1px solid #e5e5e5;
+        position: relative;
+        z-index: 1;
     }
     .ant-card-body {
         max-height: 400px;
         overflow-y: auto;
         padding: 0;
         .dyna-table-header-setting-item {
-            user-select: none;
             padding: 8px 16px;
             line-height: 20px;
             display: flex;
             cursor: pointer;
+            background-color: #fff;
+            &.dyna-table-header-setting-item-sort-ghost {
+                background-color: rgba(60, 90, 100, 0.04);
+            }
             .dyna-table-header-setting-item-sort {
                 cursor: move;
             }
