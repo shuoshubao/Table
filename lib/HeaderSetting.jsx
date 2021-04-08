@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { cloneDeep } from 'lodash';
 import { Card, Tooltip, Dropdown, Button } from 'antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import MenuOutlined from '@ant-design/icons/MenuOutlined';
-import CheckOutlined from '@ant-design/icons/CheckOutlined';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import HeaderSettingColumn from './HeaderSettingColumn.jsx';
+import { exchange } from './util';
 import './index.scss';
 
 class Index extends Component {
@@ -74,17 +74,17 @@ class Index extends Component {
                             <DndProvider backend={HTML5Backend}>
                                 {columns.map((v, i) => {
                                     const { title } = v;
-                                    return (
-                                        <div className="dyna-table-header-setting-item" key={[i].join()}>
-                                            <div className="dyna-table-header-setting-item-sort">
-                                                <MenuOutlined />
-                                            </div>
-                                            <div className="dyna-table-header-setting-item-label">{title}</div>
-                                            <div className="dyna-table-header-setting-item-check">
-                                                <CheckOutlined />
-                                            </div>
-                                        </div>
-                                    );
+                                    const column = {
+                                        ...v,
+                                        id: title,
+                                        index: i,
+                                        onMove: (dragIndex, hoverIndex) => {
+                                            this.setState({
+                                                columns: exchange(columns, dragIndex, hoverIndex)
+                                            });
+                                        }
+                                    };
+                                    return <HeaderSettingColumn column={column} key={[i].join()} />;
                                 })}
                             </DndProvider>
                         </Card>
