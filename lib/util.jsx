@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Checkbox, Radio, Button } from 'antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
-import { kebabCase } from 'lodash';
+import { kebabCase, merge, filter } from 'lodash';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 
@@ -22,37 +22,41 @@ export const getClassNames = (...args) => {
         .join(' ');
 };
 
-// 处理 props.columns
-export const mergeColumns = (columns = [], { state, domEvents }) => {
-    return cloneDeep(columns).map((v, i) => {
-        const { dataIndex, filters, filterMultiple = true } = v;
+const defaultColumn = {
+    dataIndex: '',
+    visible: true,
+    filters: [],
+    filterMultiple: true
+};
 
+// 处理 props.columns
+export const mergeColumns = (columns = [], context) => {
+    const { domEvents } = context;
+    const innerColumns = cloneDeep(columns).map((v, i) => {
+        const column = merge({}, defaultColumn, v);
+        const { dataIndex, filters, filterMultiple } = column;
         // 远端排序
-        if (filters) {
-            v.filterIcon = () => {
-                const value = state.filterValue[dataIndex];
+        if (isEmptyArray(filters)) {
+            delete column.filters;
+        } else {
+            column.filterIcon = () => {
+                const value = context.state.filterValue[dataIndex];
                 const filtered = isEveryFalsy(isEmptyValue(value), isEmptyArray(value));
                 return <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />;
             };
-            v.filterDropdown = props => {
+            column.filterDropdown = props => {
                 // 选中的值
-                const value = state.filterValue[dataIndex];
+                const value = context.state.filterValue[dataIndex];
                 const { confirm } = props;
                 let dropdownNode;
-                const dropdownOptions = filters.map((v2, i2) => {
-                    return {
-                        label: v2.label,
-                        value: v2.value
-                    };
-                });
                 // 多选 / 单选
                 if (filterMultiple) {
                     dropdownNode = (
                         <Checkbox.Group
                             value={value}
-                            options={dropdownOptions}
-                            onChange={value => {
-                                domEvents.onFilterChange(dataIndex, value);
+                            options={filters}
+                            onChange={val => {
+                                domEvents.onFilterChange(dataIndex, val);
                             }}
                         />
                     );
@@ -60,7 +64,7 @@ export const mergeColumns = (columns = [], { state, domEvents }) => {
                     dropdownNode = (
                         <Radio.Group
                             value={value}
-                            options={dropdownOptions}
+                            options={filters}
                             onChange={e => {
                                 domEvents.onFilterChange(dataIndex, e.target.value);
                             }}
@@ -103,12 +107,13 @@ export const mergeColumns = (columns = [], { state, domEvents }) => {
                 );
             };
             // 隐藏时, 触发搜索
-            v.onFilterDropdownVisibleChange = visible => {
+            column.onFilterDropdownVisibleChange = visible => {
                 if (!visible) {
                 }
             };
         }
 
-        return v;
+        return column;
     });
+    return filter(innerColumns, { visible: true });
 };

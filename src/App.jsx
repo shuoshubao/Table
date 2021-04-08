@@ -43,6 +43,7 @@ const columns = [
     },
     {
         title: '住址3',
+        visible: false,
         dataIndex: 'address3'
     }
 ];
@@ -87,6 +88,10 @@ class App extends Component {
         this.state = {};
         this.tableRef = React.createRef();
         this.onClick = this.onClick.bind(this);
+    }
+
+    componentDidMount() {
+        this.tableRef.current.search();
     }
 
     onClick() {
