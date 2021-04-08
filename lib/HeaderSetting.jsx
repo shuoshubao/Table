@@ -25,7 +25,7 @@ class Index extends Component {
         super(props);
         const columns = cloneDeep(props.columns);
         this.state = {
-            visible: true,
+            visible: false,
             columns: columns
         };
         this.cardRef = React.createRef();
@@ -36,7 +36,6 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        return;
         document.addEventListener('click', e => {
             const isCard = this.cardRef.current.contains(e.target);
             const isTriggerEle = this.triggerRef.current.contains(e.target);
