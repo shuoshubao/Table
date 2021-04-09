@@ -6,10 +6,8 @@ import 'antd/dist/antd.css';
 import App from './App';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ConfigProvider locale={zhCN}>
-            <App />
-        </ConfigProvider>
-    </React.StrictMode>,
-    document.getElementById('root')
+    <ConfigProvider locale={zhCN}>
+        <App />
+    </ConfigProvider>,
+    document.querySelector('#root')
 );
