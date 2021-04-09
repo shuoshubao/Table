@@ -54,14 +54,14 @@ const dataSource = [
         age: 32,
         address1: '西湖区湖底公园1号',
         address2: '西湖区湖底公园1号',
-        address3: '西湖区湖底公园1号',
+        address3: '西湖区湖底公园1号'
     },
     {
         name: '胡彦祖',
         age: 42,
         address1: '西湖区湖底公园1号',
         address2: '西湖区湖底公园1号',
-        address3: '西湖区湖底公园1号',
+        address3: '西湖区湖底公园1号'
     }
 ];
 

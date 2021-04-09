@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
-import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
+import { cloneDeep, get, omit, isEqual, isUndefined, debounce, map } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import HeaderSetting from './HeaderSetting.jsx';
-import { mergeColumns } from './util.jsx';
+import { mergeColumns, getVisibleColumns } from './util.jsx';
 import './index.scss';
 
 class Index extends Component {
@@ -29,6 +29,7 @@ class Index extends Component {
             pageSize: 10,
             dataSource: [],
             columns: [],
+            columnsTitleList: [], // 显示|隐藏/排序
             filterValue: {} // 筛选的数据
         };
         this.customEvents = this.getCustomEvents();
@@ -41,7 +42,8 @@ class Index extends Component {
 
     componentDidMount() {
         const columns = mergeColumns(this.props.columns, this);
-        this.setState({ columns });
+        const columnsTitleList = map(columns, 'title');
+        this.setState({ columns, columnsTitleList });
     }
 
     getCustomEvents() {
@@ -145,7 +147,7 @@ class Index extends Component {
     render() {
         const { props, state, domEvents, customEvents } = this;
         const { prependHeader, appendHeader, visibleHeaderSetting } = props;
-        const { columns, dataSource, total, current, pageSize } = state;
+        const { columns, columnsTitleList, dataSource, total, current, pageSize } = state;
         const { onChange, onShowSizeChange } = domEvents;
         const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
         const hideHeader = isEveryFalsy(prependHeader, appendHeader, visibleHeaderSetting);
@@ -160,14 +162,20 @@ class Index extends Component {
                         <div className="dyna-table-header-right">{appendHeader}</div>
                         {visibleHeaderSetting && (
                             <div className="dyna-table-header-setting">
-                                <HeaderSetting type="button" columns={columns} />
+                                <HeaderSetting
+                                    type="button"
+                                    columns={columns}
+                                    onChange={columnsTitleList => {
+                                        this.setState({ columnsTitleList });
+                                    }}
+                                />
                             </div>
                         )}
                     </div>
                 )}
                 <Table
                     {...tableProps}
-                    columns={columns}
+                    columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
                     pagination={{
                         style: { padding: '16px 10px', margin: 0 },

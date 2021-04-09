@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Checkbox, Radio, Button } from 'antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
-import { kebabCase, merge, filter } from 'lodash';
+import { kebabCase, merge, filter, find } from 'lodash';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 
@@ -117,4 +117,11 @@ export const mergeColumns = (columns = [], context) => {
         return column;
     });
     return filter(innerColumns, { visible: true });
+};
+
+// 显示|隐藏/排序
+export const getVisibleColumns = (columns, columnsTitleList) => {
+    return columnsTitleList.map(title => {
+        return find(columns, { title });
+    });
 };
