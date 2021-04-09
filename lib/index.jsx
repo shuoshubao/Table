@@ -108,10 +108,10 @@ class Index extends Component {
                 });
             },
             // 筛选-确认
-            onFilterConfirm: async () => {
+            onFilterConfirm: debounce(async () => {
                 await setAsyncState(this, { current: 1 });
                 this.customEvents.search({}, false);
-            },
+            }, 10),
             // 筛选-重置
             onFilterReset: async (dataIndex, filterMultiple) => {
                 await setAsyncState(this, prevState => {
@@ -122,7 +122,7 @@ class Index extends Component {
                         }
                     };
                 });
-                this.customEvents.search({}, false);
+                this.domEvents.onFilterConfirm();
             },
             // 分页 - 切换
             onChange: async (page, pageSize) => {
