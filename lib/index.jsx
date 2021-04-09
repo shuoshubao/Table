@@ -163,7 +163,7 @@ class Index extends Component {
                         {visibleHeaderSetting && (
                             <div className="dyna-table-header-setting">
                                 <HeaderSetting
-                                    type="button"
+                                    shape="button"
                                     columns={columns}
                                     onChange={columnsTitleList => {
                                         this.setState({ columnsTitleList });

@@ -45,6 +45,18 @@ const columns = [
         title: '住址3',
         visible: false,
         dataIndex: 'address3'
+    },
+    {
+        title: '操作',
+        dataIndex: 'operate',
+        fixed: 'right',
+        render: () => {
+            return (
+                <Button type="link" size="small">
+                    详情
+                </Button>
+            );
+        }
     }
 ];
 
@@ -100,11 +112,19 @@ class App extends Component {
 
     render() {
         return (
-            <div style={{ padding: 20 }}>
-                <Button type="primary" onClick={this.onClick}>
-                    查询
-                </Button>
-                <Table ref={this.tableRef} columns={columns} remoteConfig={remoteConfig} rowKey="name" />
+            <div style={{ padding: 20, background: '#eee' }}>
+                <Table
+                    ref={this.tableRef}
+                    prependHeader={
+                        <Button type="primary" onClick={this.onClick}>
+                            查询
+                        </Button>
+                    }
+                    columns={columns}
+                    remoteConfig={remoteConfig}
+                    rowKey="name"
+                    scroll={{ y: 300 }}
+                />
             </div>
         );
     }
