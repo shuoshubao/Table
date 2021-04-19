@@ -68,6 +68,7 @@ class Index extends Component {
                 const { props, state } = this;
                 const {
                     fetch: fetchFunc,
+                    process: v => v,
                     dataSourceKey = 'list',
                     totalKey = 'total',
                     pageSizeKey = 'pageSize',
@@ -85,7 +86,8 @@ class Index extends Component {
                     ...this.cacheSearchParams,
                     ...searchParams
                 };
-                const res = await fetchFunc(fetchParams);
+                const resOrigin = await fetchFunc(fetchParams);
+                const res = process(cloneDeep(resOrigin));
                 const dataSource = get(res, dataSourceKey, []);
                 const total = get(res, totalKey, 0);
                 this.setState({ dataSource, total });
