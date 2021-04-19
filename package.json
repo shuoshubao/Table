@@ -1,6 +1,6 @@
 {
     "name": "@jiaoyi/DynaTable",
-    "version": "0.1.1-beta-22",
+    "version": "0.1.1-beta-23",
     "main": "dist/index.js",
     "scripts": {
         "dev": "vite",

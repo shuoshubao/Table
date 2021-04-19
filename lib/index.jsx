@@ -68,7 +68,7 @@ class Index extends Component {
                 const { props, state } = this;
                 const {
                     fetch: fetchFunc,
-                    process: v => v,
+                    process = v => v,
                     dataSourceKey = 'list',
                     totalKey = 'total',
                     pageSizeKey = 'pageSize',
