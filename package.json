@@ -2,6 +2,9 @@
     "name": "@jiaoyi/DynaTable",
     "version": "0.1.1-beta-26",
     "main": "dist/index.js",
+    "publishConfig": {
+        "registry": "http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/"
+    },
     "scripts": {
         "dev": "vite",
         "build": "rm -rf dist && npx rollup -c",
@@ -9,7 +12,10 @@
         "publish-beta": "npm publish --tag beta --registry=http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/",
         "prepublishOnly": "npm run build"
     },
-    "dependencies": {},
+    "dependencies": {
+        "react-sortablejs": "^6.0.0",
+        "sortablejs": "^1.13.0"
+    },
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
         "@babel/preset-react": "^7.12.13",

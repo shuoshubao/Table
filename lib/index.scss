@@ -5,6 +5,13 @@
         display: flex;
         justify-content: space-between;
     }
+    .ant-table-row {
+        &.dyna-table-editable-row:hover .dyna-table-editable-cell-value-wrap {
+            padding: 4px 11px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+        }
+    }
 }
 
 .dyna-table-filter-dropdown {

@@ -22,6 +22,13 @@ const columns = [
         title: '年龄',
         dataIndex: 'age',
         filterMultiple: false,
+        editable: true,
+        rules: [
+            {
+                required: true,
+                message: '年龄 is 必填'
+            }
+        ],
         filters: [
             {
                 label: '32',

@@ -96,7 +96,7 @@ class Index extends Component {
                 const { state, onSelect } = this;
                 const { columns, selectList } = state;
                 return (
-                    <div>
+                    <React.Fragment>
                         <Card
                             className={getClassNames('header-setting')}
                             title="表头设置"
@@ -128,7 +128,9 @@ class Index extends Component {
                                                 }}
                                             >
                                                 <div
-                                                    className={getClassNames('header-setting-item-sort', { 'header-setting-item-sort-disabled': !configurable })}
+                                                    className={getClassNames('header-setting-item-sort', {
+                                                        'header-setting-item-sort-disabled': !configurable
+                                                    })}
                                                     onClick={e => {
                                                         e.stopPropagation();
                                                     }}
@@ -147,7 +149,7 @@ class Index extends Component {
                                 </ReactSortable>
                             </div>
                         </Card>
-                    </div>
+                    </React.Fragment>
                 );
             }
         };
