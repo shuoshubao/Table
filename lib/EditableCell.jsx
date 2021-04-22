@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Input, Form } from 'antd';
+import { Input, Form } from './antd';
 import { flatten } from 'lodash';
 import { getClassNames } from './util.jsx';
 const EditableContext = React.createContext(null);
