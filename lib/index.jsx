@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce, map } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
-// import HeaderSetting from './HeaderSetting.jsx';
+import HeaderSetting from './HeaderSetting.jsx';
 import EditableCellV4 from './EditableCell.jsx';
 import EditableCellV3 from './EditableCellV3.jsx';
 import { isAntdV3, mergeColumns, getVisibleColumns, getClassNames } from './util.jsx';
@@ -174,13 +174,13 @@ class Index extends Component {
                         <div className="dyna-table-header-right">{appendHeader}</div>
                         {visibleHeaderSetting && (
                             <div className="dyna-table-header-setting">
-                                {/*<HeaderSetting
+                                <HeaderSetting
                                     shape="button"
                                     columns={columns}
                                     onChange={columnsTitleList => {
                                         this.setState({ columnsTitleList });
                                     }}
-                                />*/}
+                                />
                             </div>
                         )}
                     </div>
