@@ -1,6 +1,6 @@
 import React from 'react';
 import { version, Table, Checkbox, Radio, Button } from 'antd';
-// import FilterFilled from '@ant-design/icons/FilterFilled';
+import FilterFilled from '@ant-design/icons/FilterFilled';
 import { kebabCase, merge, filter, find, inRange } from 'lodash';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
@@ -51,7 +51,7 @@ export const mergeColumns = (columns = [], context) => {
                 column.filterIcon = () => {
                     const value = context.state.filterValue[dataIndex];
                     const filtered = isEveryFalsy(isEmptyValue(value), isEmptyArray(value));
-                    // return <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />;
+                    return <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />;
                 };
                 column.filterDropdown = props => {
                     // 选中的值
