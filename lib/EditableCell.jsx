@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+import { isString, flatten } from 'lodash';
+import EditOutlined from '@ant-design/icons/EditOutlined';
 import { Input, Form } from './antd';
-import { flatten } from 'lodash';
 import { getClassNames } from './util.jsx';
 const EditableContext = React.createContext(null);
 
@@ -16,7 +17,7 @@ const EditableRow = ({ index, ...props }) => {
 };
 
 const EditableCell = props => {
-    const { title, editable, children, dataIndex, rules, record, handleSave, ...restProps } = props;
+    const { title, editable, children, index, dataIndex, record, rules, handleSave, ...restProps } = props;
     const [editing, setEditing] = useState(false);
     const inputRef = useRef(null);
     const form = useContext(EditableContext);
@@ -38,8 +39,11 @@ const EditableCell = props => {
         try {
             const values = await form.validateFields();
             toggleEdit();
-            handleSave({ ...record, ...values });
+            let value = values[dataIndex];
+            value = isString(value) ? value.trim() : value;
+            handleSave({ index, dataIndex, record, value });
         } catch (errInfo) {
+            toggleEdit();
             console.log('Save failed:', errInfo);
         }
     };
