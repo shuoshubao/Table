@@ -4,12 +4,12 @@ import { Table, Checkbox, Radio, Button } from './antd';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce, map } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import HeaderSetting from './HeaderSetting.jsx';
-import EditableCell from './EditableCell.jsx';
+import EditableCellV4 from './EditableCell.jsx';
 import EditableCellV3 from './EditableCellV3.jsx';
 import { isAntdV3, mergeColumns, getVisibleColumns, getClassNames } from './util.jsx';
 import './index.scss';
 
-const EditableCell = isAntdV3 ? EditableCellV3 : EditableCell;
+const EditableCell = isAntdV3 ? EditableCellV3 : EditableCellV4;
 
 class Index extends Component {
     static displayName = 'DynaTable';
