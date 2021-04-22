@@ -13,6 +13,8 @@ const EditableRow = ({ form, index, ...props }) => {
     );
 };
 
+const EditableFormRow = Form.create()(EditableRow);
+
 class EditableCell extends React.Component {
     state = {
         editing: false
@@ -84,7 +86,7 @@ class EditableCell extends React.Component {
 
 export default {
     body: {
-        row: EditableRow,
+        row: EditableFormRow,
         cell: EditableCell
     }
 };
