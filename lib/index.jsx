@@ -16,7 +16,8 @@ class Index extends Component {
 
     static defaultProps = {
         visibleHeaderSetting: false,
-        editTrigger: 'click'
+        editTrigger: 'click',
+        pagination: {}
     };
 
     static propTypes = {
@@ -24,19 +25,21 @@ class Index extends Component {
         visibleHeaderSetting: PropTypes.bool,
         dataSource: PropTypes.array,
         remoteConfig: PropTypes.object,
-        editTrigger: PropTypes.string // 编辑触发条件 'click' | 'hover'
+        editTrigger: PropTypes.string, // 编辑触发条件 'click' | 'hover'
+        pagination: PropTypes.object // 分页
     };
 
     constructor(props) {
         super(props);
+        const { defaultCurrent, defaultPageSize } = props.pagination;
         this.state = {
             loading: false,
-            total: 0,
-            current: 1,
-            pageSize: 10,
-            dataSource: [],
             columns: [],
+            dataSource: [],
             columnsTitleList: [], // 显示|隐藏/排序
+            total: 0,
+            current: defaultCurrent || 1,
+            pageSize: defaultPageSize || 10,
             filterValue: {} // 筛选的数据
         };
         this.customEvents = this.getCustomEvents();
@@ -146,6 +149,7 @@ class Index extends Component {
             onShowSizeChange: (current, size) => {
                 setTimeout(async () => {
                     await setAsyncState(this, { pageSize: size, current: 1 });
+                    this.customEvents.search({}, false);
                 }, 0);
             },
             // 编辑-单元格 保存
@@ -184,10 +188,18 @@ class Index extends Component {
 
     render() {
         const { props, state, domEvents, customEvents } = this;
-        const { prependHeader, appendHeader, visibleHeaderSetting } = props;
+        const { prependHeader, appendHeader, visibleHeaderSetting, pagination } = props;
         const { loading, columns, columnsTitleList, dataSource, total, current, pageSize } = state;
         const { onChange, onShowSizeChange } = domEvents;
-        const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
+        const tableProps = omit(props, [
+            'class',
+            'className',
+            'style',
+            'columns',
+            'dataSource',
+            'remoteConfig',
+            'pagination'
+        ]);
         const hideHeader = isEveryFalsy(prependHeader, appendHeader, visibleHeaderSetting);
         if (isEmptyArray(columns)) {
             return null;
@@ -221,13 +233,15 @@ class Index extends Component {
                         return getClassNames('editable-row');
                     }}
                     pagination={{
+                        ...pagination,
                         style: { padding: '16px 10px', margin: 0 },
                         onChange,
                         onShowSizeChange,
+                        showSizeChanger: true,
                         total,
                         current,
                         pageSize,
-                        showTotal: total => {
+                        showTotal: (total, range) => {
                             return ['总计', total, '条数据'].join(' ');
                         }
                     }}
