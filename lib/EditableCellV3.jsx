@@ -15,10 +15,8 @@ const EditableRow = ({ form, index, ...props }) => {
     );
 };
 
-const EditableFormRow = Form.create()(EditableRow);
-
 const getEditableCell = tableProps => {
-    const { editTrigger } = tableProps;
+    const { editTrigger, size } = tableProps;
     const editTriggerHover = editTrigger === 'hover';
     const editTriggerClick = editTrigger === 'click';
     class EditableCell extends React.Component {
@@ -71,6 +69,7 @@ const getEditableCell = tableProps => {
                                 }}
                                 onPressEnter={this.save}
                                 onBlur={this.save}
+                                size={size}
                             />
                         )}
                     </Form.Item>
@@ -109,6 +108,7 @@ const getEditableCell = tableProps => {
 };
 
 export default tableProps => {
+    const EditableFormRow = Form.create()(EditableRow);
     return {
         body: {
             row: EditableFormRow,
