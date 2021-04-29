@@ -27,13 +27,13 @@ export const getClassNames = (...args) => {
 
 const defaultColumn = {
     dataIndex: '',
-    visible: true,
-    filters: [],
-    editable: false,
-    rules: [],
-    configurable: true,
-    defaultConfigurable: true,
-    filterMultiple: true
+    visible: true, // 显示|隐藏
+    filters: [], // 筛选项 {label, value}[]
+    filterMultiple: true, // 单选|多选
+    editable: false, // 是否可编辑
+    rules: [], // 交易规则 编辑态
+    canHide: true, // 是否能隐藏
+    canSort: true // 是否可排序
 };
 
 // 处理 props.columns
