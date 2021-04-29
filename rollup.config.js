@@ -5,12 +5,17 @@ export default {
     input: 'lib/index.jsx',
     output: {
         file: 'dist/index.js',
-        format: 'cjs'
+        format: 'cjs',
+        exports: 'default'
+    },
+    external: id => {
+        return !['.', '/'].some(v => id.startsWith(v));
     },
     plugins: [
-        postcss({ extract: true, minimize: true }),
+        postcss({ extract: true }),
         babel({
             babelrc: false,
+            babelHelpers: 'bundled',
             presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: ['@babel/plugin-proposal-class-properties']
         })
