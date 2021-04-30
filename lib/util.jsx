@@ -38,7 +38,7 @@ const defaultColumn = {
 
 // 处理 props.columns
 export const mergeColumns = (columns = [], context) => {
-    const { domEvents } = context;
+    const { onFilterChange, onFilterReset, changeTreeSelect, onFilterConfirm, handleSaveCell } = context;
     const innerColumns = cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
@@ -68,7 +68,7 @@ export const mergeColumns = (columns = [], context) => {
                                 value={value}
                                 treeData={filters}
                                 onChange={val => {
-                                    domEvents.onFilterChange(dataIndex, val);
+                                    onFilterChange(dataIndex, val);
                                 }}
                                 style={{ width: 200 }}
                                 dropdownMatchSelectWidth={200}
@@ -91,7 +91,7 @@ export const mergeColumns = (columns = [], context) => {
                                     value={value}
                                     options={filters}
                                     onChange={val => {
-                                        domEvents.onFilterChange(dataIndex, val);
+                                        onFilterChange(dataIndex, val);
                                     }}
                                 />
                             );
@@ -101,7 +101,7 @@ export const mergeColumns = (columns = [], context) => {
                                     value={value}
                                     options={filters}
                                     onChange={e => {
-                                        domEvents.onFilterChange(dataIndex, e.target.value);
+                                        onFilterChange(dataIndex, e.target.value);
                                     }}
                                 />
                             );
@@ -130,7 +130,7 @@ export const mergeColumns = (columns = [], context) => {
                                     type="text"
                                     disabled={disabledReset}
                                     onClick={() => {
-                                        domEvents.onFilterReset(dataIndex, filterMultiple);
+                                        onFilterReset(dataIndex, filterMultiple);
                                         confirm({ closeDropdown: true });
                                     }}
                                 >
@@ -140,7 +140,7 @@ export const mergeColumns = (columns = [], context) => {
                                     size="small"
                                     type="primary"
                                     onClick={() => {
-                                        domEvents.onFilterConfirm();
+                                        onFilterConfirm();
                                         confirm({ closeDropdown: true });
                                     }}
                                 >
@@ -151,14 +151,14 @@ export const mergeColumns = (columns = [], context) => {
                     );
                 };
                 column.onFilterDropdownVisibleChange = visible => {
-                    domEvents.changeTreeSelect(visible, dataIndex);
+                    changeTreeSelect(visible, dataIndex);
                     if (visible) {
                         context.prevFilterValue = cloneDeep(context.state.filterParams);
                     } else {
                         if (isEqual(context.prevFilterValue, context.state.filterParams)) {
                             return;
                         }
-                        domEvents.onFilterConfirm();
+                        onFilterConfirm();
                     }
                 };
             }
@@ -180,7 +180,7 @@ export const mergeColumns = (columns = [], context) => {
                         dataIndex,
                         rules,
                         title,
-                        handleSave: domEvents.handleSaveCell
+                        handleSave: handleSaveCell
                     };
                 }
             };
