@@ -17,6 +17,11 @@
 .dyna-table-filter-dropdown {
     font-size: 0;
     user-select: none;
+    &.dyna-table-filter-dropdown-has-tree-select {
+        .dyna-table-filter-dropdown-options {
+            padding: 0;
+        }
+    }
     .dyna-table-filter-dropdown-options {
         padding: 4px 0;
         max-height: 300px;

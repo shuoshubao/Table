@@ -47,41 +47,89 @@ const columns = [
         ]
     },
     {
-        title: 'Trre 筛选',
-        dataIndex: 'tree',
-        filterMultiple: true,
+        title: 'Trre 筛选 单选',
+        dataIndex: 'tree1',
+        filterMultiple: false,
         filters: [
             {
-                title: 'Node1',
+                label: 'Node1',
                 value: '0-0',
-                key: '0-0',
                 children: [
                     {
-                        title: 'Child Node1',
-                        value: '0-0-0',
-                        key: '0-0-0'
+                        label: 'Child Node1',
+                        value: '0-0-0'
+                    },
+                    {
+                        label: 'Child Node1',
+                        value: '0-0-1',
+                        children: [
+                            {
+                                label: 'Child Node1',
+                                value: '0-0-1-0'
+                            }
+                        ]
                     }
                 ]
             },
             {
-                title: 'Node2',
+                label: 'Node2',
                 value: '0-1',
-                key: '0-1',
                 children: [
                     {
-                        title: 'Child Node3',
-                        value: '0-1-0',
-                        key: '0-1-0'
+                        label: 'Child Node3',
+                        value: '0-1-0'
                     },
                     {
-                        title: 'Child Node4',
-                        value: '0-1-1',
-                        key: '0-1-1'
+                        label: 'Child Node4',
+                        value: '0-1-1'
                     },
                     {
-                        title: 'Child Node5',
-                        value: '0-1-2',
-                        key: '0-1-2'
+                        label: 'Child Node5',
+                        value: '0-1-2'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        title: 'Trre 筛选 复选',
+        dataIndex: 'tree2',
+        filters: [
+            {
+                label: 'Node1',
+                value: '0-0',
+                children: [
+                    {
+                        label: 'Child Node1',
+                        value: '0-0-0'
+                    },
+                    {
+                        label: 'Child Node1',
+                        value: '0-0-1',
+                        children: [
+                            {
+                                label: 'Child Node1',
+                                value: '0-0-1-0'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                label: 'Node2',
+                value: '0-1',
+                children: [
+                    {
+                        label: 'Child Node3',
+                        value: '0-1-0'
+                    },
+                    {
+                        label: 'Child Node4',
+                        value: '0-1-1'
+                    },
+                    {
+                        label: 'Child Node5',
+                        value: '0-1-2'
                     }
                 ]
             }
