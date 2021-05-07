@@ -7,7 +7,7 @@ import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import { ReactSortable } from 'react-sortablejs';
 import { setAsyncState, isSomeFalsy } from '@nbfe/tools';
-import { getComponentName, getClassNames } from './util.jsx';
+import { getComponentName, getStorageKey, getClassNames } from './util.jsx';
 import './index.scss';
 
 class Index extends Component {
@@ -18,8 +18,10 @@ class Index extends Component {
     };
 
     static propTypes = {
+        storageKey: PropTypes.string,
         shape: PropTypes.oneOf(['button', 'icon']).isRequired,
         columns: PropTypes.array,
+        value: PropTypes.array,
         onChange: PropTypes.func.isRequired
     };
 
@@ -36,9 +38,10 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        const { columns } = this.state;
+        const { value } = this.props;
+        console.log(111, value)
         this.setState({
-            selectList: map(columns, 'title')
+            selectList: cloneDeep(value)
         });
         document.addEventListener('click', e => {
             if (isSomeFalsy(this.cardRef.current, this.triggerRef.current)) {
@@ -75,6 +78,19 @@ class Index extends Component {
         const columnsTitleList = sortBy(selectList, v => {
             return map(columns, 'title').indexOf(v);
         });
+        const storageKey = getStorageKey(this.props.storageKey);
+        const columnsDataList = columnsTitleList
+            .map(v => {
+                const item = columns.find(v2 => {
+                    return (v2.title = v);
+                });
+                if (!item) {
+                    return null;
+                }
+                return v;
+            })
+            .filter(Boolean);
+        window.localStorage.setItem(storageKey, JSON.stringify(columnsDataList));
         this.props.onChange(columnsTitleList);
     }, 10);
 

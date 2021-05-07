@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { message, Table, Checkbox, Radio, Button } from './antd';
 import { cloneDeep, get, set, omit, isEqual, isUndefined, isFunction, debounce, map } from 'lodash';
-import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
+import { sleep, setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import HeaderSetting from './HeaderSetting.jsx';
 import getTableComponentsV4 from './EditableCell.jsx';
 import getTableComponentsV3 from './EditableCellV3.jsx';
 import {
-    componentName,
     isAntdV3,
+    componentName,
+    getStorageKey,
     defaultExtraConfig,
     mergeColumns,
     getVisibleColumns,
@@ -56,8 +57,18 @@ class Index extends Component {
     }
 
     componentDidMount() {
+        const { visibleHeaderSetting, storageKey } = { ...defaultExtraConfig, ...this.props.extraConfig };
         const columns = mergeColumns(this.props.columns, this);
-        const columnsTitleList = map(columns, 'title');
+        let columnsTitleList = map(columns, 'title');
+        if (visibleHeaderSetting) {
+            const storageCompleteKey = getStorageKey(storageKey);
+            const titleList = JSON.parse(window.localStorage.getItem(storageCompleteKey)) || [];
+            if (!isEmptyArray(titleList)) {
+                columnsTitleList = titleList.filter(v => {
+                    return map(columns, 'title').includes(v);
+                });
+            }
+        }
         this.setState({ columns, columnsTitleList });
         if (this.isLocalData()) {
             this.setState({ dataSource: cloneDeep(this.props.dataSource) });
@@ -201,7 +212,7 @@ class Index extends Component {
     render() {
         const { props, state, onChange, onShowSizeChange } = this;
         const { prependHeader, appendHeader, pagination } = props;
-        const { visibleHeaderSetting, editTrigger } = { ...defaultExtraConfig, ...props.extraConfig };
+        const { visibleHeaderSetting, storageKey, editTrigger } = { ...defaultExtraConfig, ...props.extraConfig };
         const { loading, columns, columnsTitleList, dataSource, total, current, pageSize } = state;
         const tableProps = omit(props, [
             'class',
@@ -226,7 +237,9 @@ class Index extends Component {
                             <div className="dyna-table-header-setting">
                                 <HeaderSetting
                                     shape="button"
+                                    storageKey={storageKey}
                                     columns={columns}
+                                    value={columnsTitleList}
                                     onChange={columnsTitleList => {
                                         this.setState({ columnsTitleList });
                                     }}

@@ -10,13 +10,18 @@ export const isAntdV4 = inRange(parseInt(version), 4, 5);
 
 export const defaultExtraConfig = {
     visibleHeaderSetting: false, // 是否显示设置表头
-    editTrigger: 'click' // 编辑触发条件 'click' | 'hover'
+    editTrigger: 'click', // 编辑触发条件 'click' | 'hover'
+    storageKey: '' // 存储的key
 };
 
 export const componentName = 'DynaTable';
 
 export const getComponentName = (compName = '') => {
     return [componentName, compName].join('');
+};
+
+export const getStorageKey = (storageKey) => {
+    return [componentName, 'HeaderSetting', storageKey || window.location.pathname].join('__');
 };
 
 export const prefixClassName = kebabCase(componentName);
