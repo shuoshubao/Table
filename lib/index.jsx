@@ -6,7 +6,14 @@ import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } f
 import HeaderSetting from './HeaderSetting.jsx';
 import getTableComponentsV4 from './EditableCell.jsx';
 import getTableComponentsV3 from './EditableCellV3.jsx';
-import { componentName, isAntdV3, mergeColumns, getVisibleColumns, getClassNames } from './util.jsx';
+import {
+    componentName,
+    isAntdV3,
+    defaultExtraConfig,
+    mergeColumns,
+    getVisibleColumns,
+    getClassNames
+} from './util.jsx';
 import './index.scss';
 
 const getTableComponents = isAntdV3 ? getTableComponentsV3 : getTableComponentsV4;
@@ -15,18 +22,16 @@ class Index extends Component {
     static displayName = 'DynaTable';
 
     static defaultProps = {
-        visibleHeaderSetting: false,
-        editTrigger: 'click',
-        pagination: {}
+        pagination: {},
+        extraConfig: {}
     };
 
     static propTypes = {
-        columns: PropTypes.array.isRequired,
-        visibleHeaderSetting: PropTypes.bool,
-        dataSource: PropTypes.array,
         remoteConfig: PropTypes.object,
-        editTrigger: PropTypes.string, // 编辑触发条件 'click' | 'hover'
-        pagination: PropTypes.object // 分页
+        columns: PropTypes.array.isRequired,
+        dataSource: PropTypes.array,
+        pagination: PropTypes.object, // 分页
+        extraConfig: PropTypes.object // 额外配置
     };
 
     constructor(props) {
@@ -195,7 +200,8 @@ class Index extends Component {
 
     render() {
         const { props, state, onChange, onShowSizeChange } = this;
-        const { prependHeader, appendHeader, visibleHeaderSetting, pagination } = props;
+        const { prependHeader, appendHeader, pagination } = props;
+        const { visibleHeaderSetting, editTrigger } = { ...defaultExtraConfig, ...props.extraConfig };
         const { loading, columns, columnsTitleList, dataSource, total, current, pageSize } = state;
         const tableProps = omit(props, [
             'class',
@@ -234,7 +240,7 @@ class Index extends Component {
                     {...tableProps}
                     columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
-                    components={getTableComponents(tableProps)}
+                    components={getTableComponents({ ...tableProps, editTrigger })}
                     rowClassName={() => {
                         return getClassNames('editable-row');
                     }}
