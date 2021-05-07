@@ -54,18 +54,25 @@ class Index extends Component {
         const columns = mergeColumns(this.props.columns, this);
         const columnsTitleList = map(columns, 'title');
         this.setState({ columns, columnsTitleList });
+        if (this.isLocalData()) {
+            this.setState({ dataSource: cloneDeep(this.props.dataSource) });
+        }
     }
 
     // 本地数据源
     isLocalData = () => {
-        const { fetch: fetchFunc } = this.props.remoteConfig;
-        return !fetchFunc;
+        const fetchFunc = get(this.props, 'remoteConfig.fetch');
+        return !isFunction(fetchFunc);
     };
     // 参数: 排序
     getFilterParams = () => {
         return this.state.filterParams;
     };
     handleSearch = async (searchParams = {}, isReset = true) => {
+        // 本地
+        if (this.isLocalData()) {
+            return;
+        }
         // 重置
         // 回到第一页
         // 清空筛选项
