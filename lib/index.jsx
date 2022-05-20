@@ -1,272 +1,256 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { message, Table, Checkbox, Radio, Button } from './antd';
-import { cloneDeep, get, set, omit, isEqual, isUndefined, isFunction, debounce, map } from 'lodash';
-import { sleep, setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
-import HeaderSetting from './HeaderSetting.jsx';
-import getTableComponentsV4 from './EditableCell.jsx';
-import getTableComponentsV3 from './EditableCellV3.jsx';
-import {
-    isAntdV3,
-    componentName,
-    getStorageKey,
-    defaultExtraConfig,
-    mergeColumns,
-    getVisibleColumns,
-    getClassNames
-} from './util.jsx';
-import './index.scss';
-
-const getTableComponents = isAntdV3 ? getTableComponentsV3 : getTableComponentsV4;
+import { Table, Checkbox, Radio, Button } from 'antd';
+import FilterFilled from '@ant-design/icons/FilterFilled';
+import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
+import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
+import './index.css';
 
 class Index extends Component {
     static displayName = 'DynaTable';
 
-    static defaultProps = {
-        pagination: {},
-        extraConfig: {}
-    };
+    static defaultProps = {};
 
     static propTypes = {
-        remoteConfig: PropTypes.object,
         columns: PropTypes.array.isRequired,
         dataSource: PropTypes.array,
-        pagination: PropTypes.object, // 分页
-        extraConfig: PropTypes.object // 额外配置
+        remoteConfig: PropTypes.object
     };
 
     constructor(props) {
         super(props);
-        const { defaultCurrent, defaultPageSize } = props.pagination;
         this.state = {
-            loading: false,
-            columns: [],
-            dataSource: [],
-            columnsTitleList: [], // 显示|隐藏/排序
             total: 0,
-            current: defaultCurrent || 1,
-            pageSize: defaultPageSize || 10,
-            filterParams: {}, // 筛选的数据
-            treeSelectOpens: {} // TreeSelect 的显示状态
+            current: 1,
+            pageSize: 10,
+            dataSource: [],
+            columns: [],
+            filterValue: {} // 筛选的数据
         };
-        this.search = debounce(this.handleSearch, 100);
-        // 缓存 filterParams
-        this.prevFilterValue = {};
+        this.customEvents = this.getCustomEvents();
+        this.domEvents = this.getDomEvents();
+        this.renderResult = this.getRenderResult();
+        this.search = debounce(this.customEvents.search, 100);
         // 缓存 searchParams
         this.cacheSearchParams = {};
     }
 
     componentDidMount() {
-        const { visibleHeaderSetting, storageKey } = { ...defaultExtraConfig, ...this.props.extraConfig };
-        const columns = mergeColumns(this.props.columns, this);
-        let columnsTitleList = map(columns, 'title');
-        if (visibleHeaderSetting) {
-            const storageCompleteKey = getStorageKey(storageKey);
-            const titleList = JSON.parse(window.localStorage.getItem(storageCompleteKey)) || [];
-            if (!isEmptyArray(titleList)) {
-                columnsTitleList = titleList.filter(v => {
-                    return map(columns, 'title').includes(v);
-                });
+        const columns = cloneDeep(this.props.columns).map((v, i) => {
+            const { dataIndex, filters, filterMultiple = true } = v;
+
+            // 远端排序
+            if (filters) {
+                v.filterIcon = () => {
+                    const value = this.state.filterValue[dataIndex];
+                    const filtered = isEveryFalsy(isEmptyValue(value), isEmptyArray(value));
+                    return <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />;
+                };
+                v.filterDropdown = props => {
+                    // 选中的值
+                    const value = this.state.filterValue[dataIndex];
+                    const { confirm } = props;
+                    let dropdownNode;
+                    const dropdownOptions = filters.map((v2, i2) => {
+                        return {
+                            label: v2.label,
+                            value: v2.value
+                        };
+                    });
+                    // 多选 / 单选
+                    if (filterMultiple) {
+                        dropdownNode = (
+                            <Checkbox.Group
+                                value={value}
+                                options={dropdownOptions}
+                                onChange={value => {
+                                    this.domEvents.onFilterChange(dataIndex, value);
+                                }}
+                            />
+                        );
+                    } else {
+                        dropdownNode = (
+                            <Radio.Group
+                                value={value}
+                                options={dropdownOptions}
+                                onChange={e => {
+                                    this.domEvents.onFilterChange(dataIndex, e.target.value);
+                                }}
+                            />
+                        );
+                    }
+                    let disabledReset;
+                    if (filterMultiple) {
+                        disabledReset = isUndefined(value) || isEqual(value, []);
+                    } else {
+                        disabledReset = isUndefined(value) || isEqual(value, '');
+                    }
+                    return (
+                        <div className="dyna-table-filter-dropdown">
+                            <div className="dyna-table-filter-dropdown-options">{dropdownNode}</div>
+                            <div className="dyna-table-filter-dropdown-operation">
+                                <Button
+                                    size="small"
+                                    type="text"
+                                    disabled={disabledReset}
+                                    onClick={() => {
+                                        this.domEvents.onFilterReset(dataIndex, filterMultiple);
+                                        confirm({ closeDropdown: true });
+                                    }}
+                                >
+                                    重置
+                                </Button>
+                                <Button
+                                    size="small"
+                                    type="primary"
+                                    onClick={() => {
+                                        this.domEvents.onFilterConfirm();
+                                        confirm({ closeDropdown: true });
+                                    }}
+                                >
+                                    确定
+                                </Button>
+                            </div>
+                        </div>
+                    );
+                };
+                // 隐藏时, 触发搜索
+                v.onFilterDropdownVisibleChange = visible => {
+                    if (!visible) {
+                    }
+                };
             }
-        }
-        this.setState({ columns, columnsTitleList });
-        if (this.isLocalData()) {
-            this.setState({ dataSource: cloneDeep(this.props.dataSource) });
-        }
+
+            return v;
+        });
+        this.setState({ columns });
     }
 
-    // 本地数据源
-    isLocalData = () => {
-        const fetchFunc = get(this.props, 'remoteConfig.fetch');
-        return !isFunction(fetchFunc);
-    };
-    // 参数: 排序
-    getFilterParams = () => {
-        return this.state.filterParams;
-    };
-    handleSearch = async (searchParams = {}, isReset = true) => {
-        // 本地
-        if (this.isLocalData()) {
-            return;
-        }
-        // 重置
-        // 回到第一页
-        // 清空筛选项
-        // 清空排序
-        if (isReset) {
-            await setAsyncState(this, { current: 1, filterParams: {} });
-        }
-        const { props, state } = this;
-        const {
-            fetch: fetchFunc,
-            process = v => v,
-            dataSourceKey = 'list',
-            totalKey = 'total',
-            pageSizeKey = 'pageSize',
-            currentPageKey = 'currentPage'
-        } = props.remoteConfig;
-        const { current, pageSize } = state;
-        const paginationParams = {
-            [pageSizeKey]: pageSize,
-            [currentPageKey]: current
+    getCustomEvents() {
+        return {
+            // 本地数据源
+            isLocalData: () => {
+                const { fetch: fetchFunc } = this.props.remoteConfig;
+                return !fetchFunc;
+            },
+            // 参数: 排序
+            getFilterParams: () => {
+                return this.state.filterValue;
+            },
+            search: async (searchParams = {}, isReset = true) => {
+                // 重置
+                // 回到第一页
+                // 清空筛选项
+                // 清空排序
+                if (isReset) {
+                    await setAsyncState(this, { current: 1, filterValue: {} });
+                }
+                const { props, state } = this;
+                const {
+                    fetch: fetchFunc,
+                    dataSourceKey = 'list',
+                    totalKey = 'total',
+                    pageSizeKey = 'pageSize',
+                    currentPageKey = 'currentPage'
+                } = props.remoteConfig;
+                const { current, pageSize } = state;
+                const paginationParams = {
+                    [pageSizeKey]: pageSize,
+                    [currentPageKey]: current
+                };
+                const filterParams = this.customEvents.getFilterParams();
+                const fetchParams = {
+                    ...paginationParams,
+                    ...filterParams,
+                    ...this.cacheSearchParams,
+                    ...searchParams
+                };
+                const res = await fetchFunc(fetchParams);
+                const dataSource = get(res, dataSourceKey, []);
+                const total = get(res, totalKey, 0);
+                this.setState({ dataSource, total });
+                if (isReset) {
+                    this.cacheSearchParams = { ...searchParams };
+                }
+            }
         };
-        const filterParams = this.getFilterParams();
-        const fetchParams = {
-            ...paginationParams,
-            ...filterParams,
-            ...this.cacheSearchParams,
-            ...searchParams
-        };
-        this.setState({ loading: true });
-        const resOrigin = await fetchFunc(fetchParams);
-        this.setState({ loading: false });
-        const res = process(cloneDeep(resOrigin)) || resOrigin;
-        const dataSource = get(res, dataSourceKey, []);
-        const total = get(res, totalKey, 0);
-        this.setState({ dataSource, total });
-        if (isReset) {
-            this.cacheSearchParams = { ...searchParams };
-        }
-    };
+    }
 
-    // 筛选
-    onFilterChange = (dataIndex, value) => {
-        this.setState(prevState => {
-            return {
-                filterParams: {
-                    ...prevState.filterParams,
-                    [dataIndex]: value
-                }
-            };
-        });
-    };
-    // 筛选 TreeSelect
-    changeTreeSelect = (visible, dataIndex) => {
-        this.setState(prevState => {
-            const { treeSelectOpens } = prevState;
-            treeSelectOpens[dataIndex] = visible;
-            return {
-                treeSelectOpens
-            };
-        });
-    };
-    // 筛选-确认
-    onFilterConfirm = debounce(async () => {
-        await setAsyncState(this, { current: 1 });
-        this.handleSearch({}, false);
-    }, 10);
-    // 筛选-重置
-    onFilterReset = async (dataIndex, filterMultiple) => {
-        await setAsyncState(this, prevState => {
-            return {
-                filterParams: {
-                    ...prevState.filterParams,
-                    [dataIndex]: filterMultiple ? [] : ''
-                }
-            };
-        });
-        this.onFilterConfirm();
-    };
-    // 分页 - 切换
-    onChange = async (page, pageSize) => {
-        await setAsyncState(this, { current: page });
-        this.handleSearch({}, false);
-    };
-    // 分页 - 每页的设置
-    onShowSizeChange = (current, size) => {
-        setTimeout(async () => {
-            await setAsyncState(this, { pageSize: size, current: 1 });
-            this.handleSearch({}, false);
-        }, 0);
-    };
-    // 编辑-单元格 保存
-    // 请求接口, 接口完成后, 刷新数据(当前页)
-    handleSaveCell = async config => {
-        const { index, dataIndex, record, value } = config;
-        const { dataSource } = this.state;
-        const oldDataSource = cloneDeep(dataSource);
-        const newDataSource = cloneDeep(dataSource);
-        set(newDataSource[index], dataIndex, value);
-        // 未变化
-        if (String(value) === String(record[dataIndex])) {
-            return;
-        }
-        const { onEditableCellSave } = this.props;
-        if (!isFunction(onEditableCellSave)) {
-            console.info(`[${componentName}]:`, '请配置编辑成功的回调函数 onEditableCellSave');
-            return;
-        }
-        const hideLoading = message.loading('正在保存数据...', 0);
-        await setAsyncState(this, { loading: true, dataSource: newDataSource });
-        try {
-            await onEditableCellSave(config, cloneDeep(this.state));
-            this.handleSearch({}, false);
-            message.success('数据保存成功');
-        } catch (e) {
-            message.error(['数据保存失败', e].filter(Boolean).join(': '));
-            this.setState({ loading: false, dataSource: oldDataSource });
-        }
-        hideLoading();
-    };
+    getDomEvents() {
+        return {
+            // 筛选
+            onFilterChange: async (dataIndex, value) => {
+                await setAsyncState(this, prevState => {
+                    return {
+                        filterValue: {
+                            ...prevState.filterValue,
+                            [dataIndex]: value
+                        }
+                    };
+                });
+            },
+            // 筛选-确认
+            onFilterConfirm: async () => {
+                await setAsyncState(this, { current: 1 });
+                this.customEvents.search({}, false);
+            },
+            // 筛选-重置
+            onFilterReset: async (dataIndex, filterMultiple) => {
+                await setAsyncState(this, prevState => {
+                    return {
+                        filterValue: {
+                            ...prevState.filterValue,
+                            [dataIndex]: filterMultiple ? [] : ''
+                        }
+                    };
+                });
+                this.customEvents.search({}, false);
+            },
+            // 分页 - 切换
+            onChange: async (page, pageSize) => {
+                await setAsyncState(this, { current: page });
+                this.customEvents.search({}, false);
+            },
+            // 分页 - 每页的设置
+            onShowSizeChange: (current, size) => {
+                setTimeout(async () => {
+                    await setAsyncState(this, { pageSize: size, current: 1 });
+                }, 0);
+            }
+        };
+    }
+
+    getRenderResult() {
+        return {};
+    }
 
     render() {
-        const { props, state, onChange, onShowSizeChange } = this;
-        const { prependHeader, appendHeader, pagination } = props;
-        const { visibleHeaderSetting, storageKey, editTrigger } = { ...defaultExtraConfig, ...props.extraConfig };
-        const { loading, columns, columnsTitleList, dataSource, total, current, pageSize } = state;
-        const tableProps = omit(props, [
-            'class',
-            'className',
-            'style',
-            'columns',
-            'dataSource',
-            'remoteConfig',
-            'pagination'
-        ]);
-        const hideHeader = isEveryFalsy(prependHeader, appendHeader, visibleHeaderSetting);
-        if (isEmptyArray(columns)) {
-            return null;
-        }
+        const { props, state, domEvents, customEvents } = this;
+        const { prependHeader, appendHeader } = props;
+        const { columns, dataSource, total, current, pageSize } = state;
+        const { onChange, onShowSizeChange } = domEvents;
+        const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
+        const hideHeader = !prependHeader && !appendHeader;
         return (
             <div className={classNames('dyna-table', props['class'], props['className'])}>
                 {!hideHeader && (
                     <div className="dyna-table-header">
                         <div className="dyna-table-header-left">{prependHeader}</div>
                         <div className="dyna-table-header-right">{appendHeader}</div>
-                        {visibleHeaderSetting && (
-                            <div className="dyna-table-header-setting">
-                                <HeaderSetting
-                                    shape="button"
-                                    storageKey={storageKey}
-                                    columns={columns}
-                                    value={columnsTitleList}
-                                    onChange={columnsTitleList => {
-                                        this.setState({ columnsTitleList });
-                                    }}
-                                />
-                            </div>
-                        )}
                     </div>
                 )}
                 <Table
-                    loading={{ spinning: state.loading, size: 'large', tip: '数据加载中...' }}
                     {...tableProps}
-                    columns={getVisibleColumns(columns, columnsTitleList)}
+                    columns={columns}
                     dataSource={dataSource}
-                    components={getTableComponents({ ...tableProps, editTrigger })}
-                    rowClassName={() => {
-                        return getClassNames('editable-row');
-                    }}
                     pagination={{
-                        ...pagination,
                         style: { padding: '16px 10px', margin: 0 },
                         onChange,
                         onShowSizeChange,
-                        showSizeChanger: true,
                         total,
                         current,
                         pageSize,
-                        showTotal: (total, range) => {
+                        showTotal: total => {
                             return ['总计', total, '条数据'].join(' ');
                         }
                     }}

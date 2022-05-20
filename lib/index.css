@@ -1,0 +1,32 @@
+.dyna-table {
+    background-color: #fff;
+}
+
+.dyna-table .dyna-table-header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dyna-table-filter-dropdown {
+    font-size: 0;
+}
+
+.dyna-table-filter-dropdown .dyna-table-filter-dropdown-options {
+    padding: 4px 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dyna-table-filter-dropdown .dyna-table-filter-dropdown-operation {
+    border-top: 1px solid rgb(240, 240, 240);
+    padding: 7px 8px 7px 3px;
+    display: flex;
+    justify-content: flex-end;
+}
+.dyna-table-filter-dropdown .ant-checkbox-group-item,
+.dyna-table-filter-dropdown .ant-radio-wrapper {
+    display: block;
+    padding: 5px 12px;
+    margin-right: 0;
+}

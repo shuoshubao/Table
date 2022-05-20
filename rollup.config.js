@@ -2,7 +2,7 @@ import babel from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 
 export default {
-    input: 'src/Table/index.js',
+    input: 'lib/index.jsx',
     output: {
         file: 'dist/index.js',
         format: 'cjs'
