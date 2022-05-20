@@ -386,7 +386,8 @@ class App extends Component {
                     }
                     extraConfig={{
                         showTotal: true,
-                        storageKey: 'demo1'
+                        storageKey: 'demo',
+                        fullScreen: true
                     }}
                 />
             </div>
