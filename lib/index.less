@@ -4,6 +4,13 @@
         padding: 10px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        .dynamic-table-header-left,
+        .dynamic-table-header-right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
     }
     .ant-table-row {
         .ant-typography {
@@ -30,6 +37,10 @@
             font-size: 14px;
             margin-right: 0;
         }
+    }
+    .dynamic-table-total {
+      margin: 0 4px;
+      font-style: italic;
     }
 }
 

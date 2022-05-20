@@ -383,6 +383,19 @@ class App extends Component {
                         // defaultCurrent: 1,
                         pageSizeOptions: ['5', '10', '20']
                     }}
+                    prependHeader={
+                      <>
+                        <Button type="primary">新增</Button>
+                        <span>134</span>
+                      </>
+                    }
+                    appendHeader={
+                      <>
+                        <Button type="primary">新增</Button>
+                        <Button type="primary">导出</Button>
+                      </>
+                    }
+                    extraConfig={{ showTotal: true }}
                 />
             </div>
         );
