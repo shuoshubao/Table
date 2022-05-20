@@ -13,7 +13,7 @@ const getValue = (column, record, emptyText) => {
     return isEmptyValue(value) ? emptyText : value;
 };
 
-const renderButtonList = list => {
+const renderButtonList = (list, context) => {
     return list.map((v, i) => {
         const {
             text,
@@ -154,7 +154,7 @@ export default (column, context) => {
         if (tpl === 'link') {
             const { render } = template;
             const list = flatten([render(text, record, index)]);
-            return renderButtonList(list);
+            return renderButtonList(list, context);
         }
     };
 };
