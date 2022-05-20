@@ -1,10 +1,24 @@
 .dynamic-table {
     background-color: #fff;
+    .ant-table table {
+        border-radius: 0;
+    }
+    &.dynamic-table-bordered {
+        border: 1px solid #e8e8e8;
+        table {
+            border-right: none;
+            border-left: none;
+        }
+        .dynamic-table-header {
+            border-bottom: none;
+        }
+    }
     .dynamic-table-header {
         padding: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        border-bottom: 1px solid #e8e8e8;
         .dynamic-table-header-left,
         .dynamic-table-header-right {
             display: flex;
@@ -41,6 +55,9 @@
     .dynamic-table-total {
         margin: 0 4px;
         font-style: italic;
+    }
+    .ant-pagination.ant-table-pagination {
+        padding: 10px !important;
     }
 }
 

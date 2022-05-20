@@ -238,6 +238,7 @@ const columns = [
         title: '操作',
         dataIndex: 'operate',
         width: 120,
+        fixed: 'right',
         template: {
             tpl: 'link',
             render: (text, record, index) => {
@@ -384,6 +385,7 @@ class App extends Component {
                     rowKey="name"
                     bordered
                     remoteConfig={remoteConfig}
+                    scroll={{ x: 1000 }}
                     pagination={{
                         defaultPageSize: 5,
                         // defaultCurrent: 1,
