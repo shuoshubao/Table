@@ -6,7 +6,7 @@ import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import { ReactSortable } from 'react-sortablejs';
-import { getComponentName, getClassNames } from './util';
+import { getComponentName, getClassNames } from './util.jsx';
 import './index.scss';
 
 class Index extends Component {
@@ -78,7 +78,6 @@ class Index extends Component {
                                     ghostClass={getClassNames('header-setting-item-sort-ghost')}
                                     filter={getClassNames('header-setting-item-sort-disabled')}
                                     animation={150}
-                                    delay={10}
                                 >
                                     {columns.map((v, i) => {
                                         const { title } = v;
