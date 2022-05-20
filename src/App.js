@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-// import { EditOutlined } from '@ant-design/icons';
 import { random, range } from 'lodash';
-import Button from 'antd/lib/button';
-import Card from 'antd/lib/card';
-import Divider from 'antd/lib/divider';
+import { Button, Card, Divider } from 'antd';
 import { sleep, fakeFetch } from '@nbfe/tools';
+import 'antd/dist/antd.css';
 import 'rc-image/assets/index.css';
 import Table from '../lib';
 
@@ -384,6 +382,7 @@ class App extends Component {
                     ref={this.tableRef}
                     columns={columns}
                     rowKey="name"
+                    size="small"
                     remoteConfig={remoteConfig}
                     scroll={{ x: 1000 }}
                     prependHeader={
