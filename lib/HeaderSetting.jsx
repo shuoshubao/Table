@@ -159,7 +159,7 @@ class Index extends Component {
         const isIcon = shape === 'icon';
         return (
             <Dropdown visible={visible} trigger={['click']} overlay={renderResult.overlay()}>
-                <Tooltip title="表头设置" placement="topRight" arrowPointAtCenter>
+                <Tooltip title={isIcon ? '表头设置' : null} placement="topRight" arrowPointAtCenter>
                     <Button
                         ref={this.triggerRef}
                         type={isIcon ? '' : 'primary'}
