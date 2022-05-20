@@ -91,11 +91,11 @@ const columns = [
     {
         title: 'Slider',
         dataIndex: 'slider',
-        width: 100,
+        width: 200,
         editable: true,
         template: {
             tpl: 'slider',
-            width: 200
+            width: 150
         }
     },
     {
