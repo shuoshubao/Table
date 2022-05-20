@@ -67,8 +67,11 @@ const columns = [
         title: '排序',
         width: 50,
         template: {
-            tpl: 'sort'
-            // handler: <AreaChartOutlined />
+            tpl: 'sort',
+            disabledSort: (record, index) => {
+              return index === 0
+            },
+            handler: <AreaChartOutlined />
         }
     },
     {
