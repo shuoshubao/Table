@@ -8,6 +8,17 @@ import Table from '../lib/index';
 
 const columns = [
     {
+        title: '文本',
+        dataIndex: 'text',
+        width: 100,
+        template: {
+            tpl: 'text',
+            ellipsis: {
+                rows: 2
+            },
+        }
+    },
+    {
         title: '姓名',
         dataIndex: 'name',
         canHide: false,
@@ -38,6 +49,14 @@ const columns = [
                     value: 2
                 }
             ]
+        }
+    },
+    {
+        title: '日期',
+        dataIndex: 'date',
+        template: {
+            tpl: 'date',
+            format: 'YYYY-MM'
         }
     },
     {
@@ -214,9 +233,11 @@ const columns = [
 
 const itemDataSource = [
     {
+        text: '文本文本文本文本文本文本文本文本文本文本文本文本',
         name: '胡彦祖',
         age: 32,
         sex: 1,
+        date: 1627453265384,
         imgSrc: 'https://img.ljcdn.com/beike/super-agent-fe/1610547879561.png',
         address1: '西湖区湖底公园1号',
         address2: '西湖区湖底公园1号',

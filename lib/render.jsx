@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button, Image } from './antd';
+import { Button, Typography, Image } from './antd';
 import { get, omit, flatten } from 'lodash';
 import FileImageOutlined from '@ant-design/icons/FileUnknownOutlined';
-import { getLabelByValue, isEmptyObject, stringifyUrl } from '@nbfe/tools';
+import { getLabelByValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
+
+const { Paragraph } = Typography;
 
 const getValue = (column, record) => {
     const { dataIndex, template } = column;
@@ -15,7 +17,15 @@ export default column => {
     return (text, record, index) => {
         // 普通文本
         if (tpl === 'text') {
-            return get(record, template.dataIndex || dataIndex, emptyText);
+            const value = getValue(column, record);
+            const props = omit(template, ['tpl', 'emptyText']);
+            if (props.ellipsis) {
+                props.ellipsis = {
+                    tooltip: <div style={{ maxHeight: 400, overflowY: 'auto' }}>{value}</div>,
+                    ...props.ellipsis
+                };
+            }
+            return <Paragraph {...props}>{value}</Paragraph>;
         }
         // 枚举
         if (tpl === 'enum') {
@@ -32,6 +42,12 @@ export default column => {
                 return <Image src={value} alt="" width={width} height={height} {...props} />;
             }
             return <FileImageOutlined style={{ fontSize: width }} />;
+        }
+        // 日期
+        if (tpl === 'date') {
+            const { format = 'YYY-MM-DD' } = template;
+            const value = getValue(column, record);
+            return formatTime(value, format, emptyText);
         }
         // 链接
         if (tpl === 'link') {

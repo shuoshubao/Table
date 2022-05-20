@@ -39,7 +39,6 @@ class Index extends Component {
 
     componentDidMount() {
         const { value } = this.props;
-        console.log(111, value)
         this.setState({
             selectList: cloneDeep(value)
         });
