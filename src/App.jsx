@@ -3,7 +3,7 @@ import { random, range } from 'lodash';
 import Button from 'antd/lib/button';
 import Card from 'antd/lib/card';
 import Divider from 'antd/lib/divider';
-import { sleep } from '@nbfe/tools';
+import { sleep, fakeFetch } from '@nbfe/tools';
 import Table from '../lib/index';
 
 const columns = [
@@ -16,6 +16,15 @@ const columns = [
             ellipsis: {
                 rows: 2
             },
+        }
+    },
+    {
+        title: '文本数组',
+        dataIndex: 'texts',
+        width: 100,
+        template: {
+            tpl: 'text',
+            separator: '、'
         }
     },
     {
@@ -213,6 +222,7 @@ const columns = [
                     {
                         text: '编辑',
                         danger: true,
+                        tooltip: 'ABC',
                         href: `/edit?name=${name}`
                     },
                     {
@@ -234,6 +244,7 @@ const columns = [
 const itemDataSource = [
     {
         text: '文本文本文本文本文本文本文本文本文本文本文本文本',
+        texts: ['文本1', '文本2'],
         name: '胡彦祖',
         age: 32,
         sex: 1,
@@ -301,7 +312,6 @@ class App extends Component {
                     selectedRowKeys={['胡彦祖2']}
                     rowKey="name"
                     bordered
-                    extraConfig={{ visibleHeaderSetting: true, storageKey: 'abc' }}
                     pagination={{
                         defaultPageSize: 5,
                         defaultCurrent: 2,

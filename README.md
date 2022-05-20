@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# 简洁
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+基于 [antd-table](https://ant.design/components/table-cn/) 进行二次封装
 
-## Available Scripts
+-   接口请求
+    -   分页处理与接口请求的集成
+    -   筛选功能与接口请求的集成
+    -   debounce 优化, 防止因代码原因短时间内重复触发请求
+-   渲染器
+    -   空值默认处理
+    -   普通文本
+        -   多行省略号
+        -   数组类型
+    -   枚举
+    -   图片
+    -   日期
+    -   链接/按钮
 
-In the project directory, you can run:
+# 安装
 
-### `yarn start`
+```text
+npm i @nbfe/table
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# 使用
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 数据来自接口
 
-### `yarn test`
+```js
+import Table from '@nbfe/table';
+// import '@nbfe/table/dist/index.css'; // 样式文件在项目的入口文件引入即可
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const dataSource = [
+    {
+        id: '1',
+        name: '硕鼠宝',
+        age: 18
+    }
+];
 
-### `yarn build`
+const remoteConfig = {
+    fetch: async (params) => {
+        return axios.get('/xx', { params });
+        // 任意 promise 都可以, 不局限于 fetch 请求
+        await sleep(3);
+        return dataSource;
+    },
+    dataSourceKey: 'list',
+    totalKey: 'total',
+    pageSizeKey: 'pageSize',
+    currentPageKey: 'currentPage'
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const columns = [
+    {
+        title: 'ID',
+        dataIndex: 'id',
+        width: 60
+    },
+    {
+        title: '姓名',
+        dataIndex: 'name',
+        width: 80
+    },
+    {
+        title: '年龄',
+        dataIndex: 'name',
+        width: 60
+    }
+]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<Table remoteConfig={remoteConfig} columns={columns} rowKey="id" />;
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 数据固定
 
-### `yarn eject`
+```js
+import Table from '@nbfe/table';
+// import '@nbfe/table/dist/index.css'; // 样式文件在项目的入口文件引入即可
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+const dataSource = [
+    {
+        id: '1',
+        name: '硕鼠宝',
+        age: 18
+    }
+];
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+const columns = [
+    {
+        title: 'ID',
+        dataIndex: 'id',
+        width: 60
+    },
+    {
+        title: '姓名',
+        dataIndex: 'name',
+        width: 80
+    },
+    {
+        title: '年龄',
+        dataIndex: 'name',
+        width: 60
+    }
+]
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<Table dataSource={dataSource} columns={columns} rowKey="id" />;
+```
