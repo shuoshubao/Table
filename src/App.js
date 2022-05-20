@@ -232,10 +232,16 @@ const columns = [
     //     title: '住址1',
     //     dataIndex: 'address1'
     // },
-    // {
-    //     title: '住址2',
-    //     dataIndex: 'address2'
-    // },
+    {
+        title: '住址2',
+        dataIndex: 'address2',
+        transform: (value, record, index) => {
+            return `${value}(transform_${index + 1})`;
+        },
+        render: value => {
+            return ['地址:', value].join('');
+        }
+    },
     {
         title: '操作',
         dataIndex: 'operate',
