@@ -17,19 +17,17 @@
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
         "@babel/preset-react": "^7.12.13",
-        "@nbfe/form": "^0.1.14",
+        "@nbfe/form": "^0.2.0",
         "@nbfe/react-cli": "^0.1.5",
         "@nbfe/tools": "^0.2.0",
         "@rollup/plugin-babel": "^5.3.0",
         "antd": "^3.26.20",
-        "postcss": "^8.2.7",
         "prettier": "^2.2.1",
         "prop-types": "^15.7.2",
         "rc-image": "^5.2.5",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "rollup": "^2.56.3",
-        "rollup-plugin-postcss": "^4.0.0",
-        "sass": "^1.32.8"
+        "rollup-plugin-postcss": "^4.0.0"
     }
 }
