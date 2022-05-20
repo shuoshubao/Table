@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react';
+import React, { useMemo, Fragment } from 'react';
 import RcImage from 'rc-image';
 import {
     EyeOutlined,
@@ -23,7 +23,7 @@ const icons = {
 };
 
 const Image = ({ preview, ...otherProps }) => {
-    const mergedPreview = React.useMemo(() => {
+    const mergedPreview = useMemo(() => {
         if (preview === false) {
             return preview;
         }
