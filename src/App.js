@@ -7,7 +7,7 @@ import 'rc-image/assets/index.css';
 import Table from '../lib';
 import '../lib/index.less';
 
-const { Descriptions } = Table;
+const { Descriptions, Image } = Table;
 
 const SexOptions = [
     {
@@ -537,7 +537,9 @@ class App extends Component {
                         <Button type="primary" onClick={this.onClick} size="small">
                             查询
                         </Button>
+                        <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" width={50} />
                     </Card>
+
                     <Divider />
                     <Table
                         ref={this.tableRef}
