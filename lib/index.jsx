@@ -226,7 +226,7 @@ class Index extends Component {
                     </div>
                 )}
                 <Table
-                    loading={state.loading}
+                    loading={{ spinning: state.loading, size: 'large', tip: '数据加载中...' }}
                     {...tableProps}
                     columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
