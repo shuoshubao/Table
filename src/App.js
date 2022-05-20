@@ -15,6 +15,14 @@ const columns = [
         }
     },
     {
+        title: '图片',
+        dataIndex: 'imgSrc',
+        template: {
+            tpl: 'image',
+            fallback: 'https://ke.com/favicon.ico'
+        }
+    },
+    {
         title: '文本',
         dataIndex: 'text',
         width: 100,
@@ -37,18 +45,13 @@ const columns = [
     },
     {
         title: '姓名',
-        dataIndex: 'name',
-        editable: true,
-        template: {
-            tpl: 'input'
-        }
+        dataIndex: 'name'
     },
     {
         title: '枚举1',
         dataIndex: 'enum1',
-        editable: true,
         template: {
-            tpl: 'select',
+            tpl: 'enum',
             width: 80,
             options: [
                 {
@@ -65,38 +68,22 @@ const columns = [
     {
         title: '枚举2',
         dataIndex: 'enum2',
-        width: 100,
-        editable: true,
         template: {
-            tpl: 'switch'
-        }
-    },
-    {
-        title: '枚举3',
-        dataIndex: 'enum3',
-        width: 100,
-        editable: true,
-        template: {
-            tpl: 'select',
-            // options: [],
-            getOptions: (value, record, index) => {
-              return record['enum3List'].map(v => {
-                return {
-                  value: v.code,
-                  label: v.desc,
+            tpl: 'enum',
+            shape: 'circle',
+            width: 80,
+            options: [
+                {
+                    label: '上线',
+                    value: 1,
+                    color: 'red'
+                },
+                {
+                    label: '下线',
+                    value: 2,
+                    color: 'green'
                 }
-              })
-            }
-        }
-    },
-    {
-        title: 'Slider',
-        dataIndex: 'slider',
-        width: 200,
-        editable: true,
-        template: {
-            tpl: 'slider',
-            width: 150
+            ]
         }
     },
     {
@@ -107,19 +94,10 @@ const columns = [
             format: 'YYYY-MM'
         }
     },
-    {
-        title: '图片',
-        dataIndex: 'imgSrc',
-        template: {
-            tpl: 'image',
-            fallback: 'https://ke.com/favicon.ico'
-        }
-    },
     // {
     //     title: '年龄',
     //     dataIndex: 'age',
     //     filterMultiple: false,
-    //     editable: true,
     //     rules: [
     //         {
     //             required: true,
@@ -300,7 +278,7 @@ const itemDataSource = [
         name: '胡彦祖',
         age: 32,
         enum1: 1,
-        enum2: true,
+        enum2: 1,
         slider: 12,
         date: 1627453265384,
         imgSrc: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?undefined',
@@ -318,20 +296,20 @@ const dataSource = range(0, total).map((v, i) => {
         name: itemDataSource[0].name + v,
         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
         enum1: i % 3,
-        enum2: true,
+        enum2: i % 2 ? 1 : 2,
         enum3List: [
-          {
-            code: 1,
-            desc: '版本1'
-          },
-          {
-            code: 2,
-            desc: '版本2'
-          },
-          {
-            code: 3,
-            desc: '版本3'
-          }
+            {
+                code: 1,
+                desc: '版本1'
+            },
+            {
+                code: 2,
+                desc: '版本2'
+            },
+            {
+                code: 3,
+                desc: '版本3'
+            }
         ],
         enum3: (i % 3) + 1
     };
@@ -386,16 +364,16 @@ class App extends Component {
                     remoteConfig={remoteConfig}
                     scroll={{ x: 1000 }}
                     prependHeader={
-                      <>
-                        <Button type="primary">新增</Button>
-                        <span>134</span>
-                      </>
+                        <>
+                            <Button type="primary">新增</Button>
+                            <span>134</span>
+                        </>
                     }
                     appendHeader={
-                      <>
-                        <Button type="primary">新增</Button>
-                        <Button type="primary">导出</Button>
-                      </>
+                        <>
+                            <Button type="primary">新增</Button>
+                            <Button type="primary">导出</Button>
+                        </>
                     }
                     extraConfig={{ showTotal: true }}
                 />
