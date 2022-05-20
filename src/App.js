@@ -70,18 +70,18 @@ const columns = [
         dataIndex: 'enum2',
         template: {
             tpl: 'enum',
-            shape: 'circle',
+            shape: 'tag',
             width: 80,
             options: [
                 {
                     label: '上线',
                     value: 1,
-                    color: 'red'
+                    color: '#2db7f5'
                 },
                 {
                     label: '下线',
                     value: 2,
-                    color: 'green'
+                    color: '#f50'
                 }
             ]
         }
