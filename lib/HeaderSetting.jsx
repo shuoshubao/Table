@@ -6,6 +6,7 @@ import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import { ReactSortable } from 'react-sortablejs';
+import { isSomeFalsy } from '@nbfe/tools';
 import { getComponentName, getClassNames } from './util.jsx';
 import './index.scss';
 
@@ -37,6 +38,9 @@ class Index extends Component {
 
     componentDidMount() {
         document.addEventListener('click', e => {
+            if (isSomeFalsy(this.cardRef.current, this.triggerRef.current)) {
+                return;
+            }
             const isCard = this.cardRef.current.contains(e.target);
             const isTriggerEle = this.triggerRef.current.contains(e.target);
             if (isTriggerEle) {

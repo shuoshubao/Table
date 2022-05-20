@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
-import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import HeaderSetting from './HeaderSetting.jsx';
@@ -41,7 +40,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        const columns = mergeColumns(this.props.columns, {state: this.state, domEvents: this.domEvents} );
+        const columns = mergeColumns(this.props.columns, this);
         this.setState({ columns });
     }
 
@@ -98,8 +97,8 @@ class Index extends Component {
     getDomEvents() {
         return {
             // 筛选
-            onFilterChange: async (dataIndex, value) => {
-                await setAsyncState(this, prevState => {
+            onFilterChange: (dataIndex, value) => {
+                this.setState(prevState => {
                     return {
                         filterValue: {
                             ...prevState.filterValue,
