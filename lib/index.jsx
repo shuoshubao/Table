@@ -88,7 +88,7 @@ class Index extends Component {
                     return (
                         <div className="dyna-table-filter-dropdown">
                             <div className="dyna-table-filter-dropdown-options">{dropdownNode}</div>
-                            <div className="dyna-table-filter-dropdown-operation">
+                            <div className="dyna-table-filter-dropdown-footer">
                                 <Button
                                     size="small"
                                     type="text"
