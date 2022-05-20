@@ -1,6 +1,6 @@
 {
     "name": "@ke/table",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "main": "dist/index.js",
     "publishConfig": {
         "registry": "http://artifactory.ke.com/artifactory/api/npm/npm-virtual/"
