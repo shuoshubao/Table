@@ -69,6 +69,7 @@ const columns = [
         template: {
             tpl: 'sort',
             disabledSort: (record, index) => {
+              return record.radio === 1
               return index === 0
             },
             handler: <AreaChartOutlined />
@@ -307,52 +308,6 @@ const columns = [
     }
 ];
 
-const itemDataSource = [
-    {
-        text: 'demo',
-        texts: ['文本1', '文本2'],
-        name: '胡彦祖',
-        age: 32,
-        sex: 1,
-        enum1: 1,
-        enum2: 1,
-        slider: 12,
-        date: 1627453265384,
-        imgSrc: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?undefined',
-        address1: '西湖区湖底公园1号',
-        address2: '西湖区湖底公园1号',
-        address3: '西湖区湖底公园1号'
-    }
-];
-
-const total = 3;
-
-// const dataSource = range(0, total).map((v, i) => {
-//     return {
-//         id: i,
-//         ...itemDataSource[0],
-//         name: itemDataSource[0].name + v,
-//         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
-//         enum1: i % 3,
-//         enum2: i % 2 ? 1 : 2,
-//         enum3List: [
-//             {
-//                 code: 1,
-//                 desc: '版本1'
-//             },
-//             {
-//                 code: 2,
-//                 desc: '版本2'
-//             },
-//             {
-//                 code: 3,
-//                 desc: '版本3'
-//             }
-//         ],
-//         enum3: (i % 3) + 1
-//     };
-// });
-
 const dataSource = [
     {
         id: 21,
@@ -400,14 +355,14 @@ const dataSource = [
         id: 23,
         text: 'test23',
         checkbox: [2, 3],
-        radio: 2,
+        radio: 1,
         date1: '2022-02-02',
         time1: '12:34:56',
         time21: '11:22:33',
         time22: '11:11:55',
         date21: '',
         date22: '',
-        enum1: 2,
+        enum1: 1,
         enum2: 1,
         enum3: ['jiangsu', 'suzhou'],
         enum4: ['jiangsu', 'suzhou'],
@@ -421,14 +376,14 @@ const dataSource = [
         id: 31,
         text: 'test31',
         checkbox: [2, 3],
-        radio: 2,
+        radio: 1,
         date1: '2022-02-02',
         time1: '12:34:56',
         time21: '11:22:33',
         time22: '11:11:55',
         date21: '',
         date22: '',
-        enum1: 2,
+        enum1: 1,
         enum2: 1,
         enum3: ['jiangsu', 'suzhou'],
         enum4: ['jiangsu', 'suzhou'],
@@ -520,7 +475,7 @@ const remoteConfig = {
     }
 };
 
-const getPaginationData = (params, dataSource = []) => {
+const getRemoteTableData = (params, dataSource = []) => {
     const { currentPage, pageSize } = params;
     const pivot = (currentPage - 1) * pageSize;
     const list = dataSource.slice(pivot, currentPage * pageSize);
@@ -565,7 +520,7 @@ class App extends Component {
                                 console.log('请求了');
                                 console.log(params);
                                 await sleep();
-                                return getPaginationData(params, dataSource);
+                                return getRemoteTableData(params, dataSource);
                                 // return {
                                 //     list: dataSource
                                 // };
@@ -583,13 +538,17 @@ class App extends Component {
                                 <Button type="primary">导出</Button>
                             </>
                         }
-                        pagination={{
-                            defaultPageSize: 3
-                        }}
+                        // pagination={{
+                        //     defaultPageSize: 3
+                        // }}
                         extraConfig={{
                             showTotal: true,
                             storageKey: 'demo',
-                            fullScreen: true
+                            fullScreen: true,
+                            disabledSort: (record, index) => {
+                                // console.log('执行了 🍉');
+                                return record.enum1 === 1;
+                            }
                         }}
                         draggable={false}
                         onDragSortEnd={({ newDataSource, dataSource, fromIndex, toIndex }) => {
