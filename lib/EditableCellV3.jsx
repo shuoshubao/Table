@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import { Table, Input, Button, Popconfirm, Form } from './antd';
 import { flatten } from 'lodash';
 import { getClassNames } from './util.jsx';
 
@@ -12,8 +12,6 @@ const EditableRow = ({ form, index, ...props }) => {
         </EditableContext.Provider>
     );
 };
-
-const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
     state = {

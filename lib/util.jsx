@@ -1,5 +1,5 @@
 import React from 'react';
-import { version, Table, Checkbox, Radio, Button } from 'antd';
+import { version, Table, Checkbox, Radio, Button } from './antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
 import { kebabCase, merge, filter, find, inRange } from 'lodash';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';

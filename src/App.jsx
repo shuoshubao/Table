@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { range } from 'lodash';
-import { Button } from 'antd';
+import Button from 'antd/lib/button';
 import Table from '../lib/index';
 
 const columns = [

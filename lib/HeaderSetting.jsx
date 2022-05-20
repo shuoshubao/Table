@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cloneDeep, map, remove, sortBy, debounce } from 'lodash';
-import { Card, Tooltip, Dropdown, Button } from 'antd';
+import { Card, Tooltip, Dropdown, Button } from './antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
