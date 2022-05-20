@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Typography, Image, Tooltip, Tag } from './antd';
-import { get, find, omit, flatten } from 'lodash';
+import { Button, Typography, Tag, Image, Tooltip, Popconfirm } from './antd';
+import { get, find, omit, flatten, noop } from 'lodash';
 import { FileImageOutlined } from '@ant-design/icons';
 import { getLabelByValue, isEmptyValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
 import { getClassNames, getTooltipTitleNode } from './util.jsx';
@@ -13,7 +13,7 @@ const getValue = (column, record, emptyText) => {
     return isEmptyValue(value) ? emptyText : value;
 };
 
-export default column => {
+export default (column, context) => {
     const { dataIndex, template } = column;
     const { tpl, emptyText } = template;
     return (text, record, index) => {
@@ -83,8 +83,8 @@ export default column => {
             const { render } = template;
             const list = flatten([render(text, record, index)]);
             return list.map((v, i) => {
-                const { text, visible = true, query = {}, tooltip = '' } = v;
-                const props = omit(v, ['text', 'visible', 'query', 'tooltip']);
+                const { text, visible = true, query = {}, tooltip = '', PopconfirmConfig } = v;
+                const props = omit(v, ['text', 'visible', 'query', 'tooltip', 'PopconfirmConfig']);
                 const defaultProps = {
                     type: 'link',
                     size: 'small',
@@ -101,6 +101,20 @@ export default column => {
                 );
                 if (tooltip) {
                     return <Tooltip title={getTooltipTitleNode(tooltip)}>{buttonNode}</Tooltip>;
+                }
+                if (PopconfirmConfig) {
+                    let onConfirm = noop;
+                    if (PopconfirmConfig.onConfirm) {
+                        onConfirm = async () => {
+                            await PopconfirmConfig.onConfirm();
+                            context.handleSearch({}, false);
+                        };
+                    }
+                    return (
+                        <Popconfirm {...PopconfirmConfig} onConfirm={onConfirm}>
+                            {buttonNode}
+                        </Popconfirm>
+                    );
                 }
                 return buttonNode;
             });

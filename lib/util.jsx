@@ -180,7 +180,7 @@ export const mergeColumns = (columns = [], context) => {
             }
 
             if (!isFunction(render)) {
-                column.render = getRender(column);
+                column.render = getRender(column, context);
             }
 
             return column;

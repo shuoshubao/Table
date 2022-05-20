@@ -8,6 +8,12 @@ import Table from '../lib/index';
 
 const columns = [
     {
+        title: '时间戳',
+        render: () => {
+            return Date.now();
+        }
+    },
+    {
         title: '文本',
         dataIndex: 'text',
         width: 100,
@@ -248,9 +254,16 @@ const columns = [
                     },
                     {
                         text: '上线',
-                        onClick: () => {
-                            console.log(text, record, index);
+                        PopconfirmConfig: {
+                            title: 'title',
+                            onConfirm: async () => {
+                                await sleep(2);
+                                console.log('onConfirm');
+                            }
                         }
+                        // onClick: () => {
+                        //     console.log(text, record, index);
+                        // }
                     },
                     {
                         text: '下线',
@@ -332,7 +345,6 @@ class App extends Component {
                     ref={this.tableRef}
                     columns={columns}
                     dataSource={dataSource}
-                    selectedRowKeys={['胡彦祖2']}
                     rowKey="name"
                     bordered
                     pagination={{
