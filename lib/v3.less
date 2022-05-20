@@ -1,0 +1,244 @@
+@import (inline) './table.css';
+
+.dynamic-table {
+    background-color: #fff;
+    .ant-v3-table table,
+    .ant-v3-table-small {
+        border-radius: 0;
+    }
+    .ant-v3-table-footer {
+        padding: 10px;
+        background: #fff;
+        &::before {
+            display: none;
+        }
+        &:empty {
+            display: none;
+        }
+    }
+    &.dynamic-table-bordered {
+        border: 1px solid #e8e8e8;
+        table {
+            border-right: none;
+            border-left: none;
+        }
+        .dynamic-table-header {
+            border-bottom: none;
+        }
+    }
+    &.dynamic-table-small {
+        .dynamic-table-header {
+            border-bottom-width: 0;
+            padding: 5px;
+        }
+        .ant-v3-table-thead > tr > th,
+        .ant-v3-table-tbody > tr > td {
+            padding: 5px;
+        }
+        .ant-pagination.ant-v3-table-pagination {
+            padding: 5px !important;
+        }
+        .ant-v3-table-footer {
+            padding: 5px;
+        }
+    }
+    &:not(.dynamic-table-disable-pagination) {
+        .ant-v3-table-small {
+            border-bottom-width: 0;
+        }
+    }
+    .dynamic-table-header {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e8e8e8;
+        &:empty {
+            display: none;
+        }
+        .dynamic-table-header-left,
+        .dynamic-table-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+    .dynamic-table-column-title-tooltip {
+        margin-left: 4px;
+        color: #00000073;
+        cursor: help;
+    }
+    .ant-v3-table-row {
+        .ant-typography {
+            margin-bottom: 0;
+        }
+        .dynamic-table-render-enum-circle {
+            display: inline-block;
+            padding: 0 10px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 12px;
+            font-size: 12px;
+            min-width: 40px;
+            white-space: nowrap;
+        }
+        .dynamic-table-render-enum-dot,
+        .dynamic-table-render-enum-square {
+            display: inline-flex;
+            align-items: center;
+            .dynamic-table-render-enum-badge {
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                margin-right: 5px;
+            }
+            .dynamic-table-render-enum-text {
+                white-space: nowrap;
+            }
+        }
+        .dynamic-table-render-enum-dot .dynamic-table-render-enum-badge {
+            border-radius: 50%;
+        }
+    }
+    .ant-image-mask-info {
+        font-size: 0;
+        .anticon.anticon-eye {
+            font-size: 14px;
+            margin-right: 0;
+        }
+    }
+    .dynamic-table-total {
+        margin: 0 4px;
+        font-style: italic;
+    }
+    .ant-pagination.ant-v3-table-pagination {
+        padding: 10px !important;
+    }
+    .ant-v3-table-thead > tr > th,
+    .ant-v3-table-tbody > tr > td {
+        padding: 10px;
+    }
+}
+
+.dynamic-table-filter-dropdown {
+    font-size: 0;
+    user-select: none;
+    &.dynamic-table-filter-dropdown-has-tree-select {
+        .dynamic-table-filter-dropdown-options {
+            padding: 0;
+        }
+    }
+    .dynamic-table-filter-dropdown-options {
+        padding: 4px 0;
+        max-height: 300px;
+        overflow-y: auto;
+        .ant-checkbox-group,
+        .ant-radio-group {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    .dynamic-table-filter-dropdown-footer {
+        border-top: 1px solid rgb(240, 240, 240);
+        padding: 7px 8px 7px 3px;
+        display: flex;
+        justify-content: flex-end;
+        &.dynamic-table-filter-dropdown-footer-hide {
+            display: none;
+        }
+        .ant-btn + .ant-btn {
+            margin-left: 5px;
+        }
+    }
+    .ant-checkbox-group-item,
+    .ant-radio-wrapper {
+        padding: 5px 12px;
+        margin-right: 0;
+    }
+}
+
+.dynamic-table-header-setting {
+    box-shadow: rgb(0 0 0 / 10%) 0px 2px 20px;
+    user-select: none;
+    .ant-card-head {
+        padding: 5px 0 4px;
+        border-bottom: 1px solid #e5e5e5;
+        position: relative;
+        z-index: 1;
+    }
+    .ant-card-body {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 0;
+        .dynamic-table-header-setting-items {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .dynamic-table-header-setting-item {
+            padding: 8px 16px;
+            line-height: 20px;
+            display: flex;
+            cursor: pointer;
+            background-color: #fff;
+            font-size: 14px;
+            &:hover {
+                background-color: #f7f7f7;
+            }
+            &.dynamic-table-header-setting-item-not-allowed {
+                cursor: not-allowed;
+            }
+            &.dynamic-table-header-setting-item-sort-ghost {
+                background-color: rgba(60, 90, 100, 0.04);
+            }
+            .dynamic-table-header-setting-item-sort {
+                cursor: move;
+                &.dynamic-table-header-setting-item-sort-disabled {
+                    cursor: not-allowed;
+                    color: rgb(191, 191, 191);
+                }
+            }
+            .dynamic-table-header-setting-item-check {
+                &.dynamic-table-header-setting-item-check-disabled {
+                    cursor: not-allowed;
+                    color: rgb(191, 191, 191);
+                }
+            }
+            .dynamic-table-header-setting-item-sort,
+            .dynamic-table-header-setting-item-check {
+                height: 20px;
+                width: 20px;
+                line-height: 20px;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .dynamic-table-header-setting-item-label {
+                padding: 0 12px;
+                flex: 1;
+            }
+        }
+    }
+}
+
+.dynamic-table-fetch-error {
+    .ant-spin {
+        color: #ff4d4f;
+    }
+}
+
+.ant-dropdown.dynamic-table-render-link-dropdown {
+    .ant-dropdown-menu {
+        min-width: 128px;
+    }
+    a {
+        margin: 0;
+        display: inline-block;
+        height: 24px;
+        padding: 0px 7px;
+    }
+}
+
+.dynamic-form + .dynamic-table {
+    margin-top: 10px;
+}
