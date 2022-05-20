@@ -10,6 +10,12 @@ import Table from '../lib';
 
 const columns = [
     {
+        title: '序号',
+        template: {
+            tpl: 'numbering'
+        }
+    },
+    {
         title: '文本',
         dataIndex: 'text',
         width: 100,
