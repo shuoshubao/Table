@@ -109,6 +109,7 @@ export const mergeColumns = (columns = [], context) => {
             // 隐藏时, 触发搜索
             column.onFilterDropdownVisibleChange = visible => {
                 if (!visible) {
+                    domEvents.onFilterConfirm();
                 }
             };
         }

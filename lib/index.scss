@@ -9,6 +9,7 @@
 
 .dyna-table-filter-dropdown {
     font-size: 0;
+    user-select: none;
     .dyna-table-filter-dropdown-options {
         padding: 4px 0;
         max-height: 300px;
@@ -24,6 +25,9 @@
         padding: 7px 8px 7px 3px;
         display: flex;
         justify-content: flex-end;
+        .ant-btn + .ant-btn {
+            margin-left: 5px;
+        }
     }
     .ant-checkbox-group-item,
     .ant-radio-wrapper {
