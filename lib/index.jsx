@@ -186,7 +186,6 @@ class Index extends Component {
     // 请求接口, 接口完成后, 刷新数据(当前页)
     handleSave = async config => {
         const { index, dataIndex, record, value } = config;
-        const editTriggerNone = get(this.props, 'extraConfig.editTrigger', defaultExtraConfig.editTrigger) === 'none';
         const { dataSource } = this.state;
         const oldDataSource = cloneDeep(dataSource);
         const newDataSource = cloneDeep(dataSource);
@@ -195,22 +194,16 @@ class Index extends Component {
         if (String(value) === String(record[dataIndex])) {
             return;
         }
-        const { onEditableCellSave } = this.props;
-        if (!isFunction(onEditableCellSave)) {
-            console.error(`[${componentName}]:`, '请配置编辑成功的回调函数 onEditableCellSave');
+        let { onEditableCellSave } = this.props;
+        if (!onEditableCellSave) {
+            this.setState({ dataSource: newDataSource });
             return;
         }
         let hideLoading;
-        if (!editTriggerNone) {
-            hideLoading = message.loading('正在保存数据...', 0);
-        }
         await setAsyncState(this, { loading: true, dataSource: newDataSource });
         try {
             await onEditableCellSave(config, cloneDeep(this.state));
             this.handleSearch({}, false);
-            if (!editTriggerNone) {
-                message.success('数据保存成功');
-            }
             this.setState({ loading: false });
         } catch (e) {
             message.error(['数据保存失败', e].filter(Boolean).join(': '));
@@ -224,7 +217,7 @@ class Index extends Component {
     render() {
         const { props, state, onChange, onShowSizeChange } = this;
         const { prependHeader, appendHeader, pagination } = props;
-        const { visibleHeaderSetting, storageKey, editTrigger } = { ...defaultExtraConfig, ...props.extraConfig };
+        const { visibleHeaderSetting, storageKey } = { ...defaultExtraConfig, ...props.extraConfig };
         const { loading, columns, columnsTitleList, dataSource, total, current, pageSize } = state;
         const tableProps = omit(props, [
             'class',
@@ -259,7 +252,7 @@ class Index extends Component {
                     {...tableProps}
                     columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
-                    components={getTableComponents({ ...tableProps, editTrigger, columns })}
+                    components={getTableComponents({ ...tableProps, columns })}
                     rowClassName={() => {
                         return getClassNames('editable-row');
                     }}

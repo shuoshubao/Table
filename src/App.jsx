@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { EditOutlined } from '@ant-design/icons';
+// import { EditOutlined } from '@ant-design/icons';
 import { random, range } from 'lodash';
 import Button from 'antd/lib/button';
 import Card from 'antd/lib/card';
 import Divider from 'antd/lib/divider';
 import { sleep, fakeFetch } from '@nbfe/tools';
-import Table from '../lib/index';
+import Table from './lib/index';
 
 const columns = [
     {
@@ -59,21 +59,19 @@ const columns = [
         title: '枚举2',
         dataIndex: 'enum2',
         width: 100,
+        editable: true,
         template: {
-            tpl: 'enum',
-            shape: 'dot',
-            options: [
-                {
-                    color: 'green',
-                    label: '已上线',
-                    value: 1
-                },
-                {
-                    color: '#f50',
-                    label: '已下线',
-                    value: 2
-                }
-            ]
+            tpl: 'switch',
+        }
+    },
+    {
+        title: 'Slider',
+        dataIndex: 'slider',
+        width: 100,
+        editable: true,
+        template: {
+            tpl: 'slider',
+            width: 200
         }
     },
     {
@@ -83,7 +81,7 @@ const columns = [
             tpl: 'date',
             format: 'YYYY-MM'
         }
-    }
+    },
     // {
     //     title: '图片',
     //     dataIndex: 'imgSrc',
@@ -211,66 +209,62 @@ const columns = [
     //     title: '住址2',
     //     dataIndex: 'address2'
     // },
-    // {
-    //     title: '操作',
-    //     dataIndex: 'operate',
-    //     width: 120,
-    //     template: {
-    //         tpl: 'link',
-    //         render: (text, record, index) => {
-    //             const { name } = record;
-    //             return [
-    //                 {
-    //                     text: '详情',
-    //                     href: '/abc',
-    //                     query: { name },
-    //                     target: '_blank'
-    //                 },
-    //                 {
-    //                     text: '编辑',
-    //                     tooltip: 'ABC',
-    //                     href: `/edit?name=${name}`
-    //                 },
-    //                 {
-    //                     text: '上线',
-    //                     danger: true,
-    //                     PopconfirmConfig: {
-    //                         title: 'title',
-    //                         onConfirm: async () => {
-    //                             await sleep(2);
-    //                             console.log('onConfirm');
-    //                         }
-    //                     }
-    //                 },
-    //                 {
-    //                     text: '下线',
-    //                     disabled: true
-    //                 },
-    //                 {
-    //                     text: '编辑2',
-    //                     icon: <EditOutlined />,
-    //                     isMore: true,
-    //                     tooltip: 'ABC',
-    //                     href: `/edit?name=${name}`
-    //                 },
-    //                 {
-    //                     text: '编辑3',
-    //                     icon: <EditOutlined />,
-    //                     isMore: true,
-    //                     href: `/edit?name=${name}`
-    //                 },
-    //                 {
-    //                     text: '编辑3',
-    //                     icon: <EditOutlined />,
-    //                     isMore: true,
-    //                     disabled: true,
-    //                     tooltip: '点击跳转 [链接|http://baidu.com]',
-    //                     href: `/edit?name=${name}`
-    //                 }
-    //             ];
-    //         }
-    //     }
-    // }
+    {
+        title: '操作',
+        dataIndex: 'operate',
+        width: 120,
+        template: {
+            tpl: 'link',
+            render: (text, record, index) => {
+                const { name } = record;
+                return [
+                    {
+                        text: '详情',
+                        href: '/abc',
+                        query: { name },
+                        target: '_blank'
+                    },
+                    {
+                        text: '编辑',
+                        tooltip: 'ABC',
+                        href: `/edit?name=${name}`
+                    },
+                    {
+                        text: '上线',
+                        // danger: true,
+                        onClick: () => {
+                            console.log(record);
+                        }
+                    },
+                    {
+                        text: '下线',
+                        disabled: true
+                    },
+                    {
+                        text: '编辑2',
+                        // icon: <EditOutlined />,
+                        isMore: true,
+                        tooltip: 'ABC',
+                        href: `/edit?name=${name}`
+                    },
+                    {
+                        text: '编辑3',
+                        // icon: <EditOutlined />,
+                        isMore: true,
+                        href: `/edit?name=${name}`
+                    },
+                    {
+                        text: '编辑3',
+                        // icon: <EditOutlined />,
+                        isMore: true,
+                        disabled: true,
+                        tooltip: '点击跳转 [链接|http://baidu.com]',
+                        href: `/edit?name=${name}`
+                    }
+                ];
+            }
+        }
+    }
 ];
 
 const itemDataSource = [
@@ -280,7 +274,8 @@ const itemDataSource = [
         name: '胡彦祖',
         age: 32,
         enum1: 1,
-        enum2: 1,
+        enum2: true,
+        slider: 12,
         date: 1627453265384,
         imgSrc: 'https://img.ljcdn.com/beike/super-agent-fe/1610547879561.png',
         address1: '西湖区湖底公园1号',
@@ -297,7 +292,7 @@ const dataSource = range(0, total).map((v, i) => {
         name: itemDataSource[0].name + v,
         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
         enum1: i % 3,
-        enum2: i % 3
+        enum2: true,
     };
 });
 
@@ -342,21 +337,13 @@ class App extends Component {
                 <Table
                     ref={this.tableRef}
                     columns={columns}
-                    dataSource={dataSource}
                     rowKey="name"
                     bordered
+                    remoteConfig={remoteConfig}
                     pagination={{
                         defaultPageSize: 5,
                         // defaultCurrent: 1,
                         pageSizeOptions: ['5', '10', '20']
-                    }}
-                    extraConfig={{
-                        editTrigger: 'none'
-                    }}
-                    onEditableCellSave={({ index, dataIndex, record, value }, state) => {
-                        const { current, pageSize } = state;
-                        dataSource[(current - 1) * pageSize + index][dataIndex] = value;
-                        this.setState({ dataSource });
                     }}
                 />
             </div>

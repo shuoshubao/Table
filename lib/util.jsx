@@ -12,7 +12,6 @@ export const isAntdV4 = inRange(parseInt(version), 4, 5);
 
 export const defaultExtraConfig = {
     visibleHeaderSetting: false, // 是否显示设置表头
-    editTrigger: 'none', // 编辑触发条件 'none' | 'click' | 'hover'
     storageKey: '' // 存储的key
 };
 
