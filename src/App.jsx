@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { EditOutlined } from '@ant-design/icons';
 import { random, range } from 'lodash';
 import Button from 'antd/lib/button';
 import Card from 'antd/lib/card';
@@ -248,6 +249,7 @@ const columns = [
                     },
                     {
                         text: '编辑',
+                        icon: <EditOutlined />,
                         danger: true,
                         tooltip: 'ABC',
                         href: `/edit?name=${name}`
