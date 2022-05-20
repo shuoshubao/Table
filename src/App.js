@@ -48,6 +48,14 @@ const columns = [
         dataIndex: 'name'
     },
     {
+        title: '年龄',
+        dataIndex: 'age'
+    },
+    {
+        title: '性别',
+        dataIndex: 'sex'
+    },
+    {
         title: '枚举1',
         dataIndex: 'enum1',
         template: {
@@ -277,6 +285,7 @@ const itemDataSource = [
         texts: ['文本1', '文本2'],
         name: '胡彦祖',
         age: 32,
+        sex: 1,
         enum1: 1,
         enum2: 1,
         slider: 12,
@@ -377,7 +386,7 @@ class App extends Component {
                     }
                     extraConfig={{
                         showTotal: true,
-                        showColumnsSetting: true
+                        storageKey: 'demo1'
                     }}
                 />
             </div>
