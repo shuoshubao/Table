@@ -1,15 +1,15 @@
 {
-    "name": "@jiaoyi/DynaTable",
-    "version": "0.2.8",
+    "name": "@nbfe/table",
+    "version": "0.1.0",
     "main": "dist/index.js",
     "publishConfig": {
-        "registry": "http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/"
+        "registry": "https://registry.npmjs.org"
     },
     "scripts": {
         "dev": "vite",
         "build": "rm -rf dist && npx rollup -c",
         "build-docs": "vite build && cp -R dist/ docs/ && rm -rf dist",
-        "publish-beta": "npm publish --tag beta --registry=http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/",
+        "publish-beta": "npm publish --tag beta --registry=https://registry.npmjs.org",
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
