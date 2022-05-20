@@ -27,7 +27,7 @@ class Index extends Component {
         super(props);
         const columns = cloneDeep(props.columns);
         this.state = {
-            visible: false,
+            visible: true,
             columns: columns,
             selectList: []
         };
@@ -43,6 +43,7 @@ class Index extends Component {
         this.setState({
             selectList: map(columns, 'title')
         });
+        return;
         document.addEventListener('click', e => {
             if (isSomeFalsy(this.cardRef.current, this.triggerRef.current)) {
                 return;
@@ -117,7 +118,7 @@ class Index extends Component {
                                     animation={150}
                                 >
                                     {columns.map((v, i) => {
-                                        const { title } = v;
+                                        const { title, configurable } = v;
                                         return (
                                             <div
                                                 className={getClassNames('header-setting-item')}
@@ -127,7 +128,7 @@ class Index extends Component {
                                                 }}
                                             >
                                                 <div
-                                                    className={getClassNames('header-setting-item-sort')}
+                                                    className={getClassNames('header-setting-item-sort', { 'header-setting-item-sort-disabled': !configurable })}
                                                     onClick={e => {
                                                         e.stopPropagation();
                                                     }}

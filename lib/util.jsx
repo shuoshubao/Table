@@ -26,6 +26,8 @@ const defaultColumn = {
     dataIndex: '',
     visible: true,
     filters: [],
+    configurable: true,
+    defaultConfigurable: true,
     filterMultiple: true
 };
 

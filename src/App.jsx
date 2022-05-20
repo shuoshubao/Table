@@ -50,6 +50,7 @@ const columns = [
         title: '操作',
         dataIndex: 'operate',
         fixed: 'right',
+        configurable: false,
         render: () => {
             return (
                 <Button type="link" size="small">
