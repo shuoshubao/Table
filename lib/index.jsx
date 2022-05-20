@@ -16,7 +16,7 @@ class Index extends Component {
 
     static defaultProps = {
         visibleHeaderSetting: false,
-        editTrigger: 'hover'
+        editTrigger: 'click'
     };
 
     static propTypes = {
