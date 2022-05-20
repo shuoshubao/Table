@@ -12,6 +12,13 @@
             border-radius: 4px;
         }
     }
+    .ant-image-mask-info {
+        font-size: 0;
+        .anticon.anticon-eye {
+            font-size: 14px;
+            margin-right: 0;
+        }
+    }
 }
 
 .dyna-table-filter-dropdown {

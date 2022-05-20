@@ -24,6 +24,31 @@ const columns = [
         ]
     },
     {
+        title: '性别',
+        dataIndex: 'sex',
+        template: {
+            tpl: 'enum',
+            options: [
+                {
+                    label: '男',
+                    value: 1
+                },
+                {
+                    label: '女',
+                    value: 2
+                }
+            ]
+        }
+    },
+    {
+        title: '图片',
+        dataIndex: 'imgSrc',
+        template: {
+            tpl: 'image',
+            fallback: 'https://ke.com/favicon.ico'
+        }
+    },
+    {
         title: '年龄',
         dataIndex: 'age',
         filterMultiple: false,
@@ -145,20 +170,44 @@ const columns = [
         dataIndex: 'address2'
     },
     {
-        title: '住址3',
-        // visible: false,
-        dataIndex: 'address3'
-    },
-    {
         title: '操作',
         dataIndex: 'operate',
         // fixed: 'right',
-        render: () => {
-            return (
-                <Button type="link" size="small">
-                    详情
-                </Button>
-            );
+        // render: () => {
+        //     return (
+        //         <Button type="link" size="small">
+        //             详情
+        //         </Button>
+        //     );
+        // }
+        template: {
+            tpl: 'link',
+            render: (text, record, index) => {
+                const { name } = record;
+                return [
+                    {
+                        text: '详情',
+                        href: '/abc',
+                        query: { name },
+                        target: '_blank'
+                    },
+                    {
+                        text: '编辑',
+                        danger: true,
+                        href: `/edit?name=${name}`
+                    },
+                    {
+                        text: '上线',
+                        onClick: () => {
+                            console.log(text, record, index);
+                        }
+                    },
+                    {
+                        text: '下线',
+                        disabled: true
+                    }
+                ];
+            }
         }
     }
 ];
@@ -167,13 +216,8 @@ const itemDataSource = [
     {
         name: '胡彦祖',
         age: 32,
-        address1: '西湖区湖底公园1号',
-        address2: '西湖区湖底公园1号',
-        address3: '西湖区湖底公园1号'
-    },
-    {
-        name: '胡彦祖',
-        age: 42,
+        sex: 1,
+        imgSrc: 'https://img.ljcdn.com/beike/super-agent-fe/1610547879561.png',
         address1: '西湖区湖底公园1号',
         address2: '西湖区湖底公园1号',
         address3: '西湖区湖底公园1号'
@@ -182,10 +226,12 @@ const itemDataSource = [
 
 const total = 92;
 
-const dataSource = range(0, total).map(v => {
+const dataSource = range(0, total).map((v, i) => {
     return {
         ...itemDataSource[0],
-        name: itemDataSource[0].name + v
+        name: itemDataSource[0].name + v,
+        imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
+        sex: i % 3
     };
 });
 

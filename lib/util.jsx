@@ -1,8 +1,9 @@
 import React from 'react';
 import { version, Table, Radio, Checkbox, TreeSelect, Button } from './antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
-import { cloneDeep, isEqual, isUndefined, kebabCase, merge, filter, find, inRange, flatten } from 'lodash';
+import { cloneDeep, isEqual, isUndefined, isFunction, kebabCase, merge, filter, find, inRange, flatten } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
+import getRender from './render';
 
 export const isAntdV3 = inRange(parseInt(version), 3, 4);
 
@@ -20,7 +21,7 @@ export const getComponentName = (compName = '') => {
     return [componentName, compName].join('');
 };
 
-export const getStorageKey = (storageKey) => {
+export const getStorageKey = storageKey => {
     return [componentName, 'HeaderSetting', storageKey || window.location.pathname].join('__');
 };
 
@@ -43,7 +44,11 @@ const defaultColumn = {
     editable: false, // 是否可编辑
     rules: [], // 交易规则 编辑态
     canHide: true, // 是否能隐藏
-    canSort: true // 是否可排序
+    canSort: true, // 是否可排序
+    template: {
+        tpl: 'text',
+        emptyText: '--'
+    }
 };
 
 // 处理 props.columns
@@ -52,7 +57,7 @@ export const mergeColumns = (columns = [], context) => {
     const innerColumns = cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
-            const { dataIndex, filters, filterMultiple } = column;
+            const { dataIndex, filters, filterMultiple, render } = column;
             // 远端排序
             if (isEmptyArray(filters)) {
                 delete column.filters;
@@ -171,6 +176,10 @@ export const mergeColumns = (columns = [], context) => {
                         onFilterConfirm();
                     }
                 };
+            }
+
+            if (!isFunction(render)) {
+                column.render = getRender(column);
             }
 
             return column;
