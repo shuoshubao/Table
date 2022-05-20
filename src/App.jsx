@@ -10,6 +10,7 @@ const columns = [
     {
         title: '姓名',
         dataIndex: 'name',
+        canHide: false,
         canSort: false,
         filters: [
             {
@@ -152,7 +153,6 @@ const columns = [
         title: '操作',
         dataIndex: 'operate',
         // fixed: 'right',
-        configurable: false,
         render: () => {
             return (
                 <Button type="link" size="small">
@@ -234,7 +234,7 @@ class App extends Component {
                     selectedRowKeys={['胡彦祖2']}
                     rowKey="name"
                     bordered
-                    visibleHeaderSetting={true}
+                    extraConfig={{ visibleHeaderSetting: true, storageKey: 'abc' }}
                     pagination={{
                         defaultPageSize: 5,
                         defaultCurrent: 2,
