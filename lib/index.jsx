@@ -76,6 +76,11 @@ class Index extends Component {
         }
     }
 
+    // 外部获取数据
+    getDataSource = () => {
+        return cloneDeep(this.state.dataSource);
+    }
+
     // 本地数据源
     isLocalData = () => {
         const fetchFunc = get(this.props, 'remoteConfig.fetch');

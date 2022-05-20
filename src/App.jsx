@@ -233,7 +233,7 @@ const columns = [
                         text: '上线',
                         // danger: true,
                         onClick: () => {
-                            console.log(record);
+                            console.log(record.name);
                         }
                     },
                     {
@@ -323,6 +323,7 @@ class App extends Component {
 
     onClick() {
         this.tableRef.current.search();
+        // console.log(this.tableRef.current.getDataSource());
     }
 
     render() {
