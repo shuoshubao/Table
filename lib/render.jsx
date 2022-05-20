@@ -13,6 +13,78 @@ const getValue = (column, record, emptyText) => {
     return isEmptyValue(value) ? emptyText : value;
 };
 
+const renderButtonList = list => {
+    return list.map((v, i) => {
+        const {
+            text,
+            visible = true,
+            query = {},
+            tooltip = '',
+            isMore = false,
+            PopconfirmConfig,
+            ModalConfirmConfig
+        } = v;
+        const props = omit(v, [
+            'text',
+            'visible',
+            'query',
+            'tooltip',
+            'isMore',
+            'PopconfirmConfig',
+            'ModalConfirmConfig'
+        ]);
+        const defaultProps = {
+            type: 'link',
+            size: 'small',
+            children: text
+        };
+        if (!isEmptyObject(query)) {
+            props.href = stringifyUrl(props.href || '', query);
+        }
+        if (!visible) {
+            return null;
+        }
+        const key = [i, text].join();
+        const getButtonNode = (extraProps = {}) => {
+            return <Button key={key} type="link" size="small" {...{ ...defaultProps, ...props, ...extraProps }} />;
+        };
+        if (tooltip) {
+            return (
+                <Tooltip title={getTooltipTitleNode(tooltip)} key={key}>
+                    {getButtonNode()}
+                </Tooltip>
+            );
+        }
+        if (PopconfirmConfig) {
+            return (
+                <Popconfirm
+                    {...PopconfirmConfig}
+                    key={key}
+                    onConfirm={async () => {
+                        await PopconfirmConfig.onConfirm();
+                        context.handleSearch({}, false);
+                    }}
+                >
+                    {getButtonNode()}
+                </Popconfirm>
+            );
+        }
+        if (ModalConfirmConfig) {
+            const handleClick = () => {
+                Modal.confirm({
+                    ...ModalConfirmConfig,
+                    onOk: async () => {
+                        await ModalConfirmConfig.onOk();
+                        context.handleSearch({}, false);
+                    }
+                });
+            };
+            return getButtonNode({ onClick: handleClick });
+        }
+        return getButtonNode();
+    });
+};
+
 export default (column, context) => {
     const { dataIndex, template } = column;
     const { tpl, emptyText } = template;
@@ -82,67 +154,7 @@ export default (column, context) => {
         if (tpl === 'link') {
             const { render } = template;
             const list = flatten([render(text, record, index)]);
-            return list.map((v, i) => {
-                const { text, visible = true, query = {}, tooltip = '', PopconfirmConfig, ModalConfirmConfig } = v;
-                const props = omit(v, [
-                    'text',
-                    'visible',
-                    'query',
-                    'tooltip',
-                    'PopconfirmConfig',
-                    'ModalConfirmConfig'
-                ]);
-                const defaultProps = {
-                    type: 'link',
-                    size: 'small',
-                    children: text
-                };
-                if (!isEmptyObject(query)) {
-                    props.href = stringifyUrl(props.href || '', query);
-                }
-                if (!visible) {
-                    return null;
-                }
-                const getButtonNode = (extraProps = {}) => {
-                    return (
-                        <Button
-                            key={[i, text].join()}
-                            type="link"
-                            size="small"
-                            {...{ ...defaultProps, ...props, ...extraProps }}
-                        />
-                    );
-                };
-                if (tooltip) {
-                    return <Tooltip title={getTooltipTitleNode(tooltip)}>{getButtonNode()}</Tooltip>;
-                }
-                if (PopconfirmConfig) {
-                    return (
-                        <Popconfirm
-                            {...PopconfirmConfig}
-                            onConfirm={async () => {
-                                await PopconfirmConfig.onConfirm();
-                                context.handleSearch({}, false);
-                            }}
-                        >
-                            {getButtonNode()}
-                        </Popconfirm>
-                    );
-                }
-                if (ModalConfirmConfig) {
-                    const handleClick = () => {
-                        Modal.confirm({
-                            ...ModalConfirmConfig,
-                            onOk: async () => {
-                                await ModalConfirmConfig.onOk();
-                                context.handleSearch({}, false);
-                            }
-                        });
-                    };
-                    return getButtonNode({ onClick: handleClick });
-                }
-                return getButtonNode();
-            });
+            return renderButtonList(list);
         }
     };
 };
