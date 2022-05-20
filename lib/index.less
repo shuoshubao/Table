@@ -213,6 +213,32 @@
     }
 }
 
+.dynamic-table-descriptions {
+    background-color: #fff;
+    .ant-descriptions-item,
+    .ant-descriptions-item-label {
+        vertical-align: top;
+        align-items: center;
+        .dynamic-table-descriptions-item-label-tooltip {
+            margin-left: 4px;
+        }
+    }
+    .ant-typography {
+        margin-bottom: 0;
+    }
+    &.dynamic-table-antd-v3 {
+        .ant-descriptions-title {
+            display: flex;
+            align-items: center;
+        }
+        .dynamic-table-descriptions-extra {
+            margin-left: auto;
+            color: #000000d9;
+            font-size: 14px;
+        }
+    }
+}
+
 .dynamic-form + .dynamic-table {
     margin-top: 10px;
 }
