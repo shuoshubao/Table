@@ -3,7 +3,7 @@ import { random, range } from 'lodash';
 import { ConfigProvider, Button, Card, Divider } from 'antd';
 import { sleep, fakeFetch, getAntdLocaleZhCN } from '@nbfe/tools';
 import 'antd/dist/antd.css';
-import 'rc-image/assets/index.css';
+import '@ke/form/dist/index.css';
 import { AreaChartOutlined } from '@ant-design/icons';
 import { blue, red } from '@ant-design/colors';
 import Table from '../lib';
@@ -78,10 +78,10 @@ const columns = [
     {
         title: '文本',
         dataIndex: 'text',
-        // editable: true,
+        editable: true,
         width: 150,
         template: {
-            // tpl: 'input'
+            tpl: 'input'
             // disabled: true
         }
     },
@@ -169,7 +169,7 @@ const columns = [
         title: '数字范围',
         dataIndex: 'number1,number2',
         editable: true,
-        width: 230,
+        // width: 230,
         template: {
             tpl: 'number-range'
         }
