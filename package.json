@@ -4,8 +4,9 @@
     "main": "dist/index.js",
     "scripts": {
         "dev": "vite",
-        "build": "npx rollup -c",
-        "publish-beta": "npm publish --tag beta",
+        "build": "rm -rf dist && npx rollup -c",
+        "build-docs": "vite build && cp -R dist/ docs/ && rm -rf dist",
+        "publish-beta": "npm publish --tag beta --registry=http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/",
         "prepublishOnly": "npm run build"
     },
     "devDependencies": {
