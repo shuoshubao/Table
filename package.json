@@ -1,38 +1,38 @@
 {
-    "name": "@ke/table",
-    "version": "2.1.2",
-    "main": "dist/index.js",
-    "publishConfig": {
-        "registry": "http://artifactory.ke.com/artifactory/api/npm/npm-virtual/"
-    },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "dev": "node bin/init && npx react-cli serve",
-        "build": "rm -rf dist && node bin/init && npx rollup -c && lessc lib/index.less dist/index.css",
-        "publish-beta": "npm publish --tag beta",
-        "prepublishOnly": "npm run build"
-    },
-    "dependencies": {
-        "@nbfe/tools": "^0.2.13",
-        "react-dnd": "^15.1.1",
-        "react-dnd-html5-backend": "^15.1.2",
-        "react-sortable-hoc": "^2.0.0"
-    },
-    "devDependencies": {
-        "@babel/preset-env": "^7.13.9",
-        "@babel/preset-react": "^7.12.13",
-        "@ke/form": "^2.1.2",
-        "@ke/react-cli": "^1.1.6",
-        "@rollup/plugin-babel": "^5.3.0",
-        "antd": "^4.19.5",
-        "axios": "^0.26.1",
-        "fs-extra": "^10.0.0",
-        "prettier": "^2.2.1",
-        "prop-types": "^15.7.2",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "rollup": "^2.67.2"
-    }
+  "name": "@ke/table",
+  "version": "2.1.2",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "registry": "http://artifactory.ke.com/artifactory/api/npm/npm-virtual/"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "node bin/init && npx react-cli serve",
+    "build": "rm -rf dist && node bin/init && npx rollup -c && lessc lib/index.less dist/index.css",
+    "publish-beta": "npm publish --tag beta",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@nbfe/tools": "^0.2.13",
+    "react-dnd": "^15.1.1",
+    "react-dnd-html5-backend": "^15.1.2",
+    "react-sortable-hoc": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.13.9",
+    "@babel/preset-react": "^7.12.13",
+    "@ke/form": "^2.1.2",
+    "@ke/react-cli": "^1.1.6",
+    "@rollup/plugin-babel": "^5.3.0",
+    "antd": "^4.19.5",
+    "axios": "^0.26.1",
+    "fs-extra": "^10.0.0",
+    "prettier": "^2.2.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "rollup": "^2.67.2"
+  }
 }
