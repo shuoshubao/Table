@@ -8,6 +8,11 @@ export const isAntdV3 = inRange(parseInt(version), 3, 4);
 
 export const isAntdV4 = inRange(parseInt(version), 4, 5);
 
+export const defaultExtraConfig = {
+    visibleHeaderSetting: false, // 是否显示设置表头
+    editTrigger: 'click' // 编辑触发条件 'click' | 'hover'
+};
+
 export const componentName = 'DynaTable';
 
 export const getComponentName = (compName = '') => {
