@@ -8,9 +8,6 @@ export default {
         format: 'cjs',
         exports: 'default'
     },
-    external: id => {
-        return !['.', '/'].some(v => id.startsWith(v));
-    },
     plugins: [
         postcss({ extract: true }),
         babel({
