@@ -83,7 +83,7 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
+            <div style={{ padding: 20 }}>
                 <Button type="primary" onClick={this.onClick}>
                     查询
                 </Button>
