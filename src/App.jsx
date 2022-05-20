@@ -6,6 +6,7 @@ import Card from 'antd/lib/card';
 import Divider from 'antd/lib/divider';
 import { sleep, fakeFetch } from '@nbfe/tools';
 import Table from './lib/index';
+import 'rc-image/assets/index.css';
 
 const columns = [
     {
@@ -61,7 +62,7 @@ const columns = [
         width: 100,
         editable: true,
         template: {
-            tpl: 'switch',
+            tpl: 'switch'
         }
     },
     {
@@ -82,14 +83,14 @@ const columns = [
             format: 'YYYY-MM'
         }
     },
-    // {
-    //     title: '图片',
-    //     dataIndex: 'imgSrc',
-    //     template: {
-    //         tpl: 'image',
-    //         fallback: 'https://ke.com/favicon.ico'
-    //     }
-    // },
+    {
+        title: '图片',
+        dataIndex: 'imgSrc',
+        template: {
+            tpl: 'image',
+            fallback: 'https://ke.com/favicon.ico'
+        }
+    },
     // {
     //     title: '年龄',
     //     dataIndex: 'age',
@@ -277,7 +278,7 @@ const itemDataSource = [
         enum2: true,
         slider: 12,
         date: 1627453265384,
-        imgSrc: 'https://img.ljcdn.com/beike/super-agent-fe/1610547879561.png',
+        imgSrc: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?undefined',
         address1: '西湖区湖底公园1号',
         address2: '西湖区湖底公园1号',
         address3: '西湖区湖底公园1号'
@@ -292,7 +293,7 @@ const dataSource = range(0, total).map((v, i) => {
         name: itemDataSource[0].name + v,
         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
         enum1: i % 3,
-        enum2: true,
+        enum2: true
     };
 });
 

@@ -106,3 +106,19 @@ const columns = [
 
 <Table dataSource={dataSource} columns={columns} rowKey="id" />;
 ```
+
+# antd v3 注意事项
+
+如果需要使用 Image 组件, 请手动安装依赖
+
+## 安装依赖
+
+```text
+npm i rc-image
+```
+
+## 引入样式文件
+
+```js
+import 'rc-image/assets/index.css';
+```

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Typography, Tag, Image, Tooltip, Popconfirm, Modal, Menu, Dropdown } from 'antd';
+import { Button, Typography, Tag, Tooltip, Popconfirm, Modal, Menu, Dropdown } from 'antd';
 import { get, filter, find, omit, flatten, merge, noop, isString, isObject } from 'lodash';
-import { FileImageOutlined, EllipsisOutlined } from './Icons.jsx';
 import { getLabelByValue, isEmptyValue, isEmptyObject, isEmptyArray, stringifyUrl, formatTime } from '@nbfe/tools';
+import { FileImageOutlined, EllipsisOutlined } from './Icons.jsx';
+import RcImage from './Image/index.jsx';
 import { isAntdV3, getClassNames, getTooltipTitleNode } from './util.jsx';
 
 const { Paragraph } = Typography;
@@ -137,7 +138,18 @@ export default (column, context) => {
             const props = omit(template, ['tpl', 'emptyText']);
             const value = getValue(column, record, '');
             if (value) {
-                return <Image src={value} alt="" width={width} height={height} {...props} />;
+                const ImageProps = {
+                    src: value,
+                    alt: '',
+                    width,
+                    height,
+                    ...props
+                };
+                const Image = get(window, 'antd.Image');
+                if (Image) {
+                    return <Image {...ImageProps} />;
+                }
+                return <RcImage {...ImageProps} />;
             }
             return <FileImageOutlined style={{ fontSize: width }} />;
         }
