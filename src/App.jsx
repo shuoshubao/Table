@@ -44,8 +44,8 @@ const columns = [
         ]
     },
     {
-        title: '性别',
-        dataIndex: 'sex',
+        title: '枚举1',
+        dataIndex: 'enum1',
         template: {
             tpl: 'enum',
             options: [
@@ -55,6 +55,27 @@ const columns = [
                 },
                 {
                     label: '女',
+                    value: 2
+                }
+            ]
+        }
+    },
+    {
+        title: '枚举2',
+        dataIndex: 'enum2',
+        width: 100,
+        template: {
+            tpl: 'enum',
+            shape: 'dot',
+            options: [
+                {
+                    color: 'green',
+                    label: '已上线',
+                    value: 1
+                },
+                {
+                    color: '#f50',
+                    label: '已下线',
                     value: 2
                 }
             ]
@@ -247,7 +268,8 @@ const itemDataSource = [
         texts: ['文本1', '文本2'],
         name: '胡彦祖',
         age: 32,
-        sex: 1,
+        enum1: 1,
+        enum2: 1,
         date: 1627453265384,
         imgSrc: 'https://img.ljcdn.com/beike/super-agent-fe/1610547879561.png',
         address1: '西湖区湖底公园1号',
@@ -263,7 +285,8 @@ const dataSource = range(0, total).map((v, i) => {
         ...itemDataSource[0],
         name: itemDataSource[0].name + v,
         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
-        sex: i % 3
+        enum1: i % 3,
+        enum2: i % 3
     };
 });
 

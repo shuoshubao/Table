@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Typography, Image, Tooltip } from './antd';
-import { get, omit, flatten } from 'lodash';
+import { Button, Typography, Image, Tooltip, Tag } from './antd';
+import { get, find, omit, flatten } from 'lodash';
 import { FileImageOutlined } from '@ant-design/icons';
 import { getLabelByValue, isEmptyValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
-import { getTooltipTitleNode } from './util.jsx';
+import { getClassNames, getTooltipTitleNode } from './util.jsx';
 
 const { Paragraph } = Typography;
 
@@ -41,9 +41,26 @@ export default column => {
         }
         // 枚举
         if (tpl === 'enum') {
-            const { options = [] } = template;
+            const { options = [], shape = 'text' } = template;
             const value = getValue(column, record, emptyText);
-            return getLabelByValue(value, options, emptyText);
+            const valueText = getLabelByValue(value, options, emptyText);
+            if (valueText === emptyText) {
+                return valueText;
+            }
+            const itemProps = omit(find(options, { value }), ['value', 'label']);
+            if (shape === 'tag') {
+                return <Tag {...itemProps}>{valueText}</Tag>;
+            }
+            if (['dot', 'square'].includes(shape)) {
+                const { color = 'rgba(0, 0, 0, 0.85)' } = itemProps;
+                return (
+                    <span className={getClassNames(['render-enum', shape].join('-'))}>
+                        <span className={getClassNames('render-enum-badge')} style={{ backgroundColor: color }} />
+                        <span style={{ color: color }}>{valueText}</span>
+                    </span>
+                );
+            }
+            return valueText;
         }
         // 图片
         if (tpl === 'image') {

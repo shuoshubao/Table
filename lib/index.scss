@@ -14,6 +14,20 @@
         .ant-typography {
             margin-bottom: 0;
         }
+        .dyna-table-render-enum-dot,
+        .dyna-table-render-enum-square {
+            display: inline-flex;
+            align-items: center;
+            .dyna-table-render-enum-badge {
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                margin-right: 5px;
+            }
+        }
+        .dyna-table-render-enum-dot .dyna-table-render-enum-badge {
+            border-radius: 50%;
+        }
     }
     .ant-image-mask-info {
         font-size: 0;
