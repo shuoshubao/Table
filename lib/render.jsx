@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Typography, Image } from './antd';
+import { Button, Typography, Image, Tooltip } from './antd';
 import { get, omit, flatten } from 'lodash';
 import FileImageOutlined from '@ant-design/icons/FileUnknownOutlined';
 import { getLabelByValue, isEmptyValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
+import { getTooltipTitleNode } from './util';
 
 const { Paragraph } = Typography;
 
@@ -65,8 +66,8 @@ export default column => {
             const { render } = template;
             const list = flatten([render(text, record, index)]);
             return list.map((v, i) => {
-                const { text, visible = true, query = {} } = v;
-                const props = omit(v, ['text', 'visible', 'query']);
+                const { text, visible = true, query = {}, tooltip = '' } = v;
+                const props = omit(v, ['text', 'visible', 'query', 'tooltip']);
                 const defaultProps = {
                     type: 'link',
                     size: 'small',
@@ -78,7 +79,13 @@ export default column => {
                 if (!visible) {
                     return null;
                 }
-                return <Button key={[i, text].join()} type="link" size="small" {...{ ...defaultProps, ...props }} />;
+                const buttonNode = (
+                    <Button key={[i, text].join()} type="link" size="small" {...{ ...defaultProps, ...props }} />
+                );
+                if (tooltip) {
+                    return <Tooltip title={getTooltipTitleNode(tooltip)}>{buttonNode}</Tooltip>;
+                }
+                return buttonNode;
             });
         }
     };

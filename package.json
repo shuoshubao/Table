@@ -12,7 +12,9 @@
         "publish-beta": "npm publish --tag beta --registry=http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/",
         "prepublishOnly": "npm run build"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@nbfe/js2html": "^1.1.7"
+    },
     "devDependencies": {
         "@ant-design/icons": "^4.6.2",
         "@babel/preset-env": "^7.13.9",
