@@ -7,6 +7,21 @@ import 'rc-image/assets/index.css';
 import Table from '../lib';
 import '../lib/index.less';
 
+const { Descriptions } = Table;
+
+const SexOptions = [
+    {
+        label: '男',
+        value: 1,
+        color: 'blue'
+    },
+    {
+        label: '女',
+        value: 2,
+        color: 'red'
+    }
+];
+
 const columns = [
     {
         title: '序号',
@@ -340,6 +355,136 @@ const remoteConfig = {
     }
 };
 
+const DescriptionsData = {
+    text: '硕鼠宝',
+    enum: 1,
+    image: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    date: Date.now(),
+    digit1: random(1e4, 5e4),
+    digit2: null,
+    digit3: random(1e4, 5e4),
+    digit4: random(1e4, 5e4),
+    percent1: 0.123456789,
+    percent2: 0.123456789,
+    code: `const getData = async params => {\n    const data = await getData(params);\n    return { list: data.data, ...data };\n};`,
+    jsonCode: {
+        a: 1,
+        b: [1, 2, { c: 1 }]
+    }
+};
+
+const DescriptionsColumns = [
+    {
+        label: '文本',
+        name: 'text',
+        tooltip: '提示文案: [链接|baidu.com]'
+    },
+    {
+        label: '枚举',
+        name: 'enum',
+        template: {
+            tpl: 'enum',
+            shape: 'tag',
+            options: SexOptions
+        }
+    },
+    {
+        label: '图片',
+        name: 'image',
+        template: {
+            tpl: 'image'
+        }
+    },
+    {
+        label: '链接',
+        name: 'link',
+        template: {
+            tpl: 'link',
+            render: (text, record) => {
+                console.log(record);
+                return [
+                    {
+                        text: '链接1'
+                    },
+                    {
+                        text: '链接2'
+                    }
+                ];
+            }
+        }
+    },
+    {
+        label: '日期',
+        name: 'date',
+        template: {
+            tpl: 'date',
+            format: 'YYYY-MM-DD'
+        }
+    },
+    {
+        label: '数字',
+        name: 'digit1',
+        template: {
+            tpl: 'digit'
+        }
+    },
+    {
+        label: '数字-空值',
+        name: 'digit2',
+        template: {
+            tpl: 'digit'
+        }
+    },
+    {
+        label: '数字-金额',
+        name: 'digit3',
+        template: {
+            tpl: 'digit',
+            prefix: '￥'
+        }
+    },
+    {
+        label: '数字-金额',
+        name: 'digit4',
+        template: {
+            tpl: 'digit',
+            suffix: '元'
+        }
+    },
+    {
+        label: '百分比',
+        name: 'percent1',
+        template: {
+            tpl: 'percent'
+        }
+    },
+    {
+        label: '百分比-千分比',
+        name: 'percent2',
+        template: {
+            tpl: 'percent',
+            suffix: '‰',
+            times: 3,
+            precision: 3
+        }
+    },
+    {
+        label: '代码',
+        name: 'code',
+        template: {
+            tpl: 'code'
+        }
+    },
+    {
+        label: '代码-json',
+        name: 'jsonCode',
+        template: {
+            tpl: 'code',
+            language: 'json'
+        }
+    }
+];
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -360,6 +505,10 @@ class App extends Component {
     render() {
         return (
             <div style={{ padding: 20, background: '#eee' }}>
+                <Card title="Descriptions" size="small">
+                    <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
+                </Card>
+                <Divider />
                 <Card title="搜索区" size="small">
                     <Button type="primary" onClick={this.onClick} size="small">
                         查询
@@ -371,7 +520,7 @@ class App extends Component {
                     columns={columns}
                     rowKey="name"
                     remoteConfig={remoteConfig}
-                    scroll={{ x: 1000 }}
+                    scroll={{ x: 1200 }}
                     prependHeader={
                         <>
                             <Button type="primary">新增</Button>
