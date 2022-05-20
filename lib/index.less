@@ -76,14 +76,6 @@
         color: #00000073;
         cursor: help;
     }
-    .ant-table-row {
-        .ant-typography {
-            margin-bottom: 0;
-        }
-        .ant-progress-line {
-            width: calc(100% - 25px);
-        }
-    }
     .ant-image-mask-info {
         font-size: 0;
         .anticon.anticon-eye {
@@ -109,6 +101,12 @@
         &.dynamic-table-drop-over-upward td {
             border-top: 2px dashed #1890ff;
         }
+    }
+    .ant-typography {
+        margin-bottom: 0;
+    }
+    .ant-progress-line {
+        width: calc(100% - 25px);
     }
 }
 
@@ -290,4 +288,20 @@
 
 .dynamic-form + .dynamic-table {
     margin-top: 10px;
+}
+
+.dynamic-table-row-dragging {
+    z-index: 2;
+    background: #fafafa;
+    box-shadow: 0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000017;
+    td {
+        background: #fafafa;
+        padding: 10px;
+        .ant-typography {
+            margin-bottom: 0;
+        }
+        .ant-progress-line {
+            width: calc(100% - 25px);
+        }
+    }
 }
