@@ -39,16 +39,9 @@ const columns = [
         dataIndex: 'name',
         canHide: false,
         canSort: false,
-        filters: [
-            {
-                label: '胡彦祖1',
-                value: 'aa'
-            },
-            {
-                label: '胡彦祖2',
-                value: 'bb'
-            }
-        ]
+        template: {
+            tpl: 'input'
+        }
     },
     {
         title: '枚举1',
@@ -96,195 +89,195 @@ const columns = [
             format: 'YYYY-MM'
         }
     },
-    {
-        title: '图片',
-        dataIndex: 'imgSrc',
-        template: {
-            tpl: 'image',
-            fallback: 'https://ke.com/favicon.ico'
-        }
-    },
-    {
-        title: '年龄',
-        dataIndex: 'age',
-        filterMultiple: false,
-        canSort: false,
-        canHide: false,
-        editable: true,
-        rules: [
-            {
-                required: true,
-                message: '年龄 is 必填'
-            }
-        ],
-        filters: [
-            {
-                label: '32',
-                value: 32
-            },
-            {
-                label: '42',
-                value: 42
-            }
-        ]
-    },
-    {
-        title: 'Trre 筛选 单选',
-        dataIndex: 'tree1',
-        filterMultiple: false,
-        filters: [
-            {
-                label: 'Node1',
-                value: '0-0',
-                children: [
-                    {
-                        label: 'Child Node1',
-                        value: '0-0-0'
-                    },
-                    {
-                        label: 'Child Node1',
-                        value: '0-0-1',
-                        children: [
-                            {
-                                label: 'Child Node1',
-                                value: '0-0-1-0'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'Node2',
-                value: '0-1',
-                children: [
-                    {
-                        label: 'Child Node3',
-                        value: '0-1-0'
-                    },
-                    {
-                        label: 'Child Node4',
-                        value: '0-1-1'
-                    },
-                    {
-                        label: 'Child Node5',
-                        value: '0-1-2'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        title: 'Trre 筛选 复选',
-        dataIndex: 'tree2',
-        filters: [
-            {
-                label: 'Node1',
-                value: '0-0',
-                children: [
-                    {
-                        label: 'Child Node1',
-                        value: '0-0-0'
-                    },
-                    {
-                        label: 'Child Node1',
-                        value: '0-0-1',
-                        children: [
-                            {
-                                label: 'Child Node1',
-                                value: '0-0-1-0'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'Node2',
-                value: '0-1',
-                children: [
-                    {
-                        label: 'Child Node3',
-                        value: '0-1-0'
-                    },
-                    {
-                        label: 'Child Node4',
-                        value: '0-1-1'
-                    },
-                    {
-                        label: 'Child Node5',
-                        value: '0-1-2'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        title: '住址1',
-        dataIndex: 'address1'
-    },
-    {
-        title: '住址2',
-        dataIndex: 'address2'
-    },
-    {
-        title: '操作',
-        dataIndex: 'operate',
-        width: 120,
-        template: {
-            tpl: 'link',
-            render: (text, record, index) => {
-                const { name } = record;
-                return [
-                    {
-                        text: '详情',
-                        href: '/abc',
-                        query: { name },
-                        target: '_blank'
-                    },
-                    {
-                        text: '编辑',
-                        tooltip: 'ABC',
-                        href: `/edit?name=${name}`
-                    },
-                    {
-                        text: '上线',
-                        danger: true,
-                        PopconfirmConfig: {
-                            title: 'title',
-                            onConfirm: async () => {
-                                await sleep(2);
-                                console.log('onConfirm');
-                            }
-                        }
-                    },
-                    {
-                        text: '下线',
-                        disabled: true
-                    },
-                    {
-                        text: '编辑2',
-                        icon: <EditOutlined />,
-                        isMore: true,
-                        tooltip: 'ABC',
-                        href: `/edit?name=${name}`
-                    },
-                    {
-                        text: '编辑3',
-                        icon: <EditOutlined />,
-                        isMore: true,
-                        href: `/edit?name=${name}`
-                    },
-                    {
-                        text: '编辑3',
-                        icon: <EditOutlined />,
-                        isMore: true,
-                        disabled: true,
-                        tooltip: '点击跳转 [链接|http://baidu.com]',
-                        href: `/edit?name=${name}`
-                    }
-                ];
-            }
-        }
-    }
+    // {
+    //     title: '图片',
+    //     dataIndex: 'imgSrc',
+    //     template: {
+    //         tpl: 'image',
+    //         fallback: 'https://ke.com/favicon.ico'
+    //     }
+    // },
+    // {
+    //     title: '年龄',
+    //     dataIndex: 'age',
+    //     filterMultiple: false,
+    //     canSort: false,
+    //     canHide: false,
+    //     editable: true,
+    //     rules: [
+    //         {
+    //             required: true,
+    //             message: '年龄 is 必填'
+    //         }
+    //     ],
+    //     filters: [
+    //         {
+    //             label: '32',
+    //             value: 32
+    //         },
+    //         {
+    //             label: '42',
+    //             value: 42
+    //         }
+    //     ]
+    // },
+    // {
+    //     title: 'Trre 筛选 单选',
+    //     dataIndex: 'tree1',
+    //     filterMultiple: false,
+    //     filters: [
+    //         {
+    //             label: 'Node1',
+    //             value: '0-0',
+    //             children: [
+    //                 {
+    //                     label: 'Child Node1',
+    //                     value: '0-0-0'
+    //                 },
+    //                 {
+    //                     label: 'Child Node1',
+    //                     value: '0-0-1',
+    //                     children: [
+    //                         {
+    //                             label: 'Child Node1',
+    //                             value: '0-0-1-0'
+    //                         }
+    //                     ]
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             label: 'Node2',
+    //             value: '0-1',
+    //             children: [
+    //                 {
+    //                     label: 'Child Node3',
+    //                     value: '0-1-0'
+    //                 },
+    //                 {
+    //                     label: 'Child Node4',
+    //                     value: '0-1-1'
+    //                 },
+    //                 {
+    //                     label: 'Child Node5',
+    //                     value: '0-1-2'
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // },
+    // {
+    //     title: 'Trre 筛选 复选',
+    //     dataIndex: 'tree2',
+    //     filters: [
+    //         {
+    //             label: 'Node1',
+    //             value: '0-0',
+    //             children: [
+    //                 {
+    //                     label: 'Child Node1',
+    //                     value: '0-0-0'
+    //                 },
+    //                 {
+    //                     label: 'Child Node1',
+    //                     value: '0-0-1',
+    //                     children: [
+    //                         {
+    //                             label: 'Child Node1',
+    //                             value: '0-0-1-0'
+    //                         }
+    //                     ]
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             label: 'Node2',
+    //             value: '0-1',
+    //             children: [
+    //                 {
+    //                     label: 'Child Node3',
+    //                     value: '0-1-0'
+    //                 },
+    //                 {
+    //                     label: 'Child Node4',
+    //                     value: '0-1-1'
+    //                 },
+    //                 {
+    //                     label: 'Child Node5',
+    //                     value: '0-1-2'
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // },
+    // {
+    //     title: '住址1',
+    //     dataIndex: 'address1'
+    // },
+    // {
+    //     title: '住址2',
+    //     dataIndex: 'address2'
+    // },
+    // {
+    //     title: '操作',
+    //     dataIndex: 'operate',
+    //     width: 120,
+    //     template: {
+    //         tpl: 'link',
+    //         render: (text, record, index) => {
+    //             const { name } = record;
+    //             return [
+    //                 {
+    //                     text: '详情',
+    //                     href: '/abc',
+    //                     query: { name },
+    //                     target: '_blank'
+    //                 },
+    //                 {
+    //                     text: '编辑',
+    //                     tooltip: 'ABC',
+    //                     href: `/edit?name=${name}`
+    //                 },
+    //                 {
+    //                     text: '上线',
+    //                     danger: true,
+    //                     PopconfirmConfig: {
+    //                         title: 'title',
+    //                         onConfirm: async () => {
+    //                             await sleep(2);
+    //                             console.log('onConfirm');
+    //                         }
+    //                     }
+    //                 },
+    //                 {
+    //                     text: '下线',
+    //                     disabled: true
+    //                 },
+    //                 {
+    //                     text: '编辑2',
+    //                     icon: <EditOutlined />,
+    //                     isMore: true,
+    //                     tooltip: 'ABC',
+    //                     href: `/edit?name=${name}`
+    //                 },
+    //                 {
+    //                     text: '编辑3',
+    //                     icon: <EditOutlined />,
+    //                     isMore: true,
+    //                     href: `/edit?name=${name}`
+    //                 },
+    //                 {
+    //                     text: '编辑3',
+    //                     icon: <EditOutlined />,
+    //                     isMore: true,
+    //                     disabled: true,
+    //                     tooltip: '点击跳转 [链接|http://baidu.com]',
+    //                     href: `/edit?name=${name}`
+    //                 }
+    //             ];
+    //         }
+    //     }
+    // }
 ];
 
 const itemDataSource = [

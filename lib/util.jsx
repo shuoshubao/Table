@@ -4,7 +4,8 @@ import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, isEqual, isUndefined, isFunction, kebabCase, merge, filter, find, inRange, flatten } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
-import getRender from './render.jsx';
+import getRender, { RenderTplList } from './render.jsx';
+import getEditRender from './EditRender.jsx';
 
 export const isAntdV3 = inRange(parseInt(version), 3, 4);
 
@@ -58,7 +59,7 @@ export const mergeColumns = (columns = [], context) => {
     const innerColumns = cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
-            const { dataIndex, filters, filterMultiple, render } = column;
+            const { dataIndex, filters, filterMultiple, render, template } = column;
             // 远端排序
             if (isEmptyArray(filters)) {
                 delete column.filters;
@@ -180,7 +181,12 @@ export const mergeColumns = (columns = [], context) => {
             }
 
             if (!isFunction(render)) {
-                column.render = getRender(column, context);
+                const { tpl } = template;
+                if (RenderTplList.includes(tpl)) {
+                    column.render = getRender(column, context);
+                } else {
+                    column.render = getEditRender(column, context);
+                }
             }
 
             return column;

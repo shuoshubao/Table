@@ -81,6 +81,8 @@ const renderButtonList = (list, context) => {
     });
 };
 
+export const RenderTplList = ['text', 'enum', 'image', 'date', 'link'];
+
 export default (column, context) => {
     const { dataIndex, template } = column;
     const { tpl, emptyText } = template;
