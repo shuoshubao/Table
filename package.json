@@ -1,6 +1,6 @@
 {
     "name": "@jiaoyi/DynaTable",
-    "version": "0.1.1-beta-11",
+    "version": "0.1.1-beta-12",
     "main": "dist/index.js",
     "devDependencies": {
         "@babel/preset-env": "^7.13.9",
@@ -17,7 +17,6 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build-": "react-scripts build",
         "build": "npx rollup -c",
         "publish-beta": "npm publish --tag beta",
         "prepublishOnly": "npm run build",

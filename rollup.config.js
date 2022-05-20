@@ -8,19 +8,7 @@ export default {
         format: 'cjs'
     },
     plugins: [
-        postcss({
-            extensions: ['.css'],
-            use: [
-                [
-                    'less',
-                    {
-                        javascriptEnabled: true
-                    }
-                ]
-            ],
-            inject: true,
-            extract: false
-        }),
+        postcss({ extract: true }),
         babel({
             babelrc: false,
             presets: ['@babel/preset-react', '@babel/preset-env'],
