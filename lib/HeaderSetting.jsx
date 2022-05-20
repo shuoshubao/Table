@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { cloneDeep } from 'lodash';
 import { Card, Tooltip, Dropdown, Button } from 'antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
@@ -22,8 +23,10 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
+        const columns = cloneDeep(props.columns);
         this.state = {
-            visible: false
+            visible: true,
+            columns: columns
         };
         this.cardRef = React.createRef();
         this.triggerRef = React.createRef();
@@ -33,6 +36,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
+        return;
         document.addEventListener('click', e => {
             const isCard = this.cardRef.current.contains(e.target);
             const isTriggerEle = this.triggerRef.current.contains(e.target);
@@ -56,7 +60,7 @@ class Index extends Component {
     getRenderResult() {
         return {
             overlay: () => {
-                const { columns } = this.props;
+                const { columns } = this.state;
                 return (
                     <div ref={this.cardRef}>
                         <Card

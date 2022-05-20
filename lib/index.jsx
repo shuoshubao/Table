@@ -11,12 +11,12 @@ class Index extends Component {
     static displayName = 'DynaTable';
 
     static defaultProps = {
-        visibleColumnsSetting: true
+        visibleHeaderSetting: true
     };
 
     static propTypes = {
         columns: PropTypes.array.isRequired,
-        visibleColumnsSetting: PropTypes.bool,
+        visibleHeaderSetting: PropTypes.bool,
         dataSource: PropTypes.array,
         remoteConfig: PropTypes.object
     };
@@ -27,7 +27,6 @@ class Index extends Component {
             total: 0,
             current: 1,
             pageSize: 10,
-            visibleHeaderSetting: true,
             dataSource: [],
             columns: [],
             filterValue: {} // 筛选的数据
@@ -231,11 +230,14 @@ class Index extends Component {
 
     render() {
         const { props, state, domEvents, customEvents } = this;
-        const { prependHeader, appendHeader, visibleColumnsSetting } = props;
-        const { visibleHeaderSetting, columns, dataSource, total, current, pageSize } = state;
+        const { prependHeader, appendHeader, visibleHeaderSetting } = props;
+        const { columns, dataSource, total, current, pageSize } = state;
         const { onChange, onShowSizeChange } = domEvents;
         const tableProps = omit(props, ['class', 'className', 'style', 'columns', 'dataSource', 'remoteConfig']);
-        const hideHeader = isEveryFalsy(prependHeader, appendHeader, visibleColumnsSetting);
+        const hideHeader = isEveryFalsy(prependHeader, appendHeader, visibleHeaderSetting);
+        if (isEmptyArray(columns)) {
+            return null;
+        }
         return (
             <div className={classNames('dyna-table', props['class'], props['className'])}>
                 {!hideHeader && (
