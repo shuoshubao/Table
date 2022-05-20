@@ -5,6 +5,9 @@
     "publishConfig": {
         "registry": "http://artifactory.ke.com/artifactory/api/npm/npm-virtual/"
     },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "dev": "node bin/init && npx react-cli serve",
         "build": "rm -rf dist && node bin/init && npx rollup -c && lessc lib/v3.less dist/v3.css",
