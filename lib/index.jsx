@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce, map } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
-// import HeaderSetting from './HeaderSetting.jsx';
-import { mergeColumns, getVisibleColumns } from './util.jsx';
+import HeaderSetting from './HeaderSetting.jsx';
+import EditableCell from './EditableCell.jsx';
+import { mergeColumns, getVisibleColumns, getClassNames } from './util.jsx';
 import './index.scss';
 
 class Index extends Component {
     static displayName = 'DynaTable';
 
     static defaultProps = {
-        visibleHeaderSetting: true
+        visibleHeaderSetting: false
     };
 
     static propTypes = {
@@ -138,6 +139,10 @@ class Index extends Component {
                 setTimeout(async () => {
                     await setAsyncState(this, { pageSize: size, current: 1 });
                 }, 0);
+            },
+            // 编辑-单元格 保存
+            handleSaveCell: row => {
+                console.log(row);
             }
         };
     }
@@ -164,13 +169,13 @@ class Index extends Component {
                         <div className="dyna-table-header-right">{appendHeader}</div>
                         {visibleHeaderSetting && (
                             <div className="dyna-table-header-setting">
-                                {/*<HeaderSetting
+                                <HeaderSetting
                                     shape="button"
                                     columns={columns}
                                     onChange={columnsTitleList => {
                                         this.setState({ columnsTitleList });
                                     }}
-                                />*/}
+                                />
                             </div>
                         )}
                     </div>
@@ -179,6 +184,10 @@ class Index extends Component {
                     {...tableProps}
                     columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
+                    components={EditableCell}
+                    rowClassName={() => {
+                        return getClassNames('editable-row');
+                    }}
                     pagination={{
                         style: { padding: '16px 10px', margin: 0 },
                         onChange,
