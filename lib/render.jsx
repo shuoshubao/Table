@@ -117,12 +117,14 @@ export default (column, context) => {
                     return <Tooltip title={getTooltipTitleNode(tooltip)}>{getButtonNode()}</Tooltip>;
                 }
                 if (PopconfirmConfig) {
-                    const onConfirm = async () => {
-                        await PopconfirmConfig.onConfirm();
-                        context.handleSearch({}, false);
-                    };
                     return (
-                        <Popconfirm {...PopconfirmConfig} onConfirm={onConfirm}>
+                        <Popconfirm
+                            {...PopconfirmConfig}
+                            onConfirm={async () => {
+                                await PopconfirmConfig.onConfirm();
+                                context.handleSearch({}, false);
+                            }}
+                        >
                             {getButtonNode()}
                         </Popconfirm>
                     );
