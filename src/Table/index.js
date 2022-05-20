@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
-import { setAsyncState, classNames, isEmptyValue, isEmptyArray } from '@nbfe/tools';
-import { isEveryFalsy } from './util';
+import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import './index.css';
 
 class Index extends Component {
@@ -31,14 +30,14 @@ class Index extends Component {
         this.customEvents = this.getCustomEvents();
         this.domEvents = this.getDomEvents();
         this.renderResult = this.getRenderResult();
-        this.search = this.customEvents.search;
+        this.search = debounce(this.customEvents.search, 100);
         // 缓存 searchParams
         this.cacheSearchParams = {};
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         const columns = cloneDeep(this.props.columns).map((v, i) => {
-            const { dataIndex, title, filters, filterMultiple = true, sortDirections } = v;
+            const { dataIndex, filters, filterMultiple = true } = v;
 
             // 远端排序
             if (filters) {
@@ -50,7 +49,7 @@ class Index extends Component {
                 v.filterDropdown = props => {
                     // 选中的值
                     const value = this.state.filterValue[dataIndex];
-                    const { setSelectedKeys, selectedKeys, confirm, clearFilters } = props;
+                    const { confirm } = props;
                     let dropdownNode;
                     const dropdownOptions = filters.map((v2, i2) => {
                         return {
@@ -73,18 +72,11 @@ class Index extends Component {
                         dropdownNode = (
                             <Radio.Group
                                 value={value}
+                                options={dropdownOptions}
                                 onChange={e => {
                                     this.domEvents.onFilterChange(dataIndex, e.target.value);
                                 }}
-                            >
-                                {dropdownOptions.map((v2, i2) => {
-                                    return (
-                                        <Radio key={v2.value} value={v2.value}>
-                                            {v2.label}
-                                        </Radio>
-                                    );
-                                })}
-                            </Radio.Group>
+                            />
                         );
                     }
                     let disabledReset;
@@ -131,7 +123,7 @@ class Index extends Component {
 
             return v;
         });
-        await setAsyncState(this, { columns });
+        this.setState({ columns });
     }
 
     getCustomEvents() {

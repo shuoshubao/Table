@@ -1,3 +1,4 @@
+import React, { Component } from 'react';
 import { range } from 'lodash';
 import { Button } from 'antd';
 import Table from './Table';
@@ -68,16 +69,28 @@ const remoteConfig = {
     }
 };
 
-const App = () => {
-    return (
-        <div className="App">
-            <Table
-                columns={columns}
-                remoteConfig={remoteConfig}
-                rowKey="name"
-            />
-        </div>
-    );
-};
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.tableRef = React.createRef();
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick() {
+        this.tableRef.current.search();
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Button type="primary" onClick={this.onClick}>
+                    查询
+                </Button>
+                <Table ref={this.tableRef} columns={columns} remoteConfig={remoteConfig} rowKey="name" />
+            </div>
+        );
+    }
+}
 
 export default App;
