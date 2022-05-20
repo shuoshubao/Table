@@ -2,21 +2,28 @@ import babel from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 
 export default {
-    input: 'lib/index.jsx',
+    input: 'src/Table/index.js',
     output: {
         file: 'dist/index.js',
-        format: 'cjs',
-        exports: 'default'
-    },
-    external: id => {
-        return !['.', '/'].some(v => id.startsWith(v));
+        format: 'cjs'
     },
     plugins: [
-        postcss({ extract: true }),
+        postcss({
+            extensions: ['.css'],
+            use: [
+                [
+                    'less',
+                    {
+                        javascriptEnabled: true
+                    }
+                ]
+            ],
+            inject: true,
+            extract: false
+        }),
         babel({
             babelrc: false,
-            babelHelpers: 'bundled',
-            presets: ['@babel/preset-env', '@babel/preset-react'],
+            presets: ['@babel/preset-react', '@babel/preset-env'],
             plugins: ['@babel/plugin-proposal-class-properties']
         })
     ]
