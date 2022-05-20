@@ -1,4 +1,4 @@
-# 简洁
+# 简介
 
 基于 [antd-table](https://ant.design/components/table-cn/) 进行二次封装
 
