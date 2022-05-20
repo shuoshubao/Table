@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { message, Table, Checkbox, Radio, Button } from './antd';
 import { cloneDeep, get, set, omit, isEqual, isUndefined, isFunction, debounce, map } from 'lodash';
 import { sleep, setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
+import CloseCircleFilled from '@ant-design/icons/CloseCircleFilled';
 import getTableComponentsV4 from './EditableCell.jsx';
 import getTableComponentsV3 from './EditableCellV3.jsx';
 import {
@@ -38,6 +39,7 @@ class Index extends Component {
         super(props);
         const { defaultCurrent, defaultPageSize } = props.pagination;
         this.state = {
+            fetchError: false, // 接口出错
             loading: false,
             columns: [],
             dataSource: [],
@@ -116,8 +118,10 @@ class Index extends Component {
             ...this.cacheSearchParams,
             ...searchParams
         };
-        this.setState({ loading: true });
-        const resOrigin = await fetchFunc(fetchParams);
+        this.setState({ loading: true, fetchError: false });
+        const resOrigin = await fetchFunc(fetchParams).catch(e => {
+            this.setState({ fetchError: true });
+        });
         this.setState({ loading: false });
         const res = process(cloneDeep(resOrigin)) || resOrigin;
         const dataSource = get(res, dataSourceKey, []);
@@ -226,6 +230,13 @@ class Index extends Component {
         if (isEmptyArray(columns)) {
             return null;
         }
+        const loadingConfig = { spinning: state.loading, size: 'large', tip: '数据加载中...' };
+        if (state.fetchError) {
+            loadingConfig.wrapperClassName = getClassNames('fetch-error');
+            loadingConfig.spinning = true;
+            loadingConfig.tip = <span>数据加载出错!</span>;
+            loadingConfig.indicator = <CloseCircleFilled />;
+        }
         return (
             <div className={classNames('dyna-table', props['class'], props['className'])}>
                 {!hideHeader && (
@@ -235,7 +246,7 @@ class Index extends Component {
                     </div>
                 )}
                 <Table
-                    loading={{ spinning: state.loading, size: 'large', tip: '数据加载中...' }}
+                    loading={loadingConfig}
                     {...tableProps}
                     columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
