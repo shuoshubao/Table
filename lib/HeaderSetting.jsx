@@ -18,7 +18,7 @@ class Index extends Component {
     };
 
     static propTypes = {
-        type: PropTypes.oneOf(['button', 'icon']).isRequired,
+        shape: PropTypes.oneOf(['button', 'icon']).isRequired,
         columns: PropTypes.array,
         onChange: PropTypes.func.isRequired
     };
@@ -154,25 +154,23 @@ class Index extends Component {
 
     render() {
         const { props, state, domEvents, customEvents, renderResult } = this;
-        const { type } = props;
+        const { shape } = props;
         const { visible } = state;
+        const isIcon = shape === 'icon';
         return (
             <Dropdown visible={visible} trigger={['click']} overlay={renderResult.overlay()}>
-                {type === 'button' ? (
+                <Tooltip title="表头设置" placement="topRight" arrowPointAtCenter>
                     <Button
                         ref={this.triggerRef}
-                        type="primary"
+                        type={isIcon ? '' : 'primary'}
+                        icon={isIcon ? <SettingOutlined /> : null}
                         onClick={() => {
                             this.setState({ visible: true });
                         }}
                     >
-                        表头设置
+                        {isIcon ? null : '表头设置'}
                     </Button>
-                ) : (
-                    <Tooltip title="表头设置" placement="topRight" arrowPointAtCenter>
-                        <SettingOutlined ref={this.triggerRef} />
-                    </Tooltip>
-                )}
+                </Tooltip>
             </Dropdown>
         );
     }
