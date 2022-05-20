@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { range } from 'lodash';
+import { random, range } from 'lodash';
 import Button from 'antd/lib/button';
+import { sleep } from '@nbfe/tools';
 import Table from '../lib/index';
 
 const columns = [
@@ -90,6 +91,7 @@ const remoteConfig = {
         const total = 92;
         console.log('🍉 params');
         console.log(params);
+        await sleep(random(0.5, 1.5, true));
         return {
             list: range(0, total).map(v => {
                 return {
@@ -132,6 +134,11 @@ class App extends Component {
                     remoteConfig={remoteConfig}
                     rowKey="name"
                     scroll={{ y: 300 }}
+                    onEditableCellSave={async config => {
+                        console.log('新数据');
+                        console.log(config);
+                        await sleep();
+                    }}
                 />
             </div>
         );
