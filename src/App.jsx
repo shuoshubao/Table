@@ -22,7 +22,7 @@ const columns = [
             tpl: 'text',
             ellipsis: {
                 rows: 2
-            },
+            }
         }
     },
     {
@@ -228,14 +228,7 @@ const columns = [
     {
         title: '操作',
         dataIndex: 'operate',
-        // fixed: 'right',
-        // render: () => {
-        //     return (
-        //         <Button type="link" size="small">
-        //             详情
-        //         </Button>
-        //     );
-        // }
+        width: 120,
         template: {
             tpl: 'link',
             render: (text, record, index) => {
@@ -249,13 +242,12 @@ const columns = [
                     },
                     {
                         text: '编辑',
-                        icon: <EditOutlined />,
-                        danger: true,
                         tooltip: 'ABC',
                         href: `/edit?name=${name}`
                     },
                     {
                         text: '上线',
+                        danger: true,
                         PopconfirmConfig: {
                             title: 'title',
                             onConfirm: async () => {
@@ -263,13 +255,31 @@ const columns = [
                                 console.log('onConfirm');
                             }
                         }
-                        // onClick: () => {
-                        //     console.log(text, record, index);
-                        // }
                     },
                     {
                         text: '下线',
                         disabled: true
+                    },
+                    {
+                        text: '编辑2',
+                        icon: <EditOutlined />,
+                        isMore: true,
+                        tooltip: 'ABC',
+                        href: `/edit?name=${name}`
+                    },
+                    {
+                        text: '编辑3',
+                        icon: <EditOutlined />,
+                        isMore: true,
+                        href: `/edit?name=${name}`
+                    },
+                    {
+                        text: '编辑3',
+                        icon: <EditOutlined />,
+                        isMore: true,
+                        disabled: true,
+                        tooltip: '点击跳转 [链接|http://baidu.com]',
+                        href: `/edit?name=${name}`
                     }
                 ];
             }
