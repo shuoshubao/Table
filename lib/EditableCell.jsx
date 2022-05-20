@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { isString, flatten } from 'lodash';
 import { classNames } from '@nbfe/tools';
-import { EditOutlined } from '@ant-design/icons';
+import EditOutlined from '@ant-design/icons/EditOutlined';
 import { Input, Form } from './antd';
 import { getClassNames } from './util.jsx';
 

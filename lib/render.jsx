@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Typography, Tag, Image, Tooltip, Popconfirm, Modal, Menu, Dropdown } from './antd';
 import { get, filter, find, omit, flatten, merge, noop, isString, isObject } from 'lodash';
-import { FileImageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import FileImageOutlined from '@ant-design/icons/FileImageOutlined';
+import EllipsisOutlined from '@ant-design/icons/EllipsisOutlined';
 import { getLabelByValue, isEmptyValue, isEmptyObject, isEmptyArray, stringifyUrl, formatTime } from '@nbfe/tools';
 import { getClassNames, getTooltipTitleNode } from './util.jsx';
 

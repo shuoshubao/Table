@@ -1,6 +1,6 @@
 import React from 'react';
 import { version, Table, Radio, Checkbox, TreeSelect, Button } from './antd';
-import { FilterFilled } from '@ant-design/icons';
+import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, isEqual, isUndefined, isFunction, kebabCase, merge, filter, find, inRange, flatten } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';

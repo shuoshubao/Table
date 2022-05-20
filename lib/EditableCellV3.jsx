@@ -1,6 +1,6 @@
 import React from 'react';
 import { isString, flatten } from 'lodash';
-import { EditOutlined } from '@ant-design/icons';
+import EditOutlined from '@ant-design/icons/EditOutlined';
 import { classNames } from '@nbfe/tools';
 import { Table, Input, Button, Form } from './antd';
 import { getClassNames } from './util.jsx';
