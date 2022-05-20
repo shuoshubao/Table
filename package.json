@@ -12,10 +12,7 @@
         "publish-beta": "npm publish --tag beta --registry=http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/",
         "prepublishOnly": "npm run build"
     },
-    "dependencies": {
-        "react-sortablejs": "^6.0.0",
-        "sortablejs": "^1.13.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@ant-design/icons": "^4.6.2",
         "@babel/preset-env": "^7.13.9",
