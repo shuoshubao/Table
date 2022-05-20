@@ -386,7 +386,6 @@ class App extends Component {
                     rowKey="name"
                     remoteConfig={remoteConfig}
                     scroll={{ x: 1000 }}
-                    size="small"
                     prependHeader={
                       <>
                         <Button type="primary">新增</Button>
