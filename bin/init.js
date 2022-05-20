@@ -4,9 +4,9 @@ const { copySync } = require('fs-extra');
 copySync('node_modules/@ke/form/dist/components.esm.js', 'lib/components.js');
 copySync('node_modules/@ke/form/dist/form.esm.js', 'lib/Form.js');
 
-writeFileSync(
-    './lib/v3.js',
-    readFileSync('./lib/index.js')
-        .toString()
-        .replace(`import { Table } from 'antd';`, `import Table from './Table/index';`)
-);
+// writeFileSync(
+//     './lib/v3.js',
+//     readFileSync('./lib/index.js')
+//         .toString()
+//         .replace(`import { Table } from 'antd';`, `import Table from './Table/index';`)
+// );
