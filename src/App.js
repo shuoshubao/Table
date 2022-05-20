@@ -382,6 +382,9 @@ const DescriptionsColumns = [
         label: '文本',
         name: 'text',
         tooltip: '提示文案: [链接|baidu.com]',
+        transform: () => {
+            return null;
+        },
         template: {
             copyable: true
         }
@@ -414,7 +417,16 @@ const DescriptionsColumns = [
                         text: '链接1'
                     },
                     {
-                        text: '链接2'
+                        text: '链接2',
+                        PopconfirmConfig: {
+                            title: '标题'
+                        }
+                    },
+                    {
+                        text: '链接3',
+                        ModalConfirmConfig: {
+                            title: '标题'
+                        }
                     }
                 ];
             }
@@ -537,7 +549,10 @@ class App extends Component {
                         <Button type="primary" onClick={this.onClick} size="small">
                             查询
                         </Button>
-                        <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" width={50} />
+                        <Image
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                            width={50}
+                        />
                     </Card>
 
                     <Divider />
