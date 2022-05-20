@@ -10,7 +10,7 @@ export default [
             format: 'cjs',
             exports: 'default'
         },
-        plugins: [postcss({ extract: true, minimize: true }), babel()]
+        plugins: [postcss({ extract: true }), babel()]
     },
     {
         input: 'lib/Render.js',
