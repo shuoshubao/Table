@@ -69,8 +69,8 @@ const columns = [
         template: {
             tpl: 'sort',
             disabledSort: (record, index) => {
-              return record.radio === 1
-              return index === 0
+                return record.radio === 1;
+                return index === 0;
             },
             handler: <AreaChartOutlined />
         }
