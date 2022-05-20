@@ -230,7 +230,7 @@ class App extends Component {
                 <Table
                     ref={this.tableRef}
                     columns={columns}
-                    remoteConfig={remoteConfig}
+                    dataSource={dataSource}
                     selectedRowKeys={['胡彦祖2']}
                     rowKey="name"
                     bordered
