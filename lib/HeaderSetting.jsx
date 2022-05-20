@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, map, remove } from 'lodash';
 import { Card, Tooltip, Dropdown, Button } from 'antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
@@ -27,7 +27,8 @@ class Index extends Component {
         const columns = cloneDeep(props.columns);
         this.state = {
             visible: false,
-            columns: columns
+            columns: columns,
+            selectList: []
         };
         this.cardRef = React.createRef();
         this.triggerRef = React.createRef();
@@ -37,6 +38,10 @@ class Index extends Component {
     }
 
     componentDidMount() {
+        const { columns } = this.state;
+        this.setState({
+            selectList: map(columns, 'title')
+        });
         document.addEventListener('click', e => {
             if (isSomeFalsy(this.cardRef.current, this.triggerRef.current)) {
                 return;
@@ -60,10 +65,25 @@ class Index extends Component {
         return {};
     }
 
+    onSelect = column => {
+        const { title } = column;
+        const { columns } = this.state;
+        const selectList = [...this.state.selectList];
+        if (selectList.includes(title)) {
+            remove(selectList, v => {
+                return v === title;
+            });
+        } else {
+            selectList.push(title);
+        }
+        this.setState({ selectList });
+    };
+
     getRenderResult() {
         return {
             overlay: () => {
-                const { columns } = this.state;
+                const { state, onSelect } = this;
+                const { columns, selectList } = state;
                 return (
                     <div>
                         <Card
@@ -86,15 +106,26 @@ class Index extends Component {
                                     {columns.map((v, i) => {
                                         const { title } = v;
                                         return (
-                                            <div className={getClassNames('header-setting-item')} key={[i].join()}>
-                                                <div className={getClassNames('header-setting-item-sort')}>
+                                            <div
+                                                className={getClassNames('header-setting-item')}
+                                                key={[i].join()}
+                                                onClick={() => {
+                                                    onSelect(v);
+                                                }}
+                                            >
+                                                <div
+                                                    className={getClassNames('header-setting-item-sort')}
+                                                    onClick={e => {
+                                                        e.stopPropagation();
+                                                    }}
+                                                >
                                                     <MenuOutlined />
                                                 </div>
                                                 <div className={getClassNames('header-setting-item-label')}>
                                                     {title}
                                                 </div>
                                                 <div className={getClassNames('header-setting-item-check')}>
-                                                    <CheckOutlined />
+                                                    {selectList.includes(title) && <CheckOutlined />}
                                                 </div>
                                             </div>
                                         );
