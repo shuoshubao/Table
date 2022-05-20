@@ -48,13 +48,13 @@ export const mergeColumns = (columns = [], context) => {
                 delete column.filters;
             } else {
                 column.filterIcon = () => {
-                    const value = context.state.filterValue[dataIndex];
+                    const value = context.state.filterParams[dataIndex];
                     const filtered = isEveryFalsy(isEmptyValue(value), isEmptyArray(value));
                     return <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />;
                 };
                 column.filterDropdown = props => {
                     // 选中的值
-                    const value = context.state.filterValue[dataIndex];
+                    const value = context.state.filterParams[dataIndex];
                     const { confirm } = props;
                     let dropdownNode;
                     const isTreeSelect = flatten(
@@ -152,10 +152,13 @@ export const mergeColumns = (columns = [], context) => {
                 };
                 column.onFilterDropdownVisibleChange = visible => {
                     domEvents.changeTreeSelect(visible, dataIndex);
-                    // 隐藏时, 触发搜索
-                    if (!visible) {
+                    if (visible) {
+                        context.prevFilterValue = cloneDeep(context.state.filterParams);
+                    } else {
+                        if (isEqual(context.prevFilterValue, context.state.filterParams)) {
+                            return;
+                        }
                         domEvents.onFilterConfirm();
-                        return;
                     }
                 };
             }

@@ -40,13 +40,15 @@ class Index extends Component {
             total: 0,
             current: defaultCurrent || 1,
             pageSize: defaultPageSize || 10,
-            filterValue: {}, // 筛选的数据
+            filterParams: {}, // 筛选的数据
             treeSelectOpens: {} // TreeSelect 的显示状态
         };
         this.customEvents = this.getCustomEvents();
         this.domEvents = this.getDomEvents();
         this.renderResult = this.getRenderResult();
         this.search = debounce(this.customEvents.search, 100);
+        // 缓存 filterParams
+        this.prevFilterValue = {};
         // 缓存 searchParams
         this.cacheSearchParams = {};
     }
@@ -66,7 +68,7 @@ class Index extends Component {
             },
             // 参数: 排序
             getFilterParams: () => {
-                return this.state.filterValue;
+                return this.state.filterParams;
             },
             search: async (searchParams = {}, isReset = true) => {
                 // 重置
@@ -74,7 +76,7 @@ class Index extends Component {
                 // 清空筛选项
                 // 清空排序
                 if (isReset) {
-                    await setAsyncState(this, { current: 1, filterValue: {} });
+                    await setAsyncState(this, { current: 1, filterParams: {} });
                 }
                 const { props, state } = this;
                 const {
@@ -117,8 +119,8 @@ class Index extends Component {
             onFilterChange: (dataIndex, value) => {
                 this.setState(prevState => {
                     return {
-                        filterValue: {
-                            ...prevState.filterValue,
+                        filterParams: {
+                            ...prevState.filterParams,
                             [dataIndex]: value
                         }
                     };
@@ -143,8 +145,8 @@ class Index extends Component {
             onFilterReset: async (dataIndex, filterMultiple) => {
                 await setAsyncState(this, prevState => {
                     return {
-                        filterValue: {
-                            ...prevState.filterValue,
+                        filterParams: {
+                            ...prevState.filterParams,
                             [dataIndex]: filterMultiple ? [] : ''
                         }
                     };
