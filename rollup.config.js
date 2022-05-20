@@ -1,6 +1,4 @@
 import babel from '@rollup/plugin-babel';
-import postcss from 'rollup-plugin-postcss';
-// import { terser } from 'rollup-plugin-terser';
 
 export default [
     {
@@ -10,7 +8,7 @@ export default [
             format: 'cjs',
             exports: 'default'
         },
-        plugins: [postcss({ extract: true }), babel()]
+        plugins: [babel()]
     },
     {
         input: 'lib/Render.js',

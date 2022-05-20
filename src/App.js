@@ -5,6 +5,7 @@ import { sleep, fakeFetch } from '@nbfe/tools';
 import 'antd/dist/antd.css';
 import 'rc-image/assets/index.css';
 import Table from '../lib';
+import '../lib/v3.less';
 
 const columns = [
     {
@@ -382,7 +383,6 @@ class App extends Component {
                     ref={this.tableRef}
                     columns={columns}
                     rowKey="name"
-                    size="small"
                     remoteConfig={remoteConfig}
                     scroll={{ x: 1000 }}
                     prependHeader={
