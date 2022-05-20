@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cloneDeep, map, remove } from 'lodash';
+import { cloneDeep, map, remove, sortBy, debounce } from 'lodash';
 import { Card, Tooltip, Dropdown, Button } from 'antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import { ReactSortable } from 'react-sortablejs';
-import { isSomeFalsy } from '@nbfe/tools';
+import { setAsyncState, isSomeFalsy } from '@nbfe/tools';
 import { getComponentName, getClassNames } from './util.jsx';
 import './index.scss';
 
@@ -19,7 +19,8 @@ class Index extends Component {
 
     static propTypes = {
         type: PropTypes.oneOf(['button', 'icon']).isRequired,
-        columns: PropTypes.array
+        columns: PropTypes.array,
+        onChange: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -65,7 +66,7 @@ class Index extends Component {
         return {};
     }
 
-    onSelect = column => {
+    onSelect = async column => {
         const { title } = column;
         const { columns } = this.state;
         const selectList = [...this.state.selectList];
@@ -76,8 +77,17 @@ class Index extends Component {
         } else {
             selectList.push(title);
         }
-        this.setState({ selectList });
+        await setAsyncState(this, { selectList });
+        this.update();
     };
+
+    update = debounce(() => {
+        const { columns, selectList } = this.state;
+        const columnsTitleList = sortBy(selectList, v => {
+            return map(columns, 'title').indexOf(v);
+        });
+        this.props.onChange(columnsTitleList);
+    }, 10);
 
     getRenderResult() {
         return {
@@ -97,7 +107,10 @@ class Index extends Component {
                             <div className={getClassNames('header-setting-items')} ref={this.cardRef}>
                                 <ReactSortable
                                     list={columns}
-                                    setList={columns => this.setState({ columns: columns })}
+                                    setList={async columns => {
+                                        await setAsyncState(this, { columns });
+                                        this.update();
+                                    }}
                                     handle={['.', getClassNames('header-setting-item-sort')].join('')}
                                     ghostClass={getClassNames('header-setting-item-sort-ghost')}
                                     filter={getClassNames('header-setting-item-sort-disabled')}
