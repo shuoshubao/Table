@@ -71,7 +71,7 @@ const columns = [
     }
 ];
 
-const dataSource = [
+const itemDataSource = [
     {
         name: '胡彦祖',
         age: 32,
@@ -88,19 +88,23 @@ const dataSource = [
     }
 ];
 
+const total = 92;
+
+const dataSource = range(0, total).map(v => {
+    return {
+        ...itemDataSource[0],
+        name: itemDataSource[0].name + v
+    };
+});
+
 const remoteConfig = {
     fetch: async params => {
-        const total = 92;
         console.log('🍉 params');
         console.log(params);
+        const { currentPage, pageSize } = params;
         await sleep(random(0.5, 1.5, true));
         return {
-            list: range(0, total).map(v => {
-                return {
-                    ...dataSource[0],
-                    name: dataSource[0].name + v
-                };
-            }),
+            list: dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize),
             total
         };
     }
@@ -126,7 +130,7 @@ class App extends Component {
         return (
             <div style={{ padding: 20, background: '#eee' }}>
                 <Card title="搜索" size="small">
-                    <Button type="primary" onClick={this.onClick}>
+                    <Button type="primary" onClick={this.onClick} size="small">
                         查询
                     </Button>
                 </Card>
@@ -142,9 +146,9 @@ class App extends Component {
                         defaultCurrent: 2,
                         pageSizeOptions: ['5', '10', '20']
                     }}
-                    onEditableCellSave={async config => {
-                        console.log('新数据');
-                        console.log(config);
+                    onEditableCellSave={async ({ index, dataIndex, record, value }, state) => {
+                        const { current, pageSize } = state;
+                        dataSource[(current - 1) * pageSize + index][dataIndex] = value;
                         await sleep();
                     }}
                 />
