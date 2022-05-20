@@ -348,6 +348,7 @@ const remoteConfig = {
         console.log(params);
         const { currentPage, pageSize } = params;
         await sleep(random(0.5, 1.5, true));
+        return Promise.reject();
         return {
             list: dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize),
             total
