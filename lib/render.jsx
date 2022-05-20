@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Typography, Image, Tooltip } from './antd';
 import { get, omit, flatten } from 'lodash';
-import FileImageOutlined from '@ant-design/icons/FileUnknownOutlined';
+import { FileImageOutlined } from '@ant-design/icons';
 import { getLabelByValue, isEmptyValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
 import { getTooltipTitleNode } from './util.jsx';
 
