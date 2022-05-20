@@ -6,7 +6,7 @@ import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } f
 import HeaderSetting from './HeaderSetting.jsx';
 import getTableComponentsV4 from './EditableCell.jsx';
 import getTableComponentsV3 from './EditableCellV3.jsx';
-import { isAntdV3, mergeColumns, getVisibleColumns, getClassNames } from './util.jsx';
+import { componentName, isAntdV3, mergeColumns, getVisibleColumns, getClassNames } from './util.jsx';
 import './index.scss';
 
 const getTableComponents = isAntdV3 ? getTableComponentsV3 : getTableComponentsV4;
@@ -165,19 +165,21 @@ class Index extends Component {
                     return;
                 }
                 const { onEditableCellSave } = this.props;
-                if (isFunction(onEditableCellSave)) {
-                    const hideLoading = message.loading('正在保存数据...', 0);
-                    this.setState({ loading: true, dataSource: newDataSource });
-                    try {
-                        await onEditableCellSave(config);
-                        this.customEvents.search({}, false);
-                        message.success('数据保存成功');
-                    } catch (e) {
-                        message.error(['数据保存失败', e].filter(Boolean).join(': '));
-                        this.setState({ loading: false, dataSource: oldDataSource });
-                    }
-                    hideLoading();
+                if (!isFunction(onEditableCellSave)) {
+                    console.info(`[${componentName}]:`, '请配置编辑成功的回调函数 onEditableCellSave');
+                    return;
                 }
+                const hideLoading = message.loading('正在保存数据...', 0);
+                await setAsyncState(this, { loading: true, dataSource: newDataSource });
+                try {
+                    await onEditableCellSave(config, cloneDeep(this.state));
+                    this.customEvents.search({}, false);
+                    message.success('数据保存成功');
+                } catch (e) {
+                    message.error(['数据保存失败', e].filter(Boolean).join(': '));
+                    this.setState({ loading: false, dataSource: oldDataSource });
+                }
+                hideLoading();
             }
         };
     }
