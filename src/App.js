@@ -19,6 +19,7 @@ const columns = [
         title: '文本',
         dataIndex: 'text',
         width: 100,
+        tooltip: '我是提示文案',
         template: {
             tpl: 'text',
             ellipsis: {
