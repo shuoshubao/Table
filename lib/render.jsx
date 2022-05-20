@@ -4,7 +4,7 @@ import { get, filter, find, omit, flatten, merge, noop, isString, isObject } fro
 import FileImageOutlined from '@ant-design/icons/FileImageOutlined';
 import EllipsisOutlined from '@ant-design/icons/EllipsisOutlined';
 import { getLabelByValue, isEmptyValue, isEmptyObject, isEmptyArray, stringifyUrl, formatTime } from '@nbfe/tools';
-import { getClassNames, getTooltipTitleNode } from './util.jsx';
+import { isAntdV3, getClassNames, getTooltipTitleNode } from './util.jsx';
 
 const { Paragraph } = Typography;
 
@@ -194,7 +194,7 @@ export default (column, context) => {
                         placement="bottomRight"
                         arrow
                     >
-                        <Button icon={<EllipsisOutlined />} type="link" size="small" />
+                        <Button icon={isAntdV3 ? 'ellipsis' : <EllipsisOutlined />} type="link" size="small" />
                     </Dropdown>
                 )
             ];

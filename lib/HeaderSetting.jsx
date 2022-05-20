@@ -7,7 +7,7 @@ import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import { ReactSortable } from 'react-sortablejs';
 import { setAsyncState, isSomeFalsy } from '@nbfe/tools';
-import { getComponentName, getStorageKey, getClassNames } from './util.jsx';
+import { isAntdV3, getComponentName, getStorageKey, getClassNames } from './util.jsx';
 import './index.scss';
 
 class Index extends Component {
@@ -168,7 +168,7 @@ class Index extends Component {
         const buttonNode = (
             <Button
                 type={isIcon ? '' : 'primary'}
-                icon={isIcon ? <SettingOutlined /> : null}
+                icon={isIcon ? isAntdV3 ? 'setting' : <SettingOutlined /> : null}
                 onClick={() => {
                     this.setState({ visible: true });
                 }}
