@@ -3,8 +3,8 @@ import { random, range } from 'lodash';
 import { ConfigProvider, Button, Card, Divider } from 'antd';
 import { sleep, fakeFetch, getAntdLocaleZhCN } from '@nbfe/tools';
 import 'antd/dist/antd.css';
+// import 'antd/dist/antd.dark.css';
 import '@ke/form/dist/index.css';
-import { AreaChartOutlined } from '@ant-design/icons';
 import { blue, red } from '@ant-design/colors';
 import Table from '../lib';
 import '../lib/index.less';
@@ -71,8 +71,14 @@ const columns = [
             disabledSort: (record, index) => {
                 return record.radio === 1;
                 return index === 0;
-            },
-            handler: <AreaChartOutlined />
+            }
+        }
+    },
+    {
+        title: '图片',
+        dataIndex: 'img',
+        template: {
+            tpl: 'image'
         }
     },
     {
@@ -311,6 +317,7 @@ const columns = [
 const dataSource = [
     {
         id: 21,
+        img: '',
         text: 'demo21',
         checkbox: [1],
         radio: 1,
@@ -332,6 +339,7 @@ const dataSource = [
     },
     {
         id: 22,
+        img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         text: 'test22',
         checkbox: [2, 3],
         radio: 2,
@@ -353,6 +361,7 @@ const dataSource = [
     },
     {
         id: 23,
+        img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         text: 'test23',
         checkbox: [2, 3],
         radio: 1,
@@ -374,6 +383,7 @@ const dataSource = [
     },
     {
         id: 31,
+        img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         text: 'test31',
         checkbox: [2, 3],
         radio: 1,
@@ -395,6 +405,7 @@ const dataSource = [
     },
     {
         id: 32,
+        img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         text: 'test32',
         checkbox: [2, 3],
         radio: 2,
@@ -416,6 +427,7 @@ const dataSource = [
     },
     {
         id: 33,
+        img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         text: 'test33',
         checkbox: [2, 3],
         radio: 2,
@@ -437,6 +449,7 @@ const dataSource = [
     },
     {
         id: 41,
+        img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         text: 'test41',
         checkbox: [2, 3],
         radio: 2,
@@ -555,6 +568,9 @@ class App extends Component {
                             console.log(222, fromIndex, toIndex);
                             console.log(dataSource);
                             console.log(newDataSource);
+                        }}
+                        footer={() => {
+                            return 'footer';
                         }}
                     />
                 </div>
