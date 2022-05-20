@@ -1,6 +1,6 @@
 {
     "name": "@nbfe/table",
-    "version": "0.2.2",
+    "version": "0.2.4",
     "main": "dist/index.js",
     "publishConfig": {
         "registry": "https://registry.npmjs.org"
