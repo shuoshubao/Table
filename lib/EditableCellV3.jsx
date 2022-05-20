@@ -97,7 +97,7 @@ const getEditableCell = tableProps => {
         };
 
         render() {
-            const { editable, dataIndex, title, record, index, handleSave, children, ...restProps } = this.props;
+            const { editable, dataIndex, title, record, index, handleSave, children, rules, ...restProps } = this.props;
             return (
                 <td {...restProps}>
                     {editable ? <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer> : children}

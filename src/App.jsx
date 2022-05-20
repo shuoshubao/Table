@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { random, range } from 'lodash';
 import Button from 'antd/lib/button';
+import Card from 'antd/lib/card';
+import Divider from 'antd/lib/divider';
 import { sleep } from '@nbfe/tools';
 import Table from '../lib/index';
 
@@ -51,7 +53,7 @@ const columns = [
     },
     {
         title: '住址3',
-        visible: false,
+        // visible: false,
         dataIndex: 'address3'
     },
     {
@@ -113,7 +115,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.tableRef.current.search();
+        this.tableRef.current.search({}, false);
     }
 
     onClick() {
@@ -123,17 +125,23 @@ class App extends Component {
     render() {
         return (
             <div style={{ padding: 20, background: '#eee' }}>
+                <Card title="搜索" size="small">
+                    <Button type="primary" onClick={this.onClick}>
+                        查询
+                    </Button>
+                </Card>
+                <Divider />
                 <Table
                     ref={this.tableRef}
-                    prependHeader={
-                        <Button type="primary" onClick={this.onClick}>
-                            查询
-                        </Button>
-                    }
                     columns={columns}
                     remoteConfig={remoteConfig}
+                    selectedRowKeys={['胡彦祖2']}
                     rowKey="name"
-                    scroll={{ y: 300 }}
+                    pagination={{
+                        defaultPageSize: 5,
+                        defaultCurrent: 2,
+                        pageSizeOptions: ['5', '10', '20']
+                    }}
                     onEditableCellSave={async config => {
                         console.log('新数据');
                         console.log(config);
