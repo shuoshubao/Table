@@ -27,7 +27,7 @@ class Index extends Component {
         super(props);
         const columns = cloneDeep(props.columns);
         this.state = {
-            visible: true,
+            visible: false,
             columns: columns,
             selectList: []
         };
@@ -43,7 +43,6 @@ class Index extends Component {
         this.setState({
             selectList: map(columns, 'title')
         });
-        return;
         document.addEventListener('click', e => {
             if (isSomeFalsy(this.cardRef.current, this.triggerRef.current)) {
                 return;
@@ -114,22 +113,26 @@ class Index extends Component {
                                     }}
                                     handle={['.', getClassNames('header-setting-item-sort')].join('')}
                                     ghostClass={getClassNames('header-setting-item-sort-ghost')}
-                                    filter={getClassNames('header-setting-item-sort-disabled')}
+                                    filter={['.', getClassNames('header-setting-item-sort-disabled')].join('')}
                                     animation={150}
                                 >
                                     {columns.map((v, i) => {
-                                        const { title, configurable } = v;
+                                        const { title, canSort, canHide } = v;
                                         return (
                                             <div
-                                                className={getClassNames('header-setting-item')}
+                                                className={getClassNames('header-setting-item', {
+                                                    'header-setting-item-not-allowed': !canHide
+                                                })}
                                                 key={[i].join()}
                                                 onClick={() => {
-                                                    onSelect(v);
+                                                    if (canHide) {
+                                                        onSelect(v);
+                                                    }
                                                 }}
                                             >
                                                 <div
                                                     className={getClassNames('header-setting-item-sort', {
-                                                        'header-setting-item-sort-disabled': !configurable
+                                                        'header-setting-item-sort-disabled': !canSort
                                                     })}
                                                     onClick={e => {
                                                         e.stopPropagation();
@@ -140,7 +143,11 @@ class Index extends Component {
                                                 <div className={getClassNames('header-setting-item-label')}>
                                                     {title}
                                                 </div>
-                                                <div className={getClassNames('header-setting-item-check')}>
+                                                <div
+                                                    className={getClassNames('header-setting-item-check', {
+                                                        'header-setting-item-check-disabled': !canHide
+                                                    })}
+                                                >
                                                     {selectList.includes(title) && <CheckOutlined />}
                                                 </div>
                                             </div>
@@ -163,16 +170,17 @@ class Index extends Component {
         return (
             <Dropdown visible={visible} trigger={['click']} overlay={renderResult.overlay()}>
                 <Tooltip title={isIcon ? '表头设置' : null} placement="topRight" arrowPointAtCenter>
-                    <Button
-                        ref={this.triggerRef}
-                        type={isIcon ? '' : 'primary'}
-                        icon={isIcon ? <SettingOutlined /> : null}
-                        onClick={() => {
-                            this.setState({ visible: true });
-                        }}
-                    >
-                        {isIcon ? null : '表头设置'}
-                    </Button>
+                    <span ref={this.triggerRef}>
+                        <Button
+                            type={isIcon ? '' : 'primary'}
+                            icon={isIcon ? <SettingOutlined /> : null}
+                            onClick={() => {
+                                this.setState({ visible: true });
+                            }}
+                        >
+                            {isIcon ? null : '表头设置'}
+                        </Button>
+                    </span>
                 </Tooltip>
             </Dropdown>
         );

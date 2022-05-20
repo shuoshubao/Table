@@ -10,6 +10,7 @@ const columns = [
     {
         title: '姓名',
         dataIndex: 'name',
+        canSort: false,
         filters: [
             {
                 label: '胡彦祖1',
@@ -25,6 +26,8 @@ const columns = [
         title: '年龄',
         dataIndex: 'age',
         filterMultiple: false,
+        canSort: false,
+        canHide: false,
         editable: true,
         rules: [
             {
@@ -59,7 +62,7 @@ const columns = [
     {
         title: '操作',
         dataIndex: 'operate',
-        fixed: 'right',
+        // fixed: 'right',
         configurable: false,
         render: () => {
             return (
@@ -129,7 +132,7 @@ class App extends Component {
     render() {
         return (
             <div style={{ padding: 20, background: '#eee' }}>
-                <Card title="搜索" size="small">
+                <Card title="搜索区" size="small">
                     <Button type="primary" onClick={this.onClick} size="small">
                         查询
                     </Button>
@@ -141,6 +144,8 @@ class App extends Component {
                     remoteConfig={remoteConfig}
                     selectedRowKeys={['胡彦祖2']}
                     rowKey="name"
+                    bordered
+                    visibleHeaderSetting={true}
                     pagination={{
                         defaultPageSize: 5,
                         defaultCurrent: 2,
