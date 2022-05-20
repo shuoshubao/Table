@@ -1,7 +1,7 @@
 import React from 'react';
 import { version, Table, Radio, Checkbox, TreeSelect, Button } from './antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
-import { cloneDeep, isEqual, isUndefined, kebabCase, merge, filter, find, inRange } from 'lodash';
+import { cloneDeep, isEqual, isUndefined, kebabCase, merge, filter, find, inRange, flatten } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 
 export const isAntdV3 = inRange(parseInt(version), 3, 4);
@@ -57,22 +57,29 @@ export const mergeColumns = (columns = [], context) => {
                     const value = context.state.filterValue[dataIndex];
                     const { confirm } = props;
                     let dropdownNode;
-                    const isTreeSelect = Object.keys(filters[0]).includes('children');
-                    console.log(isTreeSelect, dataIndex, Object.keys(filters[0]));
+                    const isTreeSelect = flatten(
+                        filters.map(v2 => {
+                            return Object.keys(v2);
+                        })
+                    ).includes('children');
                     if (isTreeSelect) {
                         dropdownNode = (
                             <TreeSelect
                                 value={value}
                                 treeData={filters}
-                                onChange={e => {
-                                    domEvents.onFilterChange(dataIndex, e.target.value);
+                                onChange={val => {
+                                    domEvents.onFilterChange(dataIndex, val);
                                 }}
                                 style={{ width: 200 }}
                                 dropdownMatchSelectWidth={200}
-                                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                showSearch={true}
+                                treeNodeFilterProp="label"
+                                treeNodeLabelProp="label"
+                                maxTagCount={1}
+                                dropdownStyle={{ maxHeight: 400, overflowY: 'auto' }}
                                 treeDefaultExpandAll
                                 multiple={filterMultiple}
-                                treeCheckable
+                                treeCheckable={filterMultiple}
                                 open={context.state.treeSelectOpens[dataIndex] || false}
                             />
                         );
@@ -107,11 +114,17 @@ export const mergeColumns = (columns = [], context) => {
                         disabledReset = isUndefined(value) || isEqual(value, '');
                     }
                     return (
-                        <div className="dyna-table-filter-dropdown">
+                        <div
+                            className={classNames('dyna-table-filter-dropdown', {
+                                'dyna-table-filter-dropdown-has-tree-select': isTreeSelect
+                            })}
+                        >
                             <div className="dyna-table-filter-dropdown-options">{dropdownNode}</div>
-                            <div className={classNames("dyna-table-filter-dropdown-footer", {
-                                'dyna-table-filter-dropdown-footer-hide': isTreeSelect
-                            })}>
+                            <div
+                                className={classNames('dyna-table-filter-dropdown-footer', {
+                                    'dyna-table-filter-dropdown-footer-hide': isTreeSelect
+                                })}
+                            >
                                 <Button
                                     size="small"
                                     type="text"
