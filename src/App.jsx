@@ -9,12 +9,6 @@ import Table from '../lib/index';
 
 const columns = [
     {
-        title: '时间戳',
-        render: () => {
-            return Date.now();
-        }
-    },
-    {
         title: '文本',
         dataIndex: 'text',
         width: 100,
@@ -37,8 +31,7 @@ const columns = [
     {
         title: '姓名',
         dataIndex: 'name',
-        canHide: false,
-        canSort: false,
+        editable: true,
         template: {
             tpl: 'input'
         }
@@ -46,8 +39,10 @@ const columns = [
     {
         title: '枚举1',
         dataIndex: 'enum1',
+        editable: true,
         template: {
-            tpl: 'enum',
+            tpl: 'select',
+            width: 80,
             options: [
                 {
                     label: '男',
@@ -88,7 +83,7 @@ const columns = [
             tpl: 'date',
             format: 'YYYY-MM'
         }
-    },
+    }
     // {
     //     title: '图片',
     //     dataIndex: 'imgSrc',
@@ -101,8 +96,6 @@ const columns = [
     //     title: '年龄',
     //     dataIndex: 'age',
     //     filterMultiple: false,
-    //     canSort: false,
-    //     canHide: false,
     //     editable: true,
     //     rules: [
     //         {
@@ -354,13 +347,16 @@ class App extends Component {
                     bordered
                     pagination={{
                         defaultPageSize: 5,
-                        defaultCurrent: 2,
+                        // defaultCurrent: 1,
                         pageSizeOptions: ['5', '10', '20']
                     }}
-                    onEditableCellSave={async ({ index, dataIndex, record, value }, state) => {
+                    extraConfig={{
+                        editTrigger: 'none'
+                    }}
+                    onEditableCellSave={({ index, dataIndex, record, value }, state) => {
                         const { current, pageSize } = state;
                         dataSource[(current - 1) * pageSize + index][dataIndex] = value;
-                        await sleep();
+                        this.setState({ dataSource });
                     }}
                 />
             </div>

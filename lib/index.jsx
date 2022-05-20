@@ -184,8 +184,9 @@ class Index extends Component {
     };
     // 编辑-单元格 保存
     // 请求接口, 接口完成后, 刷新数据(当前页)
-    handleSaveCell = async config => {
+    handleSave = async config => {
         const { index, dataIndex, record, value } = config;
+        const editTriggerNone = get(this.props, 'extraConfig.editTrigger', defaultExtraConfig.editTrigger) === 'none';
         const { dataSource } = this.state;
         const oldDataSource = cloneDeep(dataSource);
         const newDataSource = cloneDeep(dataSource);
@@ -196,20 +197,28 @@ class Index extends Component {
         }
         const { onEditableCellSave } = this.props;
         if (!isFunction(onEditableCellSave)) {
-            console.info(`[${componentName}]:`, '请配置编辑成功的回调函数 onEditableCellSave');
+            console.error(`[${componentName}]:`, '请配置编辑成功的回调函数 onEditableCellSave');
             return;
         }
-        const hideLoading = message.loading('正在保存数据...', 0);
+        let hideLoading;
+        if (!editTriggerNone) {
+            hideLoading = message.loading('正在保存数据...', 0)
+        }
         await setAsyncState(this, { loading: true, dataSource: newDataSource });
         try {
             await onEditableCellSave(config, cloneDeep(this.state));
             this.handleSearch({}, false);
-            message.success('数据保存成功');
+            if (!editTriggerNone) {
+                message.success('数据保存成功');
+            }
+            this.setState({ loading: false });
         } catch (e) {
             message.error(['数据保存失败', e].filter(Boolean).join(': '));
             this.setState({ loading: false, dataSource: oldDataSource });
         }
-        hideLoading();
+        if (hideLoading) {
+            hideLoading();
+        }
     };
 
     render() {
@@ -250,7 +259,7 @@ class Index extends Component {
                     {...tableProps}
                     columns={getVisibleColumns(columns, columnsTitleList)}
                     dataSource={dataSource}
-                    components={getTableComponents({ ...tableProps, editTrigger })}
+                    components={getTableComponents({ ...tableProps, editTrigger, columns })}
                     rowClassName={() => {
                         return getClassNames('editable-row');
                     }}

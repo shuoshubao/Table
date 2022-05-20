@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { isString, flatten } from 'lodash';
+import { Input, Select, Form } from './antd';
+import { find, omit, flatten, isString } from 'lodash';
 import { classNames } from '@nbfe/tools';
 import EditOutlined from '@ant-design/icons/EditOutlined';
-import { Input, Form } from './antd';
+import DynamicForm from '@nbfe/form';
 import { getClassNames } from './util.jsx';
+
+const { ComplexInput, RangeNumber, Tabs, Switch, Slider } = DynamicForm;
 
 const EditableContext = React.createContext(null);
 
@@ -19,16 +22,26 @@ const EditableRow = ({ index, ...props }) => {
 };
 
 const getEditableCell = tableProps => {
-    const { editTrigger, size } = tableProps;
+    const { editTrigger, size, columns } = tableProps;
+    const editTriggerNone = editTrigger === 'none';
     const editTriggerHover = editTrigger === 'hover';
     const editTriggerClick = editTrigger === 'click';
     const EditableCell = props => {
         const { title, editable, children, index, dataIndex, record, rules, handleSave, ...restProps } = props;
-        const [editing, setEditing] = useState(false);
+        if (!record) {
+            return <td {...restProps}>{children}</td>;
+        }
+        const [editing, setEditing] = useState(editTriggerNone);
         const inputRef = useRef(null);
         const form = useContext(EditableContext);
         const computedRules = flatten([rules]).filter(Boolean);
+        const value = record[dataIndex];
+
         useEffect(() => {
+            if (editTriggerNone) {
+                form.setFieldsValue({ [dataIndex]: value })
+                return;
+            }
             if (editing) {
                 inputRef.current.focus();
             }
@@ -50,14 +63,48 @@ const getEditableCell = tableProps => {
                 handleSave({ index, dataIndex, record, value });
             } catch (errInfo) {
                 toggleEdit();
-                console.log('Save failed:', errInfo);
+                console.error('保存失败:', errInfo);
             }
         };
 
         let childNode = children;
 
         if (editable) {
+            const column = find(columns, { dataIndex });
+            const { template } = column;
+            const { tpl } = template;
             if (editing) {
+                let FormItemNode;
+                if (tpl === 'input') {
+                    const { width = 100 } = template;
+                    FormItemNode = (
+                        <Input
+                            ref={inputRef}
+                            onBlur={save}
+                            size={size}
+                            style={{ width }}
+                        />
+                    );
+                }
+                if (tpl === 'select') {
+                    const { options = [], width = 100 } = template;
+                    FormItemNode = (
+                        <Select
+                            ref={inputRef}
+                            onBlur={save}
+                            size={size}
+                            style={{ width }}
+                        >
+                            {options.map(v => {
+                                return (
+                                    <Select.Option key={v.value} {...omit(v, ['label', 'options'])}>
+                                        {v.label}
+                                    </Select.Option>
+                                );
+                            })}
+                        </Select>
+                    );
+                }
                 childNode = (
                     <Form.Item
                         style={{
@@ -66,7 +113,7 @@ const getEditableCell = tableProps => {
                         name={dataIndex}
                         rules={computedRules}
                     >
-                        <Input ref={inputRef} onPressEnter={save} onBlur={save} size={size} />
+                        {FormItemNode}
                     </Form.Item>
                 );
             } else {

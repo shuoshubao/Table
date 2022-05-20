@@ -5,7 +5,6 @@ import { cloneDeep, isEqual, isUndefined, isFunction, kebabCase, merge, filter, 
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
 import { createElement } from '@nbfe/js2html';
 import getRender, { RenderTplList } from './render.jsx';
-import getEditRender from './EditRender.jsx';
 
 export const isAntdV3 = inRange(parseInt(version), 3, 4);
 
@@ -13,7 +12,7 @@ export const isAntdV4 = inRange(parseInt(version), 4, 5);
 
 export const defaultExtraConfig = {
     visibleHeaderSetting: false, // 是否显示设置表头
-    editTrigger: 'click', // 编辑触发条件 'click' | 'hover'
+    editTrigger: 'none', // 编辑触发条件 'none' | 'click' | 'hover'
     storageKey: '' // 存储的key
 };
 
@@ -55,7 +54,7 @@ const defaultColumn = {
 
 // 处理 props.columns
 export const mergeColumns = (columns = [], context) => {
-    const { onFilterChange, onFilterReset, changeTreeSelect, onFilterConfirm, handleSaveCell } = context;
+    const { onFilterChange, onFilterReset, changeTreeSelect, onFilterConfirm, handleSave } = context;
     const innerColumns = cloneDeep(columns)
         .map((v, i) => {
             const column = merge({}, defaultColumn, v);
@@ -184,8 +183,6 @@ export const mergeColumns = (columns = [], context) => {
                 const { tpl } = template;
                 if (RenderTplList.includes(tpl)) {
                     column.render = getRender(column, context);
-                } else {
-                    column.render = getEditRender(column, context);
                 }
             }
 
@@ -206,7 +203,7 @@ export const mergeColumns = (columns = [], context) => {
                         dataIndex,
                         rules,
                         title,
-                        handleSave: handleSaveCell
+                        handleSave
                     };
                 }
             };
