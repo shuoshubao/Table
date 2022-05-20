@@ -183,6 +183,7 @@
         border-radius: 50%;
     }
     .dynamic-table-render-code {
+        width: 100%;
         margin: 0;
         padding: 5px;
         overflow: auto;
@@ -229,8 +230,11 @@
             margin-left: 4px;
         }
     }
-    .ant-descriptions-item-content {
+    .ant-descriptions-item:not(:last-child) {
         padding-right: 10px;
+    }
+    .ant-descriptions-row:last-child > td {
+        padding-bottom: 0;
     }
     .ant-typography {
         margin-bottom: 0;
