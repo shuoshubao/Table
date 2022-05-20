@@ -66,6 +66,24 @@ const columns = [
         }
     },
     {
+        title: '枚举3',
+        dataIndex: 'enum3',
+        width: 100,
+        editable: true,
+        template: {
+            tpl: 'select',
+            // options: [],
+            getOptions: (value, record, index) => {
+              return record['enum3List'].map(v => {
+                return {
+                  value: v.code,
+                  label: v.desc,
+                }
+              })
+            }
+        }
+    },
+    {
         title: 'Slider',
         dataIndex: 'slider',
         width: 100,
@@ -293,9 +311,27 @@ const dataSource = range(0, total).map((v, i) => {
         name: itemDataSource[0].name + v,
         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
         enum1: i % 3,
-        enum2: true
+        enum2: true,
+        enum3List: [
+          {
+            code: 1,
+            desc: '版本1'
+          },
+          {
+            code: 2,
+            desc: '版本2'
+          },
+          {
+            code: 3,
+            desc: '版本3'
+          }
+        ],
+        enum3: (i % 3) + 1
     };
 });
+
+// console.log(222)
+// console.log(dataSource)
 
 const remoteConfig = {
     fetch: async params => {
