@@ -384,7 +384,6 @@ class App extends Component {
                     ref={this.tableRef}
                     columns={columns}
                     rowKey="name"
-                    bordered
                     remoteConfig={remoteConfig}
                     scroll={{ x: 1000 }}
                     pagination={{
