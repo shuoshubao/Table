@@ -18,13 +18,5 @@ export default [
             exports: 'default'
         },
         plugins: [babel()]
-    },
-    {
-        input: 'lib/Render.js',
-        output: {
-            file: 'dist/Render.esm.js',
-            format: 'esm'
-        },
-        plugins: [babel()]
     }
 ];
