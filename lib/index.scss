@@ -1,12 +1,12 @@
-.dyna-table {
+.dynamic-table {
     background-color: #fff;
-    .dyna-table-header {
+    .dynamic-table-header {
         padding: 10px;
         display: flex;
         justify-content: space-between;
     }
     .ant-table-row {
-        &.dyna-table-editable-row:hover .dyna-table-editable-cell-value-wrap {
+        &.dynamic-table-editable-row:hover .dynamic-table-editable-cell-value-wrap {
             padding: 4px 11px;
             border: 1px solid #d9d9d9;
             border-radius: 4px;
@@ -14,18 +14,18 @@
         .ant-typography {
             margin-bottom: 0;
         }
-        .dyna-table-render-enum-dot,
-        .dyna-table-render-enum-square {
+        .dynamic-table-render-enum-dot,
+        .dynamic-table-render-enum-square {
             display: inline-flex;
             align-items: center;
-            .dyna-table-render-enum-badge {
+            .dynamic-table-render-enum-badge {
                 display: inline-block;
                 width: 6px;
                 height: 6px;
                 margin-right: 5px;
             }
         }
-        .dyna-table-render-enum-dot .dyna-table-render-enum-badge {
+        .dynamic-table-render-enum-dot .dynamic-table-render-enum-badge {
             border-radius: 50%;
         }
     }
@@ -38,15 +38,15 @@
     }
 }
 
-.dyna-table-filter-dropdown {
+.dynamic-table-filter-dropdown {
     font-size: 0;
     user-select: none;
-    &.dyna-table-filter-dropdown-has-tree-select {
-        .dyna-table-filter-dropdown-options {
+    &.dynamic-table-filter-dropdown-has-tree-select {
+        .dynamic-table-filter-dropdown-options {
             padding: 0;
         }
     }
-    .dyna-table-filter-dropdown-options {
+    .dynamic-table-filter-dropdown-options {
         padding: 4px 0;
         max-height: 300px;
         overflow-y: auto;
@@ -56,12 +56,12 @@
             flex-direction: column;
         }
     }
-    .dyna-table-filter-dropdown-footer {
+    .dynamic-table-filter-dropdown-footer {
         border-top: 1px solid rgb(240, 240, 240);
         padding: 7px 8px 7px 3px;
         display: flex;
         justify-content: flex-end;
-        &.dyna-table-filter-dropdown-footer-hide {
+        &.dynamic-table-filter-dropdown-footer-hide {
             display: none;
         }
         .ant-btn + .ant-btn {
@@ -75,7 +75,7 @@
     }
 }
 
-.dyna-table-header-setting {
+.dynamic-table-header-setting {
     box-shadow: rgb(0 0 0 / 10%) 0px 2px 20px;
     user-select: none;
     .ant-card-head {
@@ -88,11 +88,11 @@
         max-height: 400px;
         overflow-y: auto;
         padding: 0;
-        .dyna-table-header-setting-items {
+        .dynamic-table-header-setting-items {
             max-height: 400px;
             overflow-y: auto;
         }
-        .dyna-table-header-setting-item {
+        .dynamic-table-header-setting-item {
             padding: 8px 16px;
             line-height: 20px;
             display: flex;
@@ -102,27 +102,27 @@
             &:hover {
                 background-color: #f7f7f7;
             }
-            &.dyna-table-header-setting-item-not-allowed {
+            &.dynamic-table-header-setting-item-not-allowed {
                 cursor: not-allowed;
             }
-            &.dyna-table-header-setting-item-sort-ghost {
+            &.dynamic-table-header-setting-item-sort-ghost {
                 background-color: rgba(60, 90, 100, 0.04);
             }
-            .dyna-table-header-setting-item-sort {
+            .dynamic-table-header-setting-item-sort {
                 cursor: move;
-                &.dyna-table-header-setting-item-sort-disabled {
+                &.dynamic-table-header-setting-item-sort-disabled {
                     cursor: not-allowed;
                     color: rgb(191, 191, 191);
                 }
             }
-            .dyna-table-header-setting-item-check {
-                &.dyna-table-header-setting-item-check-disabled {
+            .dynamic-table-header-setting-item-check {
+                &.dynamic-table-header-setting-item-check-disabled {
                     cursor: not-allowed;
                     color: rgb(191, 191, 191);
                 }
             }
-            .dyna-table-header-setting-item-sort,
-            .dyna-table-header-setting-item-check {
+            .dynamic-table-header-setting-item-sort,
+            .dynamic-table-header-setting-item-check {
                 height: 20px;
                 width: 20px;
                 line-height: 20px;
@@ -131,7 +131,7 @@
                 align-items: center;
                 justify-content: center;
             }
-            .dyna-table-header-setting-item-label {
+            .dynamic-table-header-setting-item-label {
                 padding: 0 12px;
                 flex: 1;
             }
@@ -139,13 +139,13 @@
     }
 }
 
-.dyna-table-fetch-error {
+.dynamic-table-fetch-error {
     .ant-spin {
         color: #ff4d4f;
     }
 }
 
-.ant-dropdown.dyna-table-render-link-dropdown {
+.ant-dropdown.dynamic-table-render-link-dropdown {
     .ant-dropdown-menu {
         min-width: 128px;
     }

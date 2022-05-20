@@ -27,8 +27,8 @@ npm i @nbfe/table
 ## 数据来自接口
 
 ```js
+// import '@nbfe/table/dist/index.css'; // 样式在项目的入口文件引入即可
 import Table from '@nbfe/table';
-// import '@nbfe/table/dist/index.css'; // 样式文件在项目的入口文件引入即可
 
 const dataSource = [
     {

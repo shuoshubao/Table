@@ -16,7 +16,7 @@ export const defaultExtraConfig = {
     storageKey: '' // 存储的key
 };
 
-export const componentName = 'DynaTable';
+export const componentName = 'DynamicTable';
 
 export const getComponentName = (compName = '') => {
     return [componentName, compName].join('');
@@ -131,14 +131,14 @@ export const mergeColumns = (columns = [], context) => {
                     }
                     return (
                         <div
-                            className={classNames('dyna-table-filter-dropdown', {
-                                'dyna-table-filter-dropdown-has-tree-select': isTreeSelect
+                            className={classNames('dynamic-table-filter-dropdown', {
+                                'dynamic-table-filter-dropdown-has-tree-select': isTreeSelect
                             })}
                         >
-                            <div className="dyna-table-filter-dropdown-options">{dropdownNode}</div>
+                            <div className="dynamic-table-filter-dropdown-options">{dropdownNode}</div>
                             <div
-                                className={classNames('dyna-table-filter-dropdown-footer', {
-                                    'dyna-table-filter-dropdown-footer-hide': isTreeSelect
+                                className={classNames('dynamic-table-filter-dropdown-footer', {
+                                    'dynamic-table-filter-dropdown-footer-hide': isTreeSelect
                                 })}
                             >
                                 <Button

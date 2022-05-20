@@ -20,7 +20,7 @@ import './index.scss';
 const getTableComponents = isAntdV3 ? getTableComponentsV3 : getTableComponentsV4;
 
 class Index extends Component {
-    static displayName = 'DynaTable';
+    static displayName = componentName;
 
     static defaultProps = {
         pagination: {},
@@ -238,11 +238,11 @@ class Index extends Component {
             loadingConfig.indicator = <CloseCircleFilled />;
         }
         return (
-            <div className={classNames('dyna-table', props['class'], props['className'])}>
+            <div className={classNames('dynamic-table', props['class'], props['className'])}>
                 {!hideHeader && (
-                    <div className="dyna-table-header">
-                        <div className="dyna-table-header-left">{prependHeader}</div>
-                        <div className="dyna-table-header-right">{appendHeader}</div>
+                    <div className="dynamic-table-header">
+                        <div className="dynamic-table-header-left">{prependHeader}</div>
+                        <div className="dynamic-table-header-right">{appendHeader}</div>
                     </div>
                 )}
                 <Table
