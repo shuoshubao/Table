@@ -386,11 +386,6 @@ class App extends Component {
                     rowKey="name"
                     remoteConfig={remoteConfig}
                     scroll={{ x: 1000 }}
-                    pagination={{
-                        defaultPageSize: 5,
-                        // defaultCurrent: 1,
-                        pageSizeOptions: ['5', '10', '20']
-                    }}
                     prependHeader={
                       <>
                         <Button type="primary">新增</Button>
