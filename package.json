@@ -1,6 +1,6 @@
 {
     "name": "@jiaoyi/DynaTable",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "main": "dist/index.js",
     "publishConfig": {
         "registry": "http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/"
