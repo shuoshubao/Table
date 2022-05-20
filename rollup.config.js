@@ -11,7 +11,7 @@ export default {
         postcss({ extract: true }),
         babel({
             babelrc: false,
-            presets: ['@babel/preset-react', '@babel/preset-env'],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: ['@babel/plugin-proposal-class-properties']
         })
     ]

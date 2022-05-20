@@ -14,6 +14,8 @@
 
 .dyna-table-filter-dropdown .dyna-table-filter-dropdown-options {
     padding: 4px 0;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .dyna-table-filter-dropdown .dyna-table-filter-dropdown-operation {
