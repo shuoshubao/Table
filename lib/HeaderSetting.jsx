@@ -4,6 +4,8 @@ import { Card, Tooltip, Dropdown, Button } from 'antd';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import MenuOutlined from '@ant-design/icons/MenuOutlined';
 import CheckOutlined from '@ant-design/icons/CheckOutlined';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import './index.scss';
 
 class Index extends Component {
@@ -65,20 +67,22 @@ class Index extends Component {
                             size="small"
                             bordered={false}
                         >
-                            {columns.map((v, i) => {
-                                const { title } = v;
-                                return (
-                                    <div className="dyna-table-header-setting-item" key={[i].join()}>
-                                        <div className="dyna-table-header-setting-item-sort">
-                                            <MenuOutlined />
+                            <DndProvider backend={HTML5Backend}>
+                                {columns.map((v, i) => {
+                                    const { title } = v;
+                                    return (
+                                        <div className="dyna-table-header-setting-item" key={[i].join()}>
+                                            <div className="dyna-table-header-setting-item-sort">
+                                                <MenuOutlined />
+                                            </div>
+                                            <div className="dyna-table-header-setting-item-label">{title}</div>
+                                            <div className="dyna-table-header-setting-item-check">
+                                                <CheckOutlined />
+                                            </div>
                                         </div>
-                                        <div className="dyna-table-header-setting-item-label">{title}</div>
-                                        <div className="dyna-table-header-setting-item-check">
-                                            <CheckOutlined />
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </DndProvider>
                         </Card>
                     </div>
                 );
