@@ -102,6 +102,14 @@
     .ant-table-tbody > tr > td {
         padding: 10px;
     }
+    .ant-table-tbody > tr {
+        &.dynamic-table-drop-over-downward td {
+            border-bottom: 2px dashed #1890ff;
+        }
+        &.dynamic-table-drop-over-upward td {
+            border-top: 2px dashed #1890ff;
+        }
+    }
 }
 
 .dynamic-table-filter-dropdown {
