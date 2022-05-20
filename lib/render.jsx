@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Typography, Tag, Image, Tooltip, Popconfirm, Modal } from './antd';
-import { get, find, omit, flatten, noop } from 'lodash';
-import { FileImageOutlined } from '@ant-design/icons';
-import { getLabelByValue, isEmptyValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
+import { Button, Typography, Tag, Image, Tooltip, Popconfirm, Modal, Menu, Dropdown } from './antd';
+import { get, filter, find, omit, flatten, merge, noop, isString, isObject } from 'lodash';
+import { FileImageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { getLabelByValue, isEmptyValue, isEmptyObject, isEmptyArray, stringifyUrl, formatTime } from '@nbfe/tools';
 import { getClassNames, getTooltipTitleNode } from './util.jsx';
 
 const { Paragraph } = Typography;
@@ -15,16 +15,9 @@ const getValue = (column, record, emptyText) => {
 
 const renderButtonList = (list, context) => {
     return list.map((v, i) => {
-        const {
-            text,
-            visible = true,
-            query = {},
-            tooltip = '',
-            isMore = false,
-            PopconfirmConfig,
-            ModalConfirmConfig
-        } = v;
+        const { text, key, visible, query, tooltip, isMore, PopconfirmConfig, ModalConfirmConfig } = v;
         const props = omit(v, [
+            'key',
             'text',
             'visible',
             'query',
@@ -44,17 +37,19 @@ const renderButtonList = (list, context) => {
         if (!visible) {
             return null;
         }
-        const key = [i, text].join();
         const getButtonNode = (extraProps = {}) => {
-            return <Button key={key} type="link" size="small" {...{ ...defaultProps, ...props, ...extraProps }} />;
-        };
-        if (tooltip) {
-            return (
-                <Tooltip title={getTooltipTitleNode(tooltip)} key={key}>
-                    {getButtonNode()}
-                </Tooltip>
+            const buttonNode = (
+                <Button key={key} type="link" size="small" {...{ ...defaultProps, ...props, ...extraProps }} />
             );
-        }
+            if (tooltip) {
+                return (
+                    <Tooltip title={getTooltipTitleNode(tooltip)} key={key}>
+                        {buttonNode}
+                    </Tooltip>
+                );
+            }
+            return buttonNode;
+        };
         if (PopconfirmConfig) {
             return (
                 <Popconfirm
@@ -153,8 +148,53 @@ export default (column, context) => {
         // 链接
         if (tpl === 'link') {
             const { render } = template;
-            const list = flatten([render(text, record, index)]);
-            return renderButtonList(list, context);
+            const list = flatten([render(text, record, index)]).map((v, i) => {
+                const { text, icon, tooltip } = v;
+                let iconName = '';
+                if (isString(icon)) {
+                    iconName = icon;
+                }
+                if (isObject(icon)) {
+                    iconName = get(icon, 'type.render.displayName');
+                }
+                const key = [i, text, iconName, tooltip].join();
+                return merge(
+                    {},
+                    {
+                        key,
+                        visible: true,
+                        query: {},
+                        tooltip: '',
+                        isMore: false
+                    },
+                    v
+                );
+            });
+
+            const dropdownList = filter(list, { isMore: true });
+
+            const menu = (
+                <Menu>
+                    {dropdownList.map(v => {
+                        return <Menu.Item key={v.key}>{renderButtonList([v], context)}</Menu.Item>;
+                    })}
+                </Menu>
+            );
+
+            return [
+                ...renderButtonList(filter(list, { isMore: false }), context),
+                !isEmptyArray(dropdownList) && (
+                    <Dropdown
+                        key="Dropdown"
+                        overlayClassName={getClassNames('render-link-dropdown')}
+                        overlay={menu}
+                        placement="bottomRight"
+                        arrow
+                    >
+                        <Button icon={<EllipsisOutlined />} type="link" size="small" />
+                    </Dropdown>
+                )
+            ];
         }
     };
 };
