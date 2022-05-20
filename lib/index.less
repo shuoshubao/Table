@@ -222,22 +222,47 @@
 
 .dynamic-table-descriptions {
     background-color: #fff;
-    .ant-descriptions-item,
+    &.ant-descriptions-bordered {
+        .ant-descriptions-item-label,
+        .ant-descriptions-item-content {
+            padding: 10px;
+        }
+    }
+    .ant-descriptions-item-content {
+        overflow: auto;
+    }
+    &:not(.ant-descriptions-bordered) {
+        .ant-descriptions-item-label {
+            vertical-align: top;
+        }
+    }
+    .ant-descriptions-item-container {
+        align-items: flex-start;
+    }
     .ant-descriptions-item-label {
-        vertical-align: top;
+        word-break: keep-all;
+    }
+    .ant-descriptions-item .ant-descriptions-item-label {
         align-items: center;
         .dynamic-table-descriptions-item-label-tooltip {
             margin-left: 4px;
         }
     }
-    .ant-descriptions-item:not(:last-child) {
-        padding-right: 10px;
+    .ant-descriptions-row > th,
+    .ant-descriptions-row > td {
+        padding-bottom: 10px;
     }
     .ant-descriptions-row:last-child > td {
         padding-bottom: 0;
     }
+    .ant-descriptions-item:not(:last-child) {
+        padding-right: 10px;
+    }
     .ant-typography {
         margin-bottom: 0;
+    }
+    .ant-progress-line {
+        width: calc(100% - 25px);
     }
     &.dynamic-table-antd-v3 {
         .ant-descriptions-title {

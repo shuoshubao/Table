@@ -367,7 +367,7 @@ const DescriptionsData = {
     digit3: random(1e4, 5e4),
     digit4: random(1e4, 5e4),
     rate: 4.5,
-    progress: 75,
+    progress: 75.23,
     percent1: 0.123456789,
     percent2: 0.123456789,
     code: `const getData = async params => {\n    const data = await getData(params);\n    return { list: data.data, ...data };\n};`,
@@ -470,7 +470,8 @@ const DescriptionsColumns = [
         label: '进度条',
         name: 'progress',
         template: {
-            tpl: 'progress'
+            tpl: 'progress',
+            type: 'circle'
         }
     },
     {
