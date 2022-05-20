@@ -4,242 +4,277 @@ import { ConfigProvider, Button, Card, Divider } from 'antd';
 import { sleep, fakeFetch, getAntdLocaleZhCN } from '@nbfe/tools';
 import 'antd/dist/antd.css';
 import 'rc-image/assets/index.css';
+import { AreaChartOutlined } from '@ant-design/icons';
+import { blue, red } from '@ant-design/colors';
 import Table from '../lib';
 import '../lib/index.less';
 
 const { Descriptions, Image } = Table;
 
+const Options = [
+    {
+        label: '选项1',
+        value: 1
+    },
+    {
+        label: '选项2',
+        value: 2
+    },
+    {
+        label: '选项3',
+        value: 3
+    }
+];
+
 const SexOptions = [
     {
         label: '男',
         value: 1,
-        color: 'blue'
+        color: blue.primary
     },
     {
         label: '女',
         value: 2,
-        color: 'red'
+        color: red.primary
+    }
+];
+
+const CascaderOptions = [
+    {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+            {
+                value: 'hangzhou',
+                label: 'Hangzhou'
+            }
+        ]
+    },
+    {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [
+            {
+                value: 'suzhou',
+                label: 'Suzhou'
+            }
+        ]
     }
 ];
 
 const columns = [
     {
-        title: '序号',
+        title: '排序',
+        width: 50,
         template: {
-            tpl: 'numbering'
+            tpl: 'sort'
+            // handler: <AreaChartOutlined />
         }
     },
     {
-        title: '图片',
-        dataIndex: 'imgSrc',
-        template: {
-            tpl: 'image',
-            fallback: 'https://ke.com/favicon.ico'
-        }
+        title: 'ID',
+        dataIndex: 'id'
     },
     {
         title: '文本',
         dataIndex: 'text',
-        width: 100,
-        tooltip: '我是提示文案',
+        // editable: true,
+        width: 150,
         template: {
-            tpl: 'text',
-            copyable: true,
-            ellipsis: {
-                rows: 2
-            }
+            // tpl: 'input'
+            // disabled: true
+        }
+    },
+    // {
+    //     title: '复选框',
+    //     dataIndex: 'checkbox',
+    //     // editable: true,
+    //     width: 300
+    //     // template: {
+    //     //     tpl: 'checkbox',
+    //     //     disabled: true,
+    //     //     // options: Options,
+    //     //     remoteConfig: {
+    //     //         fetch: async () => {
+    //     //             console.log('请求了 checkbox');
+    //     //             await sleep(random(0.5, 1.5, true));
+    //     //             return Options;
+    //     //         }
+    //     //     }
+    //     // }
+    // },
+    {
+        title: '单选框',
+        dataIndex: 'radio',
+        // editable: true,
+        width: 150,
+        template: {
+            tpl: 'enum',
+            disabled: true,
+            options: SexOptions,
+            shape: 'circle'
         }
     },
     {
-        title: '文本数组',
-        dataIndex: 'texts',
-        width: 100,
+        title: '日期',
+        dataIndex: 'date1',
+        editable: true,
+        width: 150,
         template: {
-            tpl: 'text',
-            separator: '、'
+            tpl: 'date-picker'
         }
     },
     {
-        title: '姓名',
-        dataIndex: 'name'
+        title: '日期范围',
+        dataIndex: 'date21,date22',
+        editable: true,
+        width: 260,
+        template: {
+            tpl: 'date-range-picker'
+        }
     },
     {
-        title: '年龄',
-        dataIndex: 'age'
+        title: '时间',
+        dataIndex: 'time1',
+        editable: true,
+        width: 150,
+        template: {
+            tpl: 'time-picker',
+            // format: 'HH:mm:ss',
+            format: 'HH:mm'
+            // format: 'HH',
+        }
     },
     {
-        title: '性别',
-        dataIndex: 'sex'
+        title: '时间范围',
+        dataIndex: 'time21,time22',
+        editable: true,
+        width: 200,
+        template: {
+            tpl: 'time-range-picker'
+            // format: 'HH:mm:ss',
+            // format: 'HH:mm',
+            // format: 'HH',
+        }
+    },
+    {
+        title: '数字',
+        dataIndex: 'number',
+        editable: true,
+        template: {
+            tpl: 'number'
+        }
+    },
+    {
+        title: '数字范围',
+        dataIndex: 'number1,number2',
+        editable: true,
+        width: 230,
+        template: {
+            tpl: 'number-range'
+        }
     },
     {
         title: '枚举1',
         dataIndex: 'enum1',
+        editable: true,
         template: {
-            tpl: 'enum',
-            width: 80,
-            options: [
-                {
-                    label: '男',
-                    value: 1
-                },
-                {
-                    label: '女',
-                    value: 2
+            tpl: 'select',
+            remoteConfig: {
+                fetch: async () => {
+                    // console.log(111);
+                    await sleep(random(0.5, 1.5, true));
+                    return [
+                        {
+                            label: '男',
+                            value: 1
+                        },
+                        {
+                            label: '女',
+                            value: 2
+                        }
+                    ];
                 }
-            ]
+            }
         }
     },
     {
         title: '枚举2',
         dataIndex: 'enum2',
+        editable: true,
         template: {
-            tpl: 'enum',
-            shape: 'tag',
-            width: 80,
-            options: [
-                {
-                    label: '上线',
-                    value: 1,
-                    color: '#2db7f5'
-                },
-                {
-                    label: '下线',
-                    value: 2,
-                    color: '#f50'
+            tpl: 'select',
+            remoteConfig: {
+                fetch: async () => {
+                    // console.log(222);
+                    await sleep(random(0.5, 1.5, true));
+                    return [
+                        {
+                            label: '在线',
+                            value: 1
+                        },
+                        {
+                            label: '离线',
+                            value: 2
+                        },
+                        {
+                            label: '审批中',
+                            value: 3
+                        }
+                    ];
                 }
-            ]
+            }
         }
     },
     {
-        title: '日期',
-        dataIndex: 'date',
+        title: '枚举3',
+        dataIndex: 'enum3',
+        editable: true,
+        width: 300,
         template: {
-            tpl: 'date',
-            format: 'YYYY-MM'
+            tpl: 'cascader',
+            remoteConfig: {
+                fetch: async () => {
+                    console.log('请求了 cascader');
+                    await sleep(random(0.5, 1.5, true));
+                    return CascaderOptions;
+                }
+            }
         }
     },
-    // {
-    //     title: '年龄',
-    //     dataIndex: 'age',
-    //     filterMultiple: false,
-    //     rules: [
-    //         {
-    //             required: true,
-    //             message: '年龄 is 必填'
-    //         }
-    //     ],
-    //     filters: [
-    //         {
-    //             label: '32',
-    //             value: 32
-    //         },
-    //         {
-    //             label: '42',
-    //             value: 42
-    //         }
-    //     ]
-    // },
-    // {
-    //     title: 'Trre 筛选 单选',
-    //     dataIndex: 'tree1',
-    //     filterMultiple: false,
-    //     filters: [
-    //         {
-    //             label: 'Node1',
-    //             value: '0-0',
-    //             children: [
-    //                 {
-    //                     label: 'Child Node1',
-    //                     value: '0-0-0'
-    //                 },
-    //                 {
-    //                     label: 'Child Node1',
-    //                     value: '0-0-1',
-    //                     children: [
-    //                         {
-    //                             label: 'Child Node1',
-    //                             value: '0-0-1-0'
-    //                         }
-    //                     ]
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             label: 'Node2',
-    //             value: '0-1',
-    //             children: [
-    //                 {
-    //                     label: 'Child Node3',
-    //                     value: '0-1-0'
-    //                 },
-    //                 {
-    //                     label: 'Child Node4',
-    //                     value: '0-1-1'
-    //                 },
-    //                 {
-    //                     label: 'Child Node5',
-    //                     value: '0-1-2'
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // },
-    // {
-    //     title: 'Trre 筛选 复选',
-    //     dataIndex: 'tree2',
-    //     filters: [
-    //         {
-    //             label: 'Node1',
-    //             value: '0-0',
-    //             children: [
-    //                 {
-    //                     label: 'Child Node1',
-    //                     value: '0-0-0'
-    //                 },
-    //                 {
-    //                     label: 'Child Node1',
-    //                     value: '0-0-1',
-    //                     children: [
-    //                         {
-    //                             label: 'Child Node1',
-    //                             value: '0-0-1-0'
-    //                         }
-    //                     ]
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             label: 'Node2',
-    //             value: '0-1',
-    //             children: [
-    //                 {
-    //                     label: 'Child Node3',
-    //                     value: '0-1-0'
-    //                 },
-    //                 {
-    //                     label: 'Child Node4',
-    //                     value: '0-1-1'
-    //                 },
-    //                 {
-    //                     label: 'Child Node5',
-    //                     value: '0-1-2'
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // },
-    // {
-    //     title: '住址1',
-    //     dataIndex: 'address1'
-    // },
     {
-        title: '住址2',
-        dataIndex: 'address2',
-        transform: (value, record, index) => {
-            return `${value}(transform_${index + 1})`;
-        },
-        render: value => {
-            return ['地址:', value].join('');
+        title: '枚举4',
+        dataIndex: 'enum4',
+        editable: true,
+        width: 300,
+        template: {
+            tpl: 'tree-select',
+            multiple: true,
+            treeDefaultExpandAll: true,
+            remoteConfig: {
+                fetch: async () => {
+                    console.log('请求了 tree-select');
+                    await sleep(random(0.5, 1.5, true));
+                    return CascaderOptions;
+                }
+            }
+        }
+    },
+    {
+        title: '评分',
+        dataIndex: 'rate',
+        editable: true,
+        template: {
+            tpl: 'rate'
+        }
+    },
+    {
+        title: 'switch',
+        dataIndex: 'switch',
+        // editable: true,
+        template: {
+            tpl: 'switch',
+            disabled: true
         }
     },
     {
@@ -253,47 +288,15 @@ const columns = [
                 const { name } = record;
                 return [
                     {
-                        text: '详情',
-                        href: '/abc',
-                        query: { name },
-                        target: '_blank'
-                    },
-                    {
-                        text: '编辑',
-                        tooltip: 'ABC',
-                        href: `/edit?name=${name}`
-                    },
-                    {
-                        text: '上线',
-                        // danger: true,
+                        text: '保存',
                         onClick: () => {
-                            console.log(record.name);
+                            console.log(record);
                         }
                     },
                     {
-                        text: '下线',
-                        disabled: true
-                    },
-                    {
-                        text: '编辑2',
-                        // icon: <EditOutlined />,
-                        isMore: true,
-                        tooltip: 'ABC',
-                        href: `/edit?name=${name}`
-                    },
-                    {
-                        text: '编辑3',
-                        // icon: <EditOutlined />,
-                        isMore: true,
-                        href: `/edit?name=${name}`
-                    },
-                    {
-                        text: '编辑3',
-                        // icon: <EditOutlined />,
-                        isMore: true,
-                        disabled: true,
-                        tooltip: '点击跳转 [链接|http://baidu.com]',
-                        href: `/edit?name=${name}`
+                        text: '删除',
+                        danger: true,
+                        onClick: () => {}
                     }
                 ];
             }
@@ -303,7 +306,7 @@ const columns = [
 
 const itemDataSource = [
     {
-        text: '文本文本文本文本文本文本文本文本文本文本文本文本',
+        text: 'demo',
         texts: ['文本1', '文本2'],
         name: '胡彦祖',
         age: 32,
@@ -319,32 +322,183 @@ const itemDataSource = [
     }
 ];
 
-const total = 92;
+const total = 3;
 
-const dataSource = range(0, total).map((v, i) => {
-    return {
-        ...itemDataSource[0],
-        name: itemDataSource[0].name + v,
-        imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
-        enum1: i % 3,
-        enum2: i % 2 ? 1 : 2,
-        enum3List: [
-            {
-                code: 1,
-                desc: '版本1'
-            },
-            {
-                code: 2,
-                desc: '版本2'
-            },
-            {
-                code: 3,
-                desc: '版本3'
-            }
-        ],
-        enum3: (i % 3) + 1
-    };
-});
+// const dataSource = range(0, total).map((v, i) => {
+//     return {
+//         id: i,
+//         ...itemDataSource[0],
+//         name: itemDataSource[0].name + v,
+//         imgSrc: i % 3 ? itemDataSource[0].imgSrc : 'error',
+//         enum1: i % 3,
+//         enum2: i % 2 ? 1 : 2,
+//         enum3List: [
+//             {
+//                 code: 1,
+//                 desc: '版本1'
+//             },
+//             {
+//                 code: 2,
+//                 desc: '版本2'
+//             },
+//             {
+//                 code: 3,
+//                 desc: '版本3'
+//             }
+//         ],
+//         enum3: (i % 3) + 1
+//     };
+// });
+
+const dataSource = [
+    {
+        id: 21,
+        text: 'demo21',
+        checkbox: [1],
+        radio: 1,
+        date1: '2022-03-14',
+        time1: '02:32:19',
+        time21: '11:11:11',
+        time22: '22:22:22',
+        date21: '2022-01-01',
+        date22: '2022-01-07',
+        enum1: 1,
+        enum2: 3,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: [],
+        number: 111,
+        number1: 33,
+        number2: 54,
+        rate: 2,
+        switch: false
+    },
+    {
+        id: 22,
+        text: 'test22',
+        checkbox: [2, 3],
+        radio: 2,
+        date1: '2022-02-02',
+        time1: '12:34:56',
+        time21: '11:22:33',
+        time22: '11:11:55',
+        date21: '',
+        date22: '',
+        enum1: 2,
+        enum2: 1,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: ['jiangsu', 'suzhou'],
+        number: 222,
+        number1: 11,
+        number2: 22,
+        rate: null,
+        switch: true
+    },
+    {
+        id: 23,
+        text: 'test23',
+        checkbox: [2, 3],
+        radio: 2,
+        date1: '2022-02-02',
+        time1: '12:34:56',
+        time21: '11:22:33',
+        time22: '11:11:55',
+        date21: '',
+        date22: '',
+        enum1: 2,
+        enum2: 1,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: ['jiangsu', 'suzhou'],
+        number: 222,
+        number1: 11,
+        number2: 22,
+        rate: null,
+        switch: false
+    },
+    {
+        id: 31,
+        text: 'test31',
+        checkbox: [2, 3],
+        radio: 2,
+        date1: '2022-02-02',
+        time1: '12:34:56',
+        time21: '11:22:33',
+        time22: '11:11:55',
+        date21: '',
+        date22: '',
+        enum1: 2,
+        enum2: 1,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: ['jiangsu', 'suzhou'],
+        number: 222,
+        number1: 11,
+        number2: 22,
+        rate: null,
+        switch: false
+    },
+    {
+        id: 32,
+        text: 'test32',
+        checkbox: [2, 3],
+        radio: 2,
+        date1: '2022-02-02',
+        time1: '12:34:56',
+        time21: '11:22:33',
+        time22: '11:11:55',
+        date21: '',
+        date22: '',
+        enum1: 2,
+        enum2: 1,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: ['jiangsu', 'suzhou'],
+        number: 222,
+        number1: 11,
+        number2: 22,
+        rate: null,
+        switch: false
+    },
+    {
+        id: 33,
+        text: 'test33',
+        checkbox: [2, 3],
+        radio: 2,
+        date1: '2022-02-02',
+        time1: '12:34:56',
+        time21: '11:22:33',
+        time22: '11:11:55',
+        date21: '',
+        date22: '',
+        enum1: 2,
+        enum2: 1,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: ['jiangsu', 'suzhou'],
+        number: 222,
+        number1: 11,
+        number2: 22,
+        rate: null,
+        switch: false
+    },
+    {
+        id: 41,
+        text: 'test41',
+        checkbox: [2, 3],
+        radio: 2,
+        date1: '2022-02-02',
+        time1: '12:34:56',
+        time21: '11:22:33',
+        time22: '11:11:55',
+        date21: '',
+        date22: '',
+        enum1: 2,
+        enum2: 1,
+        enum3: ['jiangsu', 'suzhou'],
+        enum4: ['jiangsu', 'suzhou'],
+        number: 222,
+        number1: 11,
+        number2: 22,
+        rate: null,
+        switch: false
+    }
+];
 
 // console.log(222)
 // console.log(dataSource)
@@ -363,168 +517,15 @@ const remoteConfig = {
     }
 };
 
-const DescriptionsData = {
-    text: '硕鼠宝',
-    enum: 1,
-    image: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    date: Date.now(),
-    digit1: random(1e4, 5e4),
-    digit2: null,
-    digit3: random(1e4, 5e4),
-    digit4: random(1e4, 5e4),
-    rate: 4.5,
-    progress: 75.23,
-    percent1: 0.123456789,
-    percent2: 0.123456789,
-    code: `const getData = async params => {\n    const data = await getData(params);\n    return { list: data.data, ...data };\n};`,
-    jsonCode: {
-        a: 1,
-        b: [1, 2, { c: 1 }]
-    }
+const getPaginationData = (params, dataSource = []) => {
+    const { currentPage, pageSize } = params;
+    const pivot = (currentPage - 1) * pageSize;
+    const list = dataSource.slice(pivot, currentPage * pageSize);
+    return {
+        list,
+        total: dataSource.length
+    };
 };
-
-const DescriptionsColumns = [
-    {
-        label: '文本',
-        name: 'text',
-        tooltip: '提示文案: [链接|baidu.com]',
-        transform: () => {
-            return null;
-        },
-        template: {
-            copyable: true
-        }
-    },
-    {
-        label: '枚举',
-        name: 'enum',
-        template: {
-            tpl: 'enum',
-            shape: 'tag',
-            options: SexOptions
-        }
-    },
-    {
-        label: '图片',
-        name: 'image',
-        template: {
-            tpl: 'image'
-        }
-    },
-    {
-        label: '链接',
-        name: 'link',
-        template: {
-            tpl: 'link',
-            render: (text, record) => {
-                console.log(record);
-                return [
-                    {
-                        text: '链接1'
-                    },
-                    {
-                        text: '链接2',
-                        PopconfirmConfig: {
-                            title: '标题'
-                        }
-                    },
-                    {
-                        text: '链接3',
-                        ModalConfirmConfig: {
-                            title: '标题'
-                        }
-                    }
-                ];
-            }
-        }
-    },
-    {
-        label: '日期',
-        name: 'date',
-        template: {
-            tpl: 'date',
-            format: 'YYYY-MM-DD'
-        }
-    },
-    {
-        label: '数字',
-        name: 'digit1',
-        template: {
-            tpl: 'digit'
-        }
-    },
-    {
-        label: '数字-空值',
-        name: 'digit2',
-        template: {
-            tpl: 'digit'
-        }
-    },
-    {
-        label: '数字-金额',
-        name: 'digit3',
-        template: {
-            tpl: 'digit',
-            prefix: '￥'
-        }
-    },
-    {
-        label: '数字-金额',
-        name: 'digit4',
-        template: {
-            tpl: 'digit',
-            suffix: '元'
-        }
-    },
-    {
-        label: '评分',
-        name: 'rate',
-        template: {
-            tpl: 'rate',
-            allowHalf: true
-        }
-    },
-    {
-        label: '进度条',
-        name: 'progress',
-        template: {
-            tpl: 'progress',
-            type: 'circle'
-        }
-    },
-    {
-        label: '百分比',
-        name: 'percent1',
-        template: {
-            tpl: 'percent'
-        }
-    },
-    {
-        label: '百分比-千分比',
-        name: 'percent2',
-        template: {
-            tpl: 'percent',
-            suffix: '‰',
-            times: 3,
-            precision: 3
-        }
-    },
-    {
-        label: '代码',
-        name: 'code',
-        template: {
-            tpl: 'code'
-        }
-    },
-    {
-        label: '代码-json',
-        name: 'jsonCode',
-        template: {
-            tpl: 'code',
-            language: 'json'
-        }
-    }
-];
 
 class App extends Component {
     constructor(props) {
@@ -547,27 +548,26 @@ class App extends Component {
         return (
             <ConfigProvider locale={getAntdLocaleZhCN()}>
                 <div style={{ padding: 20, background: '#eee' }}>
-                    <Card title="Descriptions" size="small">
-                        <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
-                    </Card>
-                    <Divider />
-                    <Card title="搜索区" size="small">
-                        <Button type="primary" onClick={this.onClick} size="small">
-                            查询
-                        </Button>
-                        <Image
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                            width={50}
-                        />
-                    </Card>
-
                     <Divider />
                     <Table
                         ref={this.tableRef}
                         columns={columns}
-                        rowKey="name"
-                        remoteConfig={remoteConfig}
-                        scroll={{ x: 1200 }}
+                        rowKey="id"
+                        // rowKey={record => {
+                        //     return [record.id, record.date1].join('_');
+                        // }}
+                        // dataSource={dataSource}
+                        remoteConfig={{
+                            fetch: async params => {
+                                console.log('请求了');
+                                console.log(params);
+                                await sleep();
+                                return getPaginationData(params, dataSource);
+                                // return {
+                                //     list: dataSource
+                                // };
+                            }
+                        }}
                         prependHeader={
                             <>
                                 <Button type="primary">新增</Button>
@@ -580,10 +580,19 @@ class App extends Component {
                                 <Button type="primary">导出</Button>
                             </>
                         }
+                        pagination={{
+                            defaultPageSize: 3
+                        }}
                         extraConfig={{
                             showTotal: true,
                             storageKey: 'demo',
                             fullScreen: true
+                        }}
+                        draggable={false}
+                        onDragSortEnd={({ newDataSource, dataSource, fromIndex, toIndex }) => {
+                            console.log(222, fromIndex, toIndex);
+                            console.log(dataSource);
+                            console.log(newDataSource);
                         }}
                     />
                 </div>
