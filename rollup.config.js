@@ -1,4 +1,6 @@
 import babel from '@rollup/plugin-babel';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 
 export default {
@@ -9,6 +11,9 @@ export default {
         exports: 'default'
     },
     external: id => {
+        if (['@ant-design/icons', '@ant-design/colors', '@ctrl/tinycolor', 'rc-util'].some(v => id.startsWith(v))) {
+            return false;
+        }
         return !['.', '/'].some(v => id.startsWith(v));
     },
     plugins: [
@@ -18,6 +23,8 @@ export default {
             babelHelpers: 'bundled',
             presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: ['@babel/plugin-proposal-class-properties']
-        })
+        }),
+        nodeResolve(),
+        commonjs()
     ]
 };
