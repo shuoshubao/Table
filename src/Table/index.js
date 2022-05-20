@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Checkbox, Radio, Button } from 'antd';
+import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, get, omit, isEqual, isUndefined, debounce } from 'lodash';
-import { setAsyncState, classNames } from '@nbfe/tools';
+import { setAsyncState, classNames, isEmptyValue, isEmptyArray } from '@nbfe/tools';
+import { isEveryFalsy } from './util';
 import './index.css';
 
 class Index extends Component {
@@ -19,7 +21,7 @@ class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            total: 1,
+            total: 0,
             current: 1,
             pageSize: 10,
             dataSource: [],
@@ -40,7 +42,14 @@ class Index extends Component {
 
             // 远端排序
             if (filters) {
+                v.filterIcon = () => {
+                    const value = this.state.filterValue[dataIndex];
+                    const filtered = isEveryFalsy(isEmptyValue(value), isEmptyArray(value));
+                    return <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />;
+                };
                 v.filterDropdown = props => {
+                    // 选中的值
+                    const value = this.state.filterValue[dataIndex];
                     const { setSelectedKeys, selectedKeys, confirm, clearFilters } = props;
                     let dropdownNode;
                     const dropdownOptions = filters.map((v2, i2) => {
@@ -49,8 +58,6 @@ class Index extends Component {
                             value: v2.value
                         };
                     });
-                    // 选中的值
-                    const value = this.state.filterValue[dataIndex];
                     // 多选 / 单选
                     if (filterMultiple) {
                         dropdownNode = (
@@ -160,13 +167,18 @@ class Index extends Component {
                     [currentPageKey]: current
                 };
                 const filterParams = this.customEvents.getFilterParams();
-                const fetchParams = { ...paginationParams, ...filterParams, ...this.cacheSearchParams, ...searchParams };
+                const fetchParams = {
+                    ...paginationParams,
+                    ...filterParams,
+                    ...this.cacheSearchParams,
+                    ...searchParams
+                };
                 const res = await fetchFunc(fetchParams);
                 const dataSource = get(res, dataSourceKey, []);
                 const total = get(res, totalKey, 0);
                 this.setState({ dataSource, total });
                 if (isReset) {
-                  this.cacheSearchParams = { ...searchParams };
+                    this.cacheSearchParams = { ...searchParams };
                 }
             }
         };
