@@ -348,7 +348,7 @@ const remoteConfig = {
         console.log(params);
         const { currentPage, pageSize } = params;
         await sleep(random(0.5, 1.5, true));
-        return Promise.reject();
+        // return Promise.reject();
         return {
             list: dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize),
             total
@@ -365,6 +365,8 @@ const DescriptionsData = {
     digit2: null,
     digit3: random(1e4, 5e4),
     digit4: random(1e4, 5e4),
+    rate: 4.5,
+    progress: 75,
     percent1: 0.123456789,
     percent2: 0.123456789,
     code: `const getData = async params => {\n    const data = await getData(params);\n    return { list: data.data, ...data };\n};`,
@@ -450,6 +452,21 @@ const DescriptionsColumns = [
         template: {
             tpl: 'digit',
             suffix: '元'
+        }
+    },
+    {
+        label: '评分',
+        name: 'rate',
+        template: {
+            tpl: 'rate',
+            allowHalf: true
+        }
+    },
+    {
+        label: '进度条',
+        name: 'progress',
+        template: {
+            tpl: 'progress',
         }
     },
     {
