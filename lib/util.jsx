@@ -1,5 +1,5 @@
 import React from 'react';
-import { version, Table, Checkbox, Radio, Button } from './antd';
+import { version, Table, Radio, Checkbox, TreeSelect, Button } from './antd';
 import FilterFilled from '@ant-design/icons/FilterFilled';
 import { cloneDeep, isEqual, isUndefined, kebabCase, merge, filter, find, inRange } from 'lodash';
 import { setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
@@ -57,27 +57,48 @@ export const mergeColumns = (columns = [], context) => {
                     const value = context.state.filterValue[dataIndex];
                     const { confirm } = props;
                     let dropdownNode;
-                    // 多选 / 单选
-                    if (filterMultiple) {
+                    const isTreeSelect = Object.keys(filters[0]).includes('children');
+                    console.log(isTreeSelect, dataIndex, Object.keys(filters[0]));
+                    if (isTreeSelect) {
                         dropdownNode = (
-                            <Checkbox.Group
+                            <TreeSelect
                                 value={value}
-                                options={filters}
-                                onChange={val => {
-                                    domEvents.onFilterChange(dataIndex, val);
-                                }}
-                            />
-                        );
-                    } else {
-                        dropdownNode = (
-                            <Radio.Group
-                                value={value}
-                                options={filters}
+                                treeData={filters}
                                 onChange={e => {
                                     domEvents.onFilterChange(dataIndex, e.target.value);
                                 }}
+                                style={{ width: 200 }}
+                                dropdownMatchSelectWidth={200}
+                                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                treeDefaultExpandAll
+                                multiple={filterMultiple}
+                                treeCheckable
+                                open={context.state.treeSelectOpens[dataIndex] || false}
                             />
                         );
+                    } else {
+                        // 多选 / 单选
+                        if (filterMultiple) {
+                            dropdownNode = (
+                                <Checkbox.Group
+                                    value={value}
+                                    options={filters}
+                                    onChange={val => {
+                                        domEvents.onFilterChange(dataIndex, val);
+                                    }}
+                                />
+                            );
+                        } else {
+                            dropdownNode = (
+                                <Radio.Group
+                                    value={value}
+                                    options={filters}
+                                    onChange={e => {
+                                        domEvents.onFilterChange(dataIndex, e.target.value);
+                                    }}
+                                />
+                            );
+                        }
                     }
                     let disabledReset;
                     if (filterMultiple) {
@@ -88,7 +109,9 @@ export const mergeColumns = (columns = [], context) => {
                     return (
                         <div className="dyna-table-filter-dropdown">
                             <div className="dyna-table-filter-dropdown-options">{dropdownNode}</div>
-                            <div className="dyna-table-filter-dropdown-footer">
+                            <div className={classNames("dyna-table-filter-dropdown-footer", {
+                                'dyna-table-filter-dropdown-footer-hide': isTreeSelect
+                            })}>
                                 <Button
                                     size="small"
                                     type="text"
@@ -114,10 +137,12 @@ export const mergeColumns = (columns = [], context) => {
                         </div>
                     );
                 };
-                // 隐藏时, 触发搜索
                 column.onFilterDropdownVisibleChange = visible => {
+                    domEvents.changeTreeSelect(visible, dataIndex);
+                    // 隐藏时, 触发搜索
                     if (!visible) {
                         domEvents.onFilterConfirm();
+                        return;
                     }
                 };
             }

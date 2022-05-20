@@ -32,6 +32,9 @@
         padding: 7px 8px 7px 3px;
         display: flex;
         justify-content: flex-end;
+        &.dyna-table-filter-dropdown-footer-hide {
+            display: none;
+        }
         .ant-btn + .ant-btn {
             margin-left: 5px;
         }

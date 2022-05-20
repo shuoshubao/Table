@@ -40,7 +40,8 @@ class Index extends Component {
             total: 0,
             current: defaultCurrent || 1,
             pageSize: defaultPageSize || 10,
-            filterValue: {} // 筛选的数据
+            filterValue: {}, // 筛选的数据
+            treeSelectOpens: {} // TreeSelect 的显示状态
         };
         this.customEvents = this.getCustomEvents();
         this.domEvents = this.getDomEvents();
@@ -120,6 +121,16 @@ class Index extends Component {
                             ...prevState.filterValue,
                             [dataIndex]: value
                         }
+                    };
+                });
+            },
+            // 筛选 TreeSelect
+            changeTreeSelect: (visible, dataIndex) => {
+                this.setState(prevState => {
+                    const { treeSelectOpens } = prevState;
+                    treeSelectOpens[dataIndex] = visible;
+                    return {
+                        treeSelectOpens
                     };
                 });
             },
