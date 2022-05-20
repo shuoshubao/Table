@@ -19,5 +19,21 @@ export default [
             format: 'esm'
         },
         plugins: [postcss({ extract: true, minimize: true }), babel()]
+    },
+    {
+        input: 'lib/Table/index.js',
+        output: {
+            file: 'dist/Table.esm.js',
+            format: 'esm'
+        },
+        plugins: [babel()]
+    },
+    {
+        input: 'lib/Table/index.js',
+        output: {
+            file: 'dist/Table.js',
+            format: 'cjs'
+        },
+        plugins: [babel()]
     }
 ];
