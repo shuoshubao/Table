@@ -5,7 +5,7 @@ import { sleep, fakeFetch } from '@nbfe/tools';
 import 'antd/dist/antd.css';
 import 'rc-image/assets/index.css';
 import Table from '../lib';
-import '../lib/v3.less';
+import '../lib/index.less';
 
 const columns = [
     {
@@ -375,7 +375,10 @@ class App extends Component {
                             <Button type="primary">导出</Button>
                         </>
                     }
-                    extraConfig={{ showTotal: true }}
+                    extraConfig={{
+                        showTotal: true,
+                        showColumnsSetting: true
+                    }}
                 />
             </div>
         );
