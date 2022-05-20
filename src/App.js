@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { random, range } from 'lodash';
-import { Button, Card, Divider } from 'antd';
-import { sleep, fakeFetch } from '@nbfe/tools';
+import { ConfigProvider, Button, Card, Divider } from 'antd';
+import { sleep, fakeFetch, getAntdLocaleZhCN } from '@nbfe/tools';
 import 'antd/dist/antd.css';
 import 'rc-image/assets/index.css';
 import Table from '../lib';
@@ -44,6 +44,7 @@ const columns = [
         tooltip: '我是提示文案',
         template: {
             tpl: 'text',
+            copyable: true,
             ellipsis: {
                 rows: 2
             }
@@ -380,7 +381,10 @@ const DescriptionsColumns = [
     {
         label: '文本',
         name: 'text',
-        tooltip: '提示文案: [链接|baidu.com]'
+        tooltip: '提示文案: [链接|baidu.com]',
+        template: {
+            copyable: true
+        }
     },
     {
         label: '枚举',
@@ -466,7 +470,7 @@ const DescriptionsColumns = [
         label: '进度条',
         name: 'progress',
         template: {
-            tpl: 'progress',
+            tpl: 'progress'
         }
     },
     {
@@ -522,42 +526,44 @@ class App extends Component {
 
     render() {
         return (
-            <div style={{ padding: 20, background: '#eee' }}>
-                <Card title="Descriptions" size="small">
-                    <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
-                </Card>
-                <Divider />
-                <Card title="搜索区" size="small">
-                    <Button type="primary" onClick={this.onClick} size="small">
-                        查询
-                    </Button>
-                </Card>
-                <Divider />
-                <Table
-                    ref={this.tableRef}
-                    columns={columns}
-                    rowKey="name"
-                    remoteConfig={remoteConfig}
-                    scroll={{ x: 1200 }}
-                    prependHeader={
-                        <>
-                            <Button type="primary">新增</Button>
-                            <span>134</span>
-                        </>
-                    }
-                    appendHeader={
-                        <>
-                            <Button type="primary">新增</Button>
-                            <Button type="primary">导出</Button>
-                        </>
-                    }
-                    extraConfig={{
-                        showTotal: true,
-                        storageKey: 'demo',
-                        fullScreen: true
-                    }}
-                />
-            </div>
+            <ConfigProvider locale={getAntdLocaleZhCN()}>
+                <div style={{ padding: 20, background: '#eee' }}>
+                    <Card title="Descriptions" size="small">
+                        <Descriptions data={DescriptionsData} columns={DescriptionsColumns} />
+                    </Card>
+                    <Divider />
+                    <Card title="搜索区" size="small">
+                        <Button type="primary" onClick={this.onClick} size="small">
+                            查询
+                        </Button>
+                    </Card>
+                    <Divider />
+                    <Table
+                        ref={this.tableRef}
+                        columns={columns}
+                        rowKey="name"
+                        remoteConfig={remoteConfig}
+                        scroll={{ x: 1200 }}
+                        prependHeader={
+                            <>
+                                <Button type="primary">新增</Button>
+                                <span>134</span>
+                            </>
+                        }
+                        appendHeader={
+                            <>
+                                <Button type="primary">新增</Button>
+                                <Button type="primary">导出</Button>
+                            </>
+                        }
+                        extraConfig={{
+                            showTotal: true,
+                            storageKey: 'demo',
+                            fullScreen: true
+                        }}
+                    />
+                </div>
+            </ConfigProvider>
         );
     }
 }
