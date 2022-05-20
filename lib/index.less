@@ -7,6 +7,12 @@
     .ant-table-footer {
         padding: 10px;
         background: #fff;
+        &::before {
+            display: none;
+        }
+        &:empty {
+            display: none;
+        }
     }
     &.dynamic-table-bordered {
         border: 1px solid #e8e8e8;
