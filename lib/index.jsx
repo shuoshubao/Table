@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { message, Table, Checkbox, Radio, Button } from './antd';
+import { message, Table, Checkbox, Radio, Button } from 'antd';
 import { cloneDeep, get, set, omit, isEqual, isUndefined, isFunction, debounce, map } from 'lodash';
 import { sleep, setAsyncState, classNames, isEmptyValue, isEmptyArray, isEveryFalsy } from '@nbfe/tools';
-import CloseCircleFilled from '@ant-design/icons/CloseCircleFilled';
+import { CloseCircleFilled } from './Icons.jsx';
 import getTableComponentsV4 from './EditableCell.jsx';
 import getTableComponentsV3 from './EditableCellV3.jsx';
 import {
@@ -15,7 +15,7 @@ import {
     getVisibleColumns,
     getClassNames
 } from './util.jsx';
-import './index.scss';
+import './index.less';
 
 const getTableComponents = isAntdV3 ? getTableComponentsV3 : getTableComponentsV4;
 
@@ -202,7 +202,7 @@ class Index extends Component {
         }
         let hideLoading;
         if (!editTriggerNone) {
-            hideLoading = message.loading('正在保存数据...', 0)
+            hideLoading = message.loading('正在保存数据...', 0);
         }
         await setAsyncState(this, { loading: true, dataSource: newDataSource });
         try {

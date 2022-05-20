@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Input, Select, Button, Form } from './antd';
+import { Table, Input, Select, Button, Form } from 'antd';
 import { find, omit, flatten, isString } from 'lodash';
-import EditOutlined from '@ant-design/icons/EditOutlined';
+import { EditOutlined } from './Icons.jsx';
 import { classNames } from '@nbfe/tools';
 import DynamicForm from '@nbfe/form';
 import { getClassNames } from './util.jsx';

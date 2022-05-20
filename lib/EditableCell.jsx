@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Input, Select, Form } from './antd';
+import { Input, Select, Form } from 'antd';
 import { find, omit, flatten, isString } from 'lodash';
 import { classNames } from '@nbfe/tools';
-import EditOutlined from '@ant-design/icons/EditOutlined';
+import { EditOutlined } from './Icons.jsx';
 import DynamicForm from '@nbfe/form';
 import { getClassNames } from './util.jsx';
 
@@ -39,7 +39,7 @@ const getEditableCell = tableProps => {
 
         useEffect(() => {
             if (editTriggerNone) {
-                form.setFieldsValue({ [dataIndex]: value })
+                form.setFieldsValue({ [dataIndex]: value });
                 return;
             }
             if (editing) {
@@ -77,24 +77,12 @@ const getEditableCell = tableProps => {
                 let FormItemNode;
                 if (tpl === 'input') {
                     const { width = 100 } = template;
-                    FormItemNode = (
-                        <Input
-                            ref={inputRef}
-                            onBlur={save}
-                            size={size}
-                            style={{ width }}
-                        />
-                    );
+                    FormItemNode = <Input ref={inputRef} onBlur={save} size={size} style={{ width }} />;
                 }
                 if (tpl === 'select') {
                     const { options = [], width = 100 } = template;
                     FormItemNode = (
-                        <Select
-                            ref={inputRef}
-                            onBlur={save}
-                            size={size}
-                            style={{ width }}
-                        >
+                        <Select ref={inputRef} onBlur={save} size={size} style={{ width }}>
                             {options.map(v => {
                                 return (
                                     <Select.Option key={v.value} {...omit(v, ['label', 'options'])}>

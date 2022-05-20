@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cloneDeep, map, remove, sortBy, debounce } from 'lodash';
-import { Card, Tooltip, Dropdown, Button } from './antd';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import MenuOutlined from '@ant-design/icons/MenuOutlined';
-import CheckOutlined from '@ant-design/icons/CheckOutlined';
+import { Card, Tooltip, Dropdown, Button } from 'antd';
+import { SettingOutlined, MenuOutlined, CheckOutlined } from './Icons.jsx';
 import { ReactSortable } from 'react-sortablejs';
 import { setAsyncState, isSomeFalsy } from '@nbfe/tools';
 import { isAntdV3, getComponentName, getStorageKey, getClassNames } from './util.jsx';
