@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Typography, Tag, Image, Tooltip, Popconfirm } from './antd';
+import { Button, Typography, Tag, Image, Tooltip, Popconfirm, Modal } from './antd';
 import { get, find, omit, flatten, noop } from 'lodash';
 import { FileImageOutlined } from '@ant-design/icons';
 import { getLabelByValue, isEmptyValue, isEmptyObject, stringifyUrl, formatTime } from '@nbfe/tools';
@@ -83,8 +83,15 @@ export default (column, context) => {
             const { render } = template;
             const list = flatten([render(text, record, index)]);
             return list.map((v, i) => {
-                const { text, visible = true, query = {}, tooltip = '', PopconfirmConfig } = v;
-                const props = omit(v, ['text', 'visible', 'query', 'tooltip', 'PopconfirmConfig']);
+                const { text, visible = true, query = {}, tooltip = '', PopconfirmConfig, ModalConfirmConfig } = v;
+                const props = omit(v, [
+                    'text',
+                    'visible',
+                    'query',
+                    'tooltip',
+                    'PopconfirmConfig',
+                    'ModalConfirmConfig'
+                ]);
                 const defaultProps = {
                     type: 'link',
                     size: 'small',
@@ -96,27 +103,43 @@ export default (column, context) => {
                 if (!visible) {
                     return null;
                 }
-                const buttonNode = (
-                    <Button key={[i, text].join()} type="link" size="small" {...{ ...defaultProps, ...props }} />
-                );
+                const getButtonNode = (extraProps = {}) => {
+                    return (
+                        <Button
+                            key={[i, text].join()}
+                            type="link"
+                            size="small"
+                            {...{ ...defaultProps, ...props, ...extraProps }}
+                        />
+                    );
+                };
                 if (tooltip) {
-                    return <Tooltip title={getTooltipTitleNode(tooltip)}>{buttonNode}</Tooltip>;
+                    return <Tooltip title={getTooltipTitleNode(tooltip)}>{getButtonNode()}</Tooltip>;
                 }
                 if (PopconfirmConfig) {
-                    let onConfirm = noop;
-                    if (PopconfirmConfig.onConfirm) {
-                        onConfirm = async () => {
-                            await PopconfirmConfig.onConfirm();
-                            context.handleSearch({}, false);
-                        };
-                    }
+                    const onConfirm = async () => {
+                        await PopconfirmConfig.onConfirm();
+                        context.handleSearch({}, false);
+                    };
                     return (
                         <Popconfirm {...PopconfirmConfig} onConfirm={onConfirm}>
-                            {buttonNode}
+                            {getButtonNode()}
                         </Popconfirm>
                     );
                 }
-                return buttonNode;
+                if (ModalConfirmConfig) {
+                    const handleClick = () => {
+                        Modal.confirm({
+                            ...ModalConfirmConfig,
+                            onOk: async () => {
+                                await ModalConfirmConfig.onOk();
+                                context.handleSearch({}, false);
+                            }
+                        });
+                    };
+                    return getButtonNode({ onClick: handleClick });
+                }
+                return getButtonNode();
             });
         }
     };
